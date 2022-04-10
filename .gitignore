@@ -33,3 +33,6 @@ dataset/
 **/logs/**
 **/lightning_logs/**
 /examples/linkproppred/biokg/log/ogbl-biokg/TransE/500-12.0/1649338106.4477725/train.log
+/.idea/shelf/Uncommitted_changes_before_Update_at_4_10_22,_2_58_PM_[Changes]/shelved.patch
+/.idea/shelf/Uncommitted_changes_before_Update_at_4_10_22,_2_58_PM_[Changes]1/shelved.patch
+/.idea/shelf/Uncommitted_changes_before_Update_at_4_10_22__2_58_PM__Changes_.xml
