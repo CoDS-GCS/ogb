@@ -1,7 +1,9 @@
 from copy import copy
 import argparse
-from tqdm import tqdm
 
+import pandas
+from tqdm import tqdm
+import datetime
 import torch
 import torch.nn.functional as F
 from torch.nn import ModuleList, Linear, ParameterDict, Parameter
@@ -12,7 +14,7 @@ from torch_geometric.utils.hetero import group_hetero_graph
 from torch_geometric.nn import MessagePassing
 
 from ogb.nodeproppred import PygNodePropPredDataset, Evaluator
-
+from resource import *
 from logger import Logger
 
 parser = argparse.ArgumentParser(description='OGBN-MAG (GraphSAINT)')
@@ -22,19 +24,28 @@ parser.add_argument('--hidden_channels', type=int, default=64)
 parser.add_argument('--dropout', type=float, default=0.5)
 parser.add_argument('--lr', type=float, default=0.005)
 parser.add_argument('--epochs', type=int, default=30)
-parser.add_argument('--runs', type=int, default=10)
+parser.add_argument('--runs', type=int, default=1)
 parser.add_argument('--batch_size', type=int, default=20000)
 parser.add_argument('--walk_length', type=int, default=2)
 parser.add_argument('--num_steps', type=int, default=30)
+parser.add_argument('--loadTrainedModel', type=int, default=1)
 args = parser.parse_args()
 print(args)
-
+print(getrusage(RUSAGE_SELF))
+start_t = datetime.datetime.now()
+# dataset = PygNodePropPredDataset(name='ogbn-mag-QM1')
+# dataset = PygNodePropPredDataset(name='ogbn-mag-QM2')
+# dataset = PygNodePropPredDataset(name='ogbn-mag-QM3')
 dataset = PygNodePropPredDataset(name='ogbn-mag')
+# dataset = PygNodePropPredDataset(name='ogbn-mag-QM4')
 data = dataset[0]
 split_idx = dataset.get_idx_split()
+end_t = datetime.datetime.now()
+print("dataset init time=", end_t - start_t, " sec.")
 evaluator = Evaluator(name='ogbn-mag')
 logger = Logger(args.runs, args)
 
+start_t = datetime.datetime.now()
 # We do not consider those attributes for now.
 data.node_year_dict = None
 data.edge_reltype_dict = None
@@ -44,18 +55,22 @@ print(data)
 edge_index_dict = data.edge_index_dict
 
 # We need to add reverse edges to the heterogeneous graph.
-r, c = edge_index_dict[('author', 'affiliated_with', 'institution')]
-edge_index_dict[('institution', 'to', 'author')] = torch.stack([c, r])
+if ('author', 'affiliated_with', 'institution') in edge_index_dict.keys():
+    r, c = edge_index_dict[('author', 'affiliated_with', 'institution')]
+    edge_index_dict[('institution', 'to', 'author')] = torch.stack([c, r])
 
-r, c = edge_index_dict[('author', 'writes', 'paper')]
-edge_index_dict[('paper', 'to', 'author')] = torch.stack([c, r])
+if ('author', 'writes', 'paper') in edge_index_dict.keys():
+    r, c = edge_index_dict[('author', 'writes', 'paper')]
+    edge_index_dict[('paper', 'to', 'author')] = torch.stack([c, r])
 
-r, c = edge_index_dict[('paper', 'has_topic', 'field_of_study')]
-edge_index_dict[('field_of_study', 'to', 'paper')] = torch.stack([c, r])
+if ('paper', 'has_topic', 'field_of_study') in edge_index_dict.keys():
+    r, c = edge_index_dict[('paper', 'has_topic', 'field_of_study')]
+    edge_index_dict[('field_of_study', 'to', 'paper')] = torch.stack([c, r])
 
 # Convert to undirected paper <-> paper relation.
-edge_index = to_undirected(edge_index_dict[('paper', 'cites', 'paper')])
-edge_index_dict[('paper', 'cites', 'paper')] = edge_index
+if ('paper', 'cites', 'paper') in edge_index_dict.keys():
+    edge_index = to_undirected(edge_index_dict[('paper', 'cites', 'paper')])
+    edge_index_dict[('paper', 'cites', 'paper')] = edge_index
 
 # We convert the individual graphs into a single big one, so that sampling
 # neighbors does not need to care about different edge types.
@@ -90,15 +105,22 @@ train_loader = GraphSAINTRandomWalkSampler(homo_data,
                                            save_dir=dataset.processed_dir)
 
 # Map informations to their canonical type.
+#######################intialize random features ###############################
+feat = torch.Tensor(data.num_nodes_dict['paper'], 128)
+torch.nn.init.xavier_uniform_(feat)
+feat_dic = {'paper':feat}
+################################################################
 x_dict = {}
-for key, x in data.x_dict.items():
+# for key, x in data.x_dict.items():
+for key, x in feat_dic.items():
     x_dict[key2int[key]] = x
 
 num_nodes_dict = {}
 for key, N in data.num_nodes_dict.items():
     num_nodes_dict[key2int[key]] = N
 
-
+end_t = datetime.datetime.now()
+print("model init time CPU=", end_t - start_t, " sec.")
 class RGCNConv(MessagePassing):
     def __init__(self, in_channels, out_channels, num_node_types,
                  num_edge_types):
@@ -253,7 +275,7 @@ model = RGCN(128, args.hidden_channels, dataset.num_classes, args.num_layers,
              len(edge_index_dict.keys())).to(device)
 
 x_dict = {k: v.to(device) for k, v in x_dict.items()}
-
+optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 
 def train(epoch):
     model.train()
@@ -308,22 +330,41 @@ def test():
 
     return train_acc, valid_acc, test_acc
 
+if args.loadTrainedModel==1:
+    model.load_state_dict(torch.load("ogbn-mag-FM-GSaint.model"))
+    model.eval()
+    out = model.inference(x_dict, edge_index_dict, key2int)
+    out = out[key2int['paper']]
+    y_pred = out.argmax(dim=-1, keepdim=True).cpu()
+    y_true = data.y_dict['paper']
 
-test()  # Test if inference on GPU succeeds.
-for run in range(args.runs):
-    model.reset_parameters()
-    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
-    for epoch in range(1, 1 + args.epochs):
-        loss = train(epoch)
-        torch.cuda.empty_cache()
-        result = test()
-        logger.add_result(run, result)
-        train_acc, valid_acc, test_acc = result
-        print(f'Run: {run + 1:02d}, '
-              f'Epoch: {epoch:02d}, '
-              f'Loss: {loss:.4f}, '
-              f'Train: {100 * train_acc:.2f}%, '
-              f'Valid: {100 * valid_acc:.2f}%, '
-              f'Test: {100 * test_acc:.2f}%')
-    logger.print_statistics(run)
-logger.print_statistics()
+    out_lst=torch.flatten(y_true).tolist()
+    pred_lst = torch.flatten(y_pred).tolist()
+    out_df = pandas.DataFrame({"y_pred":pred_lst,"y_true":out_lst})
+    # print(y_pred, data.y_dict['paper'])
+    # print(out_df)
+    out_df.to_csv("GSaint_mag_output.csv",index=None)
+else:
+    test()  # Test if inference on GPU succeeds.
+    for run in range(args.runs):
+        start_t = datetime.datetime.now()
+        model.reset_parameters()
+
+        for epoch in range(1, 1 + args.epochs):
+            loss = train(epoch)
+            torch.cuda.empty_cache()
+            result = test()
+            logger.add_result(run, result)
+            train_acc, valid_acc, test_acc = result
+            print(f'Run: {run + 1:02d}, '
+                  f'Epoch: {epoch:02d}, '
+                  f'Loss: {loss:.4f}, '
+                  f'Train: {100 * train_acc:.2f}%, '
+                  f'Valid: {100 * valid_acc:.2f}%, '
+                  f'Test: {100 * test_acc:.2f}%')
+        logger.print_statistics(run)
+        end_t = datetime.datetime.now()
+        print("model run ", run, " train time CPU=", end_t - start_t, " sec.")
+        print(getrusage(RUSAGE_SELF))
+    logger.print_statistics()
+    torch.save(model.state_dict(), "ogbn-mag-FM-GSaint.model")

@@ -122,7 +122,13 @@ class PygNodePropPredDataset(InMemoryDataset):
 
     def download(self):
         url =  self.meta_info['url']
-        if decide_download(url):
+        if str(url).startswith("http")==False:
+            path =url
+            extract_zip(path, self.original_root)
+            os.unlink(path)
+            shutil.rmtree(self.root)
+            shutil.move(osp.join(self.original_root, self.download_name), self.root)
+        elif decide_download(url):
             path = download_url(url, self.original_root)
             extract_zip(path, self.original_root)
             os.unlink(path)

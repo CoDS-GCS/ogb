@@ -8,6 +8,8 @@ dataset/
 *.DS_Store
 *.pt
 *.so
+*.csv
+*.model
 *trial*
 *.ipynb
 *.sh
@@ -30,3 +32,4 @@ dataset/
 **/pcqm4m-scaf/**
 **/logs/**
 **/lightning_logs/**
+/examples/linkproppred/biokg/log/ogbl-biokg/TransE/500-12.0/1649338106.4477725/train.log

@@ -35,7 +35,7 @@ def parse_args(args=None):
 
     parser.add_argument('--cuda', action='store_true', help='use GPU')
     
-    parser.add_argument('--do_train', action='store_true')
+    parser.add_argument('--do_train', action='store_false')
     parser.add_argument('--do_valid', action='store_true')
     parser.add_argument('--do_test', action='store_true')
     parser.add_argument('--evaluate_train', action='store_true', help='Evaluate on training data')

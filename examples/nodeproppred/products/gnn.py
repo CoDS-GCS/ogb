@@ -105,7 +105,8 @@ def main():
     parser = argparse.ArgumentParser(description='OGBN-Products (GNN)')
     parser.add_argument('--device', type=int, default=0)
     parser.add_argument('--log_steps', type=int, default=1)
-    parser.add_argument('--use_sage', action='store_true')
+    # parser.add_argument('--use_sage', action='store_true')
+    parser.add_argument('--use_sage', type=int,default=False)
     parser.add_argument('--num_layers', type=int, default=3)
     parser.add_argument('--hidden_channels', type=int, default=256)
     parser.add_argument('--dropout', type=float, default=0.5)
@@ -126,10 +127,12 @@ def main():
     train_idx = split_idx['train'].to(device)
 
     if args.use_sage:
+        print("SAGE")
         model = SAGE(data.num_features, args.hidden_channels,
                      dataset.num_classes, args.num_layers,
                      args.dropout).to(device)
     else:
+        print("GCN")
         model = GCN(data.num_features, args.hidden_channels,
                     dataset.num_classes, args.num_layers,
                     args.dropout).to(device)

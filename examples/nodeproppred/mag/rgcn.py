@@ -1,12 +1,21 @@
-import copy
 import argparse
+import copy
+# !conda install pyg -c pygmport argparse# !conda install pyg -c pyg
+import datetime
 
+import pandas
 import torch
 import torch.nn.functional as F
 from torch.nn import Parameter, ModuleDict, ModuleList, Linear, ParameterDict
+## conda install pyg -c pyg
 from torch_sparse import SparseTensor
-
+#pip install --no-index torch-scatter -f https://pytorch-geometric.com/whl/torch-1.7.0+cpu.html
+# pip install --no-index torch-sparse -f https://pytorch-geometric.com/whl/torch-1.7.0+cpu.html
+# pip install --no-index torch-cluster -f https://pytorch-geometric.com/whl/torch-1.7.0+cpu.html
+# pip install --no-index torch-spline-conv -f https://pytorch-geometric.com/whl/torch-1.7.0+cpu.html
+# pip install torch-geometric
 from ogb.nodeproppred import PygNodePropPredDataset, Evaluator
+from resource import *
 
 from logger import Logger
 
@@ -18,14 +27,13 @@ class RGCNConv(torch.nn.Module):
         self.in_channels = in_channels
         self.out_channels = out_channels
 
-        # `ModuleDict` does not allow tuples :(
+        # `ModuleDict` does not allow tuples :( ## create linear layer for each predicate type i.e writes, affaliated with
         self.rel_lins = ModuleDict({
-            f'{key[0]}_{key[1]}_{key[2]}': Linear(in_channels, out_channels,
-                                                  bias=False)
+            f'{key[0]}_{key[1]}_{key[2]}': Linear(in_channels, out_channels,bias=False)
             for key in edge_types
         })
 
-        self.root_lins = ModuleDict({
+        self.root_lins = ModuleDict({ ## create linear layer for each node type (distinct veriex i.e author,paper,...)
             key: Linear(in_channels, out_channels, bias=True)
             for key in node_types
         })
@@ -38,7 +46,7 @@ class RGCNConv(torch.nn.Module):
         for lin in self.root_lins.values():
             lin.reset_parameters()
 
-    def forward(self, x_dict, adj_t_dict):
+    def forward(self, x_dict, adj_t_dict): ## aggregate updates
         out_dict = {}
         for key, x in x_dict.items():
             out_dict[key] = self.root_lins[key](x)
@@ -46,7 +54,7 @@ class RGCNConv(torch.nn.Module):
         for key, adj_t in adj_t_dict.items():
             key_str = f'{key[0]}_{key[1]}_{key[2]}'
             x = x_dict[key[0]]
-            out = self.rel_lins[key_str](adj_t.matmul(x, reduce='mean'))
+            out = self.rel_lins[key_str](adj_t.matmul(x, reduce='max'))
             out_dict[key[2]].add_(out)
 
         return out_dict
@@ -58,45 +66,54 @@ class RGCN(torch.nn.Module):
         super(RGCN, self).__init__()
 
         node_types = list(num_nodes_dict.keys())
-
-        self.embs = ParameterDict({
-            key: Parameter(torch.Tensor(num_nodes_dict[key], in_channels))
+        self.x_dict=None
+        self.embs = ParameterDict({ ## set node embedding features for all types except paper
+            key: Parameter(torch.Tensor(num_nodes_dict[key], in_channels)) ## vertixcount*embedding size
             for key in set(node_types).difference(set(x_types))
         })
 
         self.convs = ModuleList()
         self.convs.append(
-            RGCNConv(in_channels, hidden_channels, node_types, edge_types))
-        for _ in range(num_layers - 2):
+            RGCNConv(in_channels, hidden_channels, node_types, edge_types)) ## Start layer
+        for _ in range(num_layers - 2):## hidden Layers
             self.convs.append(
-                RGCNConv(hidden_channels, hidden_channels, node_types,
-                         edge_types))
-        self.convs.append(
-            RGCNConv(hidden_channels, out_channels, node_types, edge_types))
+                RGCNConv(hidden_channels, hidden_channels, node_types,edge_types))
+        self.convs.append(RGCNConv(hidden_channels, out_channels, node_types, edge_types)) ## output layer
 
         self.dropout = dropout
-
         self.reset_parameters()
 
     def reset_parameters(self):
         for emb in self.embs.values():
-            torch.nn.init.xavier_uniform_(emb)
+            torch.nn.init.xavier_uniform_(emb) ## intialize embeddinga with Xavier uniform dist
         for conv in self.convs:
             conv.reset_parameters()
 
+    # def forward(self, x_dict, adj_t_dict):
+    #     if self.x_dict==None:
+    #         self.x_dict = copy.copy(x_dict) ## copy x_dict features
+    #         for key, emb in self.embs.items():
+    #             self.x_dict[key] = emb
+    #
+    #     for conv in self.convs[:-1]:
+    #         self.x_dict = conv(self.x_dict, adj_t_dict) ## update features from by convolution layer forward (mean)
+    #         x_dict = copy.copy(self.x_dict)
+    #         for key, x in self.x_dict.items():
+    #             x_dict[key] = F.relu(x) ## relu
+    #             x_dict[key] = F.dropout(x, p=self.dropout,training=self.training) ## dropout some updated features
+    #     return self.convs[-1](x_dict, adj_t_dict)
+
     def forward(self, x_dict, adj_t_dict):
-        x_dict = copy.copy(x_dict)
+        x_dict = copy.copy(x_dict) ## copy x_dict features
         for key, emb in self.embs.items():
             x_dict[key] = emb
 
         for conv in self.convs[:-1]:
-            x_dict = conv(x_dict, adj_t_dict)
+            x_dict = conv(x_dict, adj_t_dict) ## update features from by convolution layer forward (mean)
             for key, x in x_dict.items():
-                x_dict[key] = F.relu(x)
-                x_dict[key] = F.dropout(x, p=self.dropout,
-                                        training=self.training)
+                x_dict[key] = F.relu(x) ## relu
+                x_dict[key] = F.dropout(x, p=self.dropout,training=self.training) ## dropout some updated features
         return self.convs[-1](x_dict, adj_t_dict)
-
 
 def train(model, x_dict, adj_t_dict, y_true, train_idx, optimizer):
     model.train()
@@ -133,7 +150,9 @@ def test(model, x_dict, adj_t_dict, y_true, split_idx, evaluator):
     return train_acc, valid_acc, test_acc
 
 
+
 def main():
+    print(getrusage(RUSAGE_SELF))
     parser = argparse.ArgumentParser(description='OGBN-MAG (Full-Batch)')
     parser.add_argument('--device', type=int, default=0)
     parser.add_argument('--log_steps', type=int, default=1)
@@ -142,17 +161,27 @@ def main():
     parser.add_argument('--dropout', type=float, default=0.5)
     parser.add_argument('--lr', type=float, default=0.01)
     parser.add_argument('--epochs', type=int, default=50)
-    parser.add_argument('--runs', type=int, default=10)
+    parser.add_argument('--runs', type=int, default=3)
+    parser.add_argument('--loadTrainedModel', type=int, default=1)
     args = parser.parse_args()
     print(args)
 
     device = f'cuda:{args.device}' if torch.cuda.is_available() else 'cpu'
     device = torch.device(device)
-
+    start_t = datetime.datetime.now()
+    # dataset = PygNodePropPredDataset(name='ogbn-mag-QM0')
+    #dataset = PygNodePropPredDataset(name='ogbn-mag-QM1')
     dataset = PygNodePropPredDataset(name='ogbn-mag')
+    # dataset = PygNodePropPredDataset(name='ogbn-mag-QM2')
+    # dataset = PygNodePropPredDataset(name='ogbn-mag-QM3')
+    # dataset = PygNodePropPredDataset(name='ogbn-mag-QM4')
+    # dataset = PygNodePropPredDataset(name='ogbn-mag-FM')
+    # dataset = PygNodePropPredDataset(name='ogbn-mag_QM_paper_venue')
+
     split_idx = dataset.get_idx_split()
     data = dataset[0]
-
+    end_t = datetime.datetime.now()
+    print("dataset init time=", end_t - start_t, " sec.")
     # We do not consider those attributes for now.
     data.node_year_dict = None
     data.edge_reltype_dict = None
@@ -165,48 +194,85 @@ def main():
         sizes = (data.num_nodes_dict[keys[0]], data.num_nodes_dict[keys[2]])
         adj = SparseTensor(row=row, col=col, sparse_sizes=sizes)
         # adj = SparseTensor(row=row, col=col)[:sizes[0], :sizes[1]] # TEST
-        if keys[0] != keys[2]:
+        if keys[0] != keys[2]: ## subject and object are diffrent
             data.adj_t_dict[keys] = adj.t()
             data.adj_t_dict[(keys[2], 'to', keys[0])] = adj
         else:
             data.adj_t_dict[keys] = adj.to_symmetric()
     data.edge_index_dict = None
 
-    x_types = list(data.x_dict.keys())
-    edge_types = list(data.adj_t_dict.keys())
 
-    model = RGCN(data.x_dict['paper'].size(-1), args.hidden_channels,
+    edge_types = list(data.adj_t_dict.keys())
+    start_t = datetime.datetime.now()
+    # x_types = list(data.x_dict.keys())
+    x_types='paper'
+    ## data.x_dict['paper'] features of papers
+    ##RGCN(in_channels, hidden_channels, out_channels, num_layers,    dropout, num_nodes_dict, x_types, edge_types)
+    ##data.x_dict['paper'].size(-1)=128= embedding vector size
+    # torch.nn.init.xavier_uniform_(emb)
+    ############init papers with random embeddings #######################
+    # len(data.x_dict['paper'][0])
+    feat = torch.Tensor(data.num_nodes_dict['paper'], 128)
+    torch.nn.init.xavier_uniform_(feat)
+    feat_dic = {'paper':feat}
+    #####################################
+    # data.x_dict['paper'].size(-1)
+    model = RGCN(feat.size(-1) , args.hidden_channels,
                  dataset.num_classes, args.num_layers, args.dropout,
                  data.num_nodes_dict, x_types, edge_types)
-
-    data = data.to(device)
-    model = model.to(device)
     train_idx = split_idx['train']['paper'].to(device)
-
+    end_t = datetime.datetime.now()
     evaluator = Evaluator(name='ogbn-mag')
     logger = Logger(args.runs, args)
+    end_t = datetime.datetime.now()
+    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+    if args.loadTrainedModel==1:
+        model.load_state_dict(torch.load("ogbn-mag-FM-RGCN.model"))
+        model.eval()
+        out = model(feat_dic, data.adj_t_dict)['paper']
+        y_pred = out.argmax(dim=-1, keepdim=True)
+        out_lst=torch.flatten(data.y_dict['paper']).tolist()
+        pred_lst = torch.flatten(y_pred).tolist()
+        out_df = pandas.DataFrame({"y_pred":pred_lst,"y_true":out_lst})
+        # print(y_pred, data.y_dict['paper'])
+        # print(out_df)
+        out_df.to_csv("RGCN_mag_output.csv",index=None)
+        # train_acc, valid_acc, test_acc = test(model, feat_dic, data.adj_t_dict,data.y_dict['paper'], split_idx, evaluator)
+        # print(f'Run: {-1 + 1:02d}, '
+        #       f'Train: {100 * train_acc:.2f}%, '
+        #       f'Valid: {100 * valid_acc:.2f}% '
+        #       f'Test: {100 * test_acc:.2f}%')
+    else:
+        data = data.to(device)
+        model = model.to(device)
 
-    for run in range(args.runs):
-        model.reset_parameters()
-        optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
-        for epoch in range(1, 1 + args.epochs):
-            loss = train(model, data.x_dict, data.adj_t_dict,
-                         data.y_dict['paper'], train_idx, optimizer)
-            result = test(model, data.x_dict, data.adj_t_dict,
-                          data.y_dict['paper'], split_idx, evaluator)
-            logger.add_result(run, result)
+        print("model init time CPU=", end_t - start_t, " sec.")
+        for run in range(args.runs):
+            start_t = datetime.datetime.now()
+            model.reset_parameters()
 
-            if epoch % args.log_steps == 0:
-                train_acc, valid_acc, test_acc = result
-                print(f'Run: {run + 1:02d}, '
-                      f'Epoch: {epoch:02d}, '
-                      f'Loss: {loss:.4f}, '
-                      f'Train: {100 * train_acc:.2f}%, '
-                      f'Valid: {100 * valid_acc:.2f}% '
-                      f'Test: {100 * test_acc:.2f}%')
+            for epoch in range(1, 1 + args.epochs):
+                loss = train(model, feat_dic, data.adj_t_dict,
+                             data.y_dict['paper'], train_idx, optimizer)
+                result = test(model, feat_dic, data.adj_t_dict,
+                              data.y_dict['paper'], split_idx, evaluator)
+                logger.add_result(run, result)
 
-        logger.print_statistics(run)
-    logger.print_statistics()
+                if epoch % args.log_steps == 0:
+                    train_acc, valid_acc, test_acc = result
+                    print(f'Run: {run + 1:02d}, '
+                          f'Epoch: {epoch:02d}, '
+                          f'Loss: {loss:.4f}, '
+                          f'Train: {100 * train_acc:.2f}%, '
+                          f'Valid: {100 * valid_acc:.2f}% '
+                          f'Test: {100 * test_acc:.2f}%')
+            end_t = datetime.datetime.now()
+            logger.print_statistics(run)
+            print("model run ",run," train time CPU=", end_t - start_t, " sec.")
+            print(getrusage(RUSAGE_SELF))
+        logger.print_statistics()
+        end_t = datetime.datetime.now()
+        torch.save(model.state_dict(), "ogbn-mag-FM-RGCN.model")
 
 
 if __name__ == "__main__":

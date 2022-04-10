@@ -1,8 +1,9 @@
 import argparse
 
+import pandas
 import torch
 import torch.nn.functional as F
-
+import datetime
 from torch_geometric.data import Data
 import torch_geometric.transforms as T
 from torch_geometric.nn import GCNConv, SAGEConv
@@ -10,7 +11,7 @@ from torch_geometric.nn import GCNConv, SAGEConv
 from ogb.nodeproppred import PygNodePropPredDataset, Evaluator
 
 from logger import Logger
-
+from resource import *
 
 class GCN(torch.nn.Module):
     def __init__(self, in_channels, hidden_channels, out_channels, num_layers,
@@ -103,6 +104,7 @@ def test(model, data, split_idx, evaluator):
 
 
 def main():
+    print(getrusage(RUSAGE_SELF))
     parser = argparse.ArgumentParser(description='OGBN-MAG (GNN)')
     parser.add_argument('--device', type=int, default=0)
     parser.add_argument('--log_steps', type=int, default=1)
@@ -112,28 +114,40 @@ def main():
     parser.add_argument('--dropout', type=float, default=0.5)
     parser.add_argument('--lr', type=float, default=0.01)
     parser.add_argument('--epochs', type=int, default=100)
-    parser.add_argument('--runs', type=int, default=10)
+    parser.add_argument('--runs', type=int, default=3)
+    parser.add_argument('--loadTrainedModel', type=int, default=1)
     args = parser.parse_args()
     print(args)
 
     device = f'cuda:{args.device}' if torch.cuda.is_available() else 'cpu'
     device = torch.device(device)
-
+    start_t = datetime.datetime.now()
     dataset = PygNodePropPredDataset(name='ogbn-mag')
+    # dataset = PygNodePropPredDataset(name='ogbn-mag-QM3')
+    # dataset = PygNodePropPredDataset(name='ogbn-mag-QM2')
+    # dataset = PygNodePropPredDataset(name='ogbn-mag-QM4')
+    # dataset = PygNodePropPredDataset(name='ogbn-mag-QM1')
     rel_data = dataset[0]
 
     # We are only interested in paper <-> paper relations.
+    feat = torch.Tensor(rel_data.num_nodes_dict['paper'], 128)
+    torch.nn.init.xavier_uniform_(feat)
+    # feat_dic = {'paper': feat}
+
     data = Data(
         x=rel_data.x_dict['paper'],
+        # x=feat,
         edge_index=rel_data.edge_index_dict[('paper', 'cites', 'paper')],
         y=rel_data.y_dict['paper'])
 
     data = T.ToSparseTensor()(data)
     data.adj_t = data.adj_t.to_symmetric()
-
     split_idx = dataset.get_idx_split()
     train_idx = split_idx['train']['paper'].to(device)
+    end_t = datetime.datetime.now()
+    print("dataset init time=", end_t - start_t, " sec.")
 
+    start_t = datetime.datetime.now()
     if args.use_sage:
         model = SAGE(data.num_features, args.hidden_channels,
                      dataset.num_classes, args.num_layers,
@@ -155,27 +169,44 @@ def main():
 
     evaluator = Evaluator(name='ogbn-mag')
     logger = Logger(args.runs, args)
+    end_t = datetime.datetime.now()
+    print("model init time CPU=", end_t - start_t, " sec.")
+    if args.loadTrainedModel==1:
+        model.load_state_dict(torch.load("ogbn-mag-FM-GCN.model"))
+        model.eval()
+        out = model(data.x, data.adj_t)
+        y_pred = out.argmax(dim=-1, keepdim=True)
+        out_lst=torch.flatten(data.y).tolist()
+        pred_lst = torch.flatten(y_pred).tolist()
+        out_df = pandas.DataFrame({"y_pred":pred_lst,"y_true":out_lst})
+        # print(y_pred, data.y_dict['paper'])
+        # print(out_df)
+        out_df.to_csv("GCN_mag_output.csv",index=None)
+    else:
+        for run in range(args.runs):
+            start_t = datetime.datetime.now()
+            model.reset_parameters()
+            optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+            for epoch in range(1, 1 + args.epochs):
+                loss = train(model, data, train_idx, optimizer)
+                result = test(model, data, split_idx, evaluator)
+                logger.add_result(run, result)
 
-    for run in range(args.runs):
-        model.reset_parameters()
-        optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
-        for epoch in range(1, 1 + args.epochs):
-            loss = train(model, data, train_idx, optimizer)
-            result = test(model, data, split_idx, evaluator)
-            logger.add_result(run, result)
+                if epoch % args.log_steps == 0:
+                    train_acc, valid_acc, test_acc = result
+                    print(f'Run: {run + 1:02d}, '
+                          f'Epoch: {epoch:02d}, '
+                          f'Loss: {loss:.4f}, '
+                          f'Train: {100 * train_acc:.2f}%, '
+                          f'Valid: {100 * valid_acc:.2f}% '
+                          f'Test: {100 * test_acc:.2f}%')
 
-            if epoch % args.log_steps == 0:
-                train_acc, valid_acc, test_acc = result
-                print(f'Run: {run + 1:02d}, '
-                      f'Epoch: {epoch:02d}, '
-                      f'Loss: {loss:.4f}, '
-                      f'Train: {100 * train_acc:.2f}%, '
-                      f'Valid: {100 * valid_acc:.2f}% '
-                      f'Test: {100 * test_acc:.2f}%')
-
-        logger.print_statistics(run)
-    logger.print_statistics()
-
+            end_t = datetime.datetime.now()
+            logger.print_statistics(run)
+            print("model run ", run, " train time CPU=", end_t - start_t, " sec.")
+            print(getrusage(RUSAGE_SELF))
+        logger.print_statistics()
+        torch.save(model.state_dict(), "ogbn-mag-FM-GCN.model")
 
 if __name__ == "__main__":
     main()

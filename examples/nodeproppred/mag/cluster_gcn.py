@@ -41,18 +41,22 @@ print(data)
 edge_index_dict = data.edge_index_dict
 
 # We need to add reverse edges to the heterogeneous graph.
-r, c = edge_index_dict[('author', 'affiliated_with', 'institution')]
-edge_index_dict[('institution', 'to', 'author')] = torch.stack([c, r])
+if ('author', 'affiliated_with', 'institution') in edge_index_dict.keys():
+    r, c = edge_index_dict[('author', 'affiliated_with', 'institution')]
+    edge_index_dict[('institution', 'to', 'author')] = torch.stack([c, r])
 
-r, c = edge_index_dict[('author', 'writes', 'paper')]
-edge_index_dict[('paper', 'to', 'author')] = torch.stack([c, r])
+if ('author', 'writes', 'paper') in edge_index_dict.keys():
+    r, c = edge_index_dict[('author', 'writes', 'paper')]
+    edge_index_dict[('paper', 'to', 'author')] = torch.stack([c, r])
 
-r, c = edge_index_dict[('paper', 'has_topic', 'field_of_study')]
-edge_index_dict[('field_of_study', 'to', 'paper')] = torch.stack([c, r])
+if ('paper', 'has_topic', 'field_of_study') in edge_index_dict.keys():
+    r, c = edge_index_dict[('paper', 'has_topic', 'field_of_study')]
+    edge_index_dict[('field_of_study', 'to', 'paper')] = torch.stack([c, r])
 
 # Convert to undirected paper <-> paper relation.
-edge_index = to_undirected(edge_index_dict[('paper', 'cites', 'paper')])
-edge_index_dict[('paper', 'cites', 'paper')] = edge_index
+if ('paper', 'cites', 'paper') in edge_index_dict.keys():
+    edge_index = to_undirected(edge_index_dict[('paper', 'cites', 'paper')])
+    edge_index_dict[('paper', 'cites', 'paper')] = edge_index
 
 # We convert the individual graphs into a single big one, so that sampling
 # neighbors does not need to care about different edge types.
@@ -85,8 +89,14 @@ train_loader = ClusterLoader(cluster_data, batch_size=500, shuffle=True,
                              num_workers=12)
 
 # Map informations to their canonical type.
+#######################intialize random features ###############################
+feat = torch.Tensor(data.num_nodes_dict['paper'], 128)
+torch.nn.init.xavier_uniform_(feat)
+feat_dic = {'paper':feat}
+################################################################
 x_dict = {}
-for key, x in data.x_dict.items():
+# for key, x in data.x_dict.items():
+for key, x in feat_dic.items():
     x_dict[key2int[key]] = x
 
 num_nodes_dict = {}
