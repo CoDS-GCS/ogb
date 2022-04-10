@@ -16,6 +16,8 @@ dataset/
 *RELEASE_*
 *.csv.gz
 *.zip
+*.csv
+*.model
 *submission_
 *.npz
 *.npy
