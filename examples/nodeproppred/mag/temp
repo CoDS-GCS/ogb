@@ -1,0 +1,6 @@
+%%time
+!DGLBACKEND=pytorch dglke_train --model_name RotatE --dataset ogbn_mag --batch_size 1000 --neg_sample_size 200 --hidden_dim 100 \
+--gamma 19.9 --lr 0.25 --max_step 1000 --log_interval 100 --batch_size_eval 16  -adv \
+--regularization_coef 1.00E-09 --num_thread 1 --num_proc 16 \
+--test   --save_path /shared_mnt/ \
+--data_path /shared_mnt/ogb-mag --format raw_udd_hrt --data_files ogbn_mag_train.txt ogbn_mag_valid.txt ogbn_mag_test.txt --neg_sample_size_eval 10000 -de

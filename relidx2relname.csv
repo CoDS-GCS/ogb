@@ -1,0 +1,7 @@
+rel idx,rel name
+0,http://mag.graph/affiliated_with
+1,http://mag.graph/has_topic
+2,http://mag.graph/writes
+3,http://mag.graph/cites
+4,http://mag.graph/has_venue
+5,http://mag.graph/has_year
