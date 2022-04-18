@@ -1,5 +1,6 @@
 from torch_geometric.data import InMemoryDataset
 import pandas as pd
+import zipfile
 import shutil, os
 import os.path as osp
 import torch
@@ -8,8 +9,8 @@ from ogb.utils.url import decide_download, download_url, extract_zip
 from ogb.io.read_graph_pyg import read_graph_pyg, read_heterograph_pyg
 from ogb.io.read_graph_raw import read_node_label_hetero, read_nodesplitidx_split_hetero
 
-class PygNodePropPredDataset(InMemoryDataset):
-    def __init__(self, name, root = 'dataset', transform=None, pre_transform=None, meta_dict = None):
+class PygNodePropPredDataset_hsh(InMemoryDataset):
+    def __init__(self, name, root = '/media/hussein/UbuntuData/OGBN_Datasets/', transform=None, pre_transform=None, meta_dict = None):
         '''
             - name (str): name of the dataset
             - root (str): root directory to store the dataset folder
@@ -18,27 +19,28 @@ class PygNodePropPredDataset(InMemoryDataset):
             - meta_dict: dictionary that stores all the meta-information about data. Default is None, 
                     but when something is passed, it uses its information. Useful for debugging for external contributers.
         ''' 
-
+        self.datasets_path=root
         self.name = name ## original name, e.g., ogbn-proteins
 
         if meta_dict is None:
-            self.dir_name = '_'.join(name.split('-')) 
+            # self.dir_name = self.datasets_path+'_'.join(name.split('-'))
+            self.dir_name = self.datasets_path + name
             
             # check if previously-downloaded folder exists.
             # If so, use that one.
             if osp.exists(osp.join(root, self.dir_name + '_pyg')):
                 self.dir_name = self.dir_name + '_pyg'
 
-            self.original_root = root
+            self.original_root = self.datasets_path #root
             self.root = osp.join(root, self.dir_name)
             
-            master = pd.read_csv(os.path.join(os.path.dirname(__file__), 'master.csv'), index_col = 0)
-            if not self.name in master:
-                error_mssg = 'Invalid dataset name {}.\n'.format(self.name)
-                error_mssg += 'Available datasets are as follows:\n'
-                error_mssg += '\n'.join(master.keys())
-                raise ValueError(error_mssg)
-            self.meta_info = master[self.name]
+            # master = pd.read_csv(os.path.join(os.path.dirname(__file__), 'master.csv'), index_col = 0)
+            # if not self.name in master:
+            #     error_mssg = 'Invalid dataset name {}.\n'.format(self.name)
+            #     error_mssg += 'Available datasets are as follows:\n'
+            #     error_mssg += '\n'.join(master.keys())
+            #     raise ValueError(error_mssg)
+            # self.meta_info = master[self.name]
             
         else:
             self.dir_name = meta_dict['dir_path']
@@ -55,9 +57,25 @@ class PygNodePropPredDataset(InMemoryDataset):
         #     print(self.name + ' has been updated.')
         #     if input('Will you update the dataset now? (y/N)\n').lower() == 'y':
         #         shutil.rmtree(self.root)
+        if osp.exists(self.root):
+            shutil.rmtree(self.root)
 
-        shutil.rmtree(self.root)
-        self.download_name = self.meta_info['download_name'] ## name of downloaded file, e.g., tox21
+        self.meta_info = {'url': self.dir_name + ".zip"}
+        f = zipfile.ZipFile(self.dir_name + ".zip", 'r')
+        self.download_name = self.datasets_path + f.namelist()[0].split("/")[0]  ## name of downloaded file, e.g., tox21
+        self.meta_info['download_name'] = {'url': self.dir_name + ".zip"}
+        self.meta_info['add_inverse_edge']=True
+        self.meta_info['has_node_attr'] = True
+        self.meta_info['has_edge_attr'] = False
+        self.meta_info['split'] = 'time'
+        self.meta_info['additional node files']='node_year'
+        self.meta_info['additional edge files'] = 'edge_reltype'
+        self.meta_info['is hetero'] = 'True'
+        self.meta_info['binary'] = 'False'
+        self.meta_info['eval metric']='acc'
+        self.meta_info['num classes']='349'
+        self.meta_info['num tasks']='1'
+        self.meta_info['task type']='multiclass classification'
 
         self.num_tasks = int(self.meta_info['num tasks'])
         self.task_type = self.meta_info['task type']
@@ -66,7 +84,7 @@ class PygNodePropPredDataset(InMemoryDataset):
         self.is_hetero = self.meta_info['is hetero'] == 'True'
         self.binary = self.meta_info['binary'] == 'True'
 
-        super(PygNodePropPredDataset, self).__init__(self.root, transform, pre_transform)
+        super(PygNodePropPredDataset_hsh, self).__init__(self.root, transform, pre_transform)
         self.data, self.slices = torch.load(self.processed_paths[0])
 
     def get_idx_split(self, split_type = None):
@@ -126,8 +144,9 @@ class PygNodePropPredDataset(InMemoryDataset):
         if str(url).startswith("http")==False:
             path =url
             extract_zip(path, self.original_root)
-            os.unlink(path)
-            shutil.rmtree(self.root)
+            # os.unlink(path) # delete  file
+            if self.download_name.split("/")[-1]!=self.root.split("/")[-1]:
+                shutil.rmtree(self.root)
             shutil.move(osp.join(self.original_root, self.download_name), self.root)
         elif decide_download(url):
             path = download_url(url, self.original_root)
@@ -206,7 +225,7 @@ class PygNodePropPredDataset(InMemoryDataset):
         
 
 if __name__ == '__main__':
-    pyg_dataset = PygNodePropPredDataset(name = 'ogbn-mag')
+    pyg_dataset = PygNodePropPredDataset_hsh(name = 'ogbn-mag')
     print(pyg_dataset[0])
     split_index = pyg_dataset.get_idx_split()
     # print(split_index)

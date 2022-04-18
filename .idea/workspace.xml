@@ -5,25 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d7625012-b420-4433-8a77-9af082890cd1" name="Changes" comment="OGB_MAG_QM">
-      <change afterPath="$PROJECT_DIR$/.idea/csv-plugin.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/ogb.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TSV_TO_Hetro_OGB.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/ogbn-mag-FM-GCN.model" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/ogbn-mag-FM-GSaint.model" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/ogbn-mag-FM-RGCN.model" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ogb/nodeproppred/.~lock.master.csv#" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/linkproppred/biokg/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/linkproppred/biokg/run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/cluster_gcn.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/cluster_gcn.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg_hsh.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TSV_TO_Hetro_OGB.py" beforeDir="false" afterPath="$PROJECT_DIR$/TSV_TO_Hetro_OGB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/gnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/gnn.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/logger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/products/gnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/products/gnn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ogb/nodeproppred/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/nodeproppred/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg.py" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ogb/nodeproppred/master.csv" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/nodeproppred/master.csv" afterDir="false" />
     </list>
@@ -64,11 +53,16 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ogb/nodeproppred" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="project.scopes" />
   </component>
-  <component name="RunManager" selected="Python.TSV_TO_Hetro_OGB">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ogb/nodeproppred" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.graph_saint">
     <configuration name="TSV_TO_Hetro_OGB" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ogb" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -176,10 +170,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.TSV_TO_Hetro_OGB" />
         <item itemvalue="Python.graph_saint" />
         <item itemvalue="Python.gnn" />
         <item itemvalue="Python.rgcn" />
+        <item itemvalue="Python.TSV_TO_Hetro_OGB" />
         <item itemvalue="Python.run" />
       </list>
     </recent_temporary>
@@ -214,7 +208,28 @@
       <option name="project" value="LOCAL" />
       <updated>1649616400175</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="OGB_MAG_QM">
+      <created>1649617271640</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1649617271640</updated>
+    </task>
+    <task id="LOCAL-00005" summary="OGB_MAG_QM">
+      <created>1649617311681</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1649617311681</updated>
+    </task>
+    <task id="LOCAL-00006" summary="OGB_MAG_QM">
+      <created>1649617315965</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1649617315965</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -237,18 +252,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/rgcn.py</url>
-          <line>93</line>
+          <line>105</line>
           <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/TSV_TO_Hetro_OGB.py</url>
-          <line>234</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/TSV_TO_Hetro_OGB.py</url>
-          <line>229</line>
-          <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ogb/io/read_graph_raw.py</url>
@@ -266,49 +271,69 @@
           <option name="timeStamp" value="42" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ogb/io/read_graph_pyg.py</url>
-          <line>57</line>
-          <option name="timeStamp" value="43" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg.py</url>
-          <line>131</line>
+          <line>132</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg.py</url>
-          <line>55</line>
+          <line>56</line>
           <option name="timeStamp" value="46" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg.py</url>
-          <line>179</line>
+          <line>180</line>
           <option name="timeStamp" value="47" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/TSV_TO_Hetro_OGB.py</url>
-          <line>167</line>
-          <option name="timeStamp" value="48" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/TSV_TO_Hetro_OGB.py</url>
-          <line>20</line>
-          <option name="timeStamp" value="52" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/rgcn.py</url>
-          <line>229</line>
-          <option name="timeStamp" value="53" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py</url>
-          <line>332</line>
+          <line>363</line>
           <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/rgcn.py</url>
+          <line>123</line>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/TSV_TO_Hetro_OGB.py</url>
-          <line>14</line>
-          <option name="timeStamp" value="57" />
+          <line>35</line>
+          <option name="timeStamp" value="72" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/rgcn.py</url>
+          <line>156</line>
+          <option name="timeStamp" value="73" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py</url>
+          <line>157</line>
+          <option name="timeStamp" value="75" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py</url>
+          <line>146</line>
+          <option name="timeStamp" value="76" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py</url>
+          <line>143</line>
+          <option name="timeStamp" value="77" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py</url>
+          <line>136</line>
+          <option name="timeStamp" value="78" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py</url>
+          <line>353</line>
+          <option name="timeStamp" value="79" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py</url>
+          <line>336</line>
+          <option name="timeStamp" value="80" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
