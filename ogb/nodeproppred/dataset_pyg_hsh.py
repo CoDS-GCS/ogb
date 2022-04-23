@@ -57,8 +57,8 @@ class PygNodePropPredDataset_hsh(InMemoryDataset):
         #     print(self.name + ' has been updated.')
         #     if input('Will you update the dataset now? (y/N)\n').lower() == 'y':
         #         shutil.rmtree(self.root)
-        if osp.exists(self.root):
-            shutil.rmtree(self.root)
+        # if osp.exists(self.root):
+        #     shutil.rmtree(self.root)
 
         self.meta_info = {'url': self.dir_name + ".zip"}
         f = zipfile.ZipFile(self.dir_name + ".zip", 'r')

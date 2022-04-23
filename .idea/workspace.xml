@@ -4,17 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d7625012-b420-4433-8a77-9af082890cd1" name="Changes" comment="OGB_MAG_QM">
-      <change afterPath="$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg_hsh.py" afterDir="false" />
+    <list default="true" id="d7625012-b420-4433-8a77-9af082890cd1" name="Changes" comment="OGB_MAG 350 Usecases">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TSV_TO_Hetro_OGB.py" beforeDir="false" afterPath="$PROJECT_DIR$/TSV_TO_Hetro_OGB.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/gnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/gnn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/logger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ogb/nodeproppred/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/nodeproppred/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg.py" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ogb/nodeproppred/master.csv" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/nodeproppred/master.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg_hsh.py" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg_hsh.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +56,7 @@
       <recent name="$PROJECT_DIR$/ogb/nodeproppred" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.graph_saint">
+  <component name="RunManager" selected="Python.rgcn">
     <configuration name="TSV_TO_Hetro_OGB" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ogb" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -76,6 +70,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TSV_TO_Hetro_OGB.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="common" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ogb" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/anaconda3/envs/ogb/lib/python3.9/site-packages/pandas/io" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/anaconda3/envs/ogb/lib/python3.9/site-packages/pandas/io/common.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -147,34 +162,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="ogb" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples/linkproppred/biokg" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/linkproppred/biokg/run.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.rgcn" />
+        <item itemvalue="Python.common" />
+        <item itemvalue="Python.TSV_TO_Hetro_OGB" />
         <item itemvalue="Python.graph_saint" />
         <item itemvalue="Python.gnn" />
-        <item itemvalue="Python.rgcn" />
-        <item itemvalue="Python.TSV_TO_Hetro_OGB" />
-        <item itemvalue="Python.run" />
       </list>
     </recent_temporary>
   </component>
@@ -229,7 +223,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649617315965</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="OGB_MAG 350 Usecases">
+      <created>1650245229373</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1650245229373</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -245,7 +246,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="OGB_MAG_QM" />
-    <option name="LAST_COMMIT_MESSAGE" value="OGB_MAG_QM" />
+    <MESSAGE value="OGB_MAG 350 Usecases" />
+    <option name="LAST_COMMIT_MESSAGE" value="OGB_MAG 350 Usecases" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -296,11 +298,6 @@
           <option name="timeStamp" value="59" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/TSV_TO_Hetro_OGB.py</url>
-          <line>35</line>
-          <option name="timeStamp" value="72" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/rgcn.py</url>
           <line>156</line>
           <option name="timeStamp" value="73" />
@@ -335,13 +332,22 @@
           <line>336</line>
           <option name="timeStamp" value="80" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/TSV_TO_Hetro_OGB.py</url>
+          <line>246</line>
+          <option name="timeStamp" value="81" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/TSV_TO_Hetro_OGB.py</url>
+          <line>123</line>
+          <option name="timeStamp" value="82" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg_hsh.py</url>
+          <line>24</line>
+          <option name="timeStamp" value="83" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="out[train_idx]" language="Python" />
-        <watch expression="y_true[train_idx]" language="Python" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>
