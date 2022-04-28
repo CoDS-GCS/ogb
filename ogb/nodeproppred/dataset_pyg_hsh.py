@@ -10,7 +10,7 @@ from ogb.io.read_graph_pyg import read_graph_pyg, read_heterograph_pyg
 from ogb.io.read_graph_raw import read_node_label_hetero, read_nodesplitidx_split_hetero
 
 class PygNodePropPredDataset_hsh(InMemoryDataset):
-    def __init__(self, name, root = '/media/hussein/UbuntuData/OGBN_Datasets/', transform=None, pre_transform=None, meta_dict = None):
+    def __init__(self, name, root = '/media/hussein/UbuntuData/OGBN_Datasets/',numofClasses=349, transform=None, pre_transform=None, meta_dict = None):
         '''
             - name (str): name of the dataset
             - root (str): root directory to store the dataset folder
@@ -73,7 +73,7 @@ class PygNodePropPredDataset_hsh(InMemoryDataset):
         self.meta_info['is hetero'] = 'True'
         self.meta_info['binary'] = 'False'
         self.meta_info['eval metric']='acc'
-        self.meta_info['num classes']='349'
+        self.meta_info['num classes']=numofClasses
         self.meta_info['num tasks']='1'
         self.meta_info['task type']='multiclass classification'
 
