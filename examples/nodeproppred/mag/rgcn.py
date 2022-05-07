@@ -184,7 +184,7 @@ def main():
         rgcn_start_t = datetime.datetime.now()
         dataset_name = ""
         for sample_key in sampledQueries:
-            if i >= 12:
+            if i >= 0:
                 start_t = datetime.datetime.now()
                 if str(covrage_row["topic"])=="FM" :
                     dataset_name = "mag"
