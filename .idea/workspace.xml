@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d7625012-b420-4433-8a77-9af082890cd1" name="Changes" comment="OGB_MAG 350 Usecases">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn_DBLP.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn_DBLP.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -251,7 +249,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651120878159</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="OGB_MAG 350 Usecases">
+      <created>1651933415366</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1651933415366</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
