@@ -179,7 +179,9 @@ class RGCN(torch.nn.Module):
                 # print("out size=",out.size())
                 # print("tmp size=",conv.rel_lins[key2int[keys]](tmp).size())
                 ################## fill missed rows hsh############################
+                # mp=conv.rel_lins[key2int[keys]](tmp)
                 tmp = conv.rel_lins[key2int[keys]](tmp).resize_([out.size()[0], out.size()[1]])
+                # tmp=conv.rel_lins[key2int[keys]](tmp).reshape([out.size()[0],out.size()[1]])
                 out.add_(tmp)
 
             if i != self.num_layers - 1:
@@ -219,7 +221,7 @@ def train(epoch):
 
 
 @torch.no_grad()
-def test():
+def test(export_output=False):
     model.eval()
 
     out = model.inference(x_dict, edge_index_dict, key2int)
@@ -227,6 +229,11 @@ def test():
 
     y_pred = out.argmax(dim=-1, keepdim=True).cpu()
     y_true = data.y_dict['rec']
+    if export_output == True:
+        out_lst = torch.flatten(y_true).tolist()
+        pred_lst = torch.flatten(y_pred).tolist()
+        out_df = pd.DataFrame({"y_pred": pred_lst, "y_true": out_lst})
+        out_df.to_csv("/shared_mnt/Conf_Y2015/GSaint_DBLP_conf_2015_output.csv", index=None)
 
     train_acc = evaluator.eval({
         'y_true': y_true[split_idx['train']['rec']],
@@ -250,7 +257,7 @@ parser.add_argument('--num_layers', type=int, default=2)
 parser.add_argument('--hidden_channels', type=int, default=64)
 parser.add_argument('--dropout', type=float, default=0.3)
 parser.add_argument('--lr', type=float, default=0.05)
-parser.add_argument('--epochs', type=int, default=50)
+parser.add_argument('--epochs', type=int, default=15)
 parser.add_argument('--runs', type=int, default=1)
 parser.add_argument('--batch_size', type=int, default=20000)
 parser.add_argument('--walk_length', type=int, default=2)
@@ -279,12 +286,12 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
             start_t = datetime.datetime.now()
             if train_FM == 1:
                 dataset_name = "dblp-2022-03-01_URI_Only_Conf_Y2015"
-                dataset = PygNodePropPredDataset_hsh(name=dataset_name, root='/mnt/', numofClasses='6740')
+                dataset = PygNodePropPredDataset_hsh(name=dataset_name, root='/shared_mnt/', numofClasses='5050')
             else:
                 dataset_name = "OBGN_QM_DBLP_conf_" + sample_key + "Usecase_" + str(int(aff_row["Q_idx"])) + "_" + str(
                     str(aff_row["affiliation"]).strip().replace(" ", "_").replace("/", "_").replace(",", "_"))
                 dataset = PygNodePropPredDataset_hsh(name=dataset_name, root='/shared_mnt/Conf_Y2015/',
-                                                     numofClasses='6740')
+                                                     numofClasses='5050')
 
             print("dataset_name=", dataset_name)
             dic_results[dataset_name] = {}
@@ -437,7 +444,9 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
             optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
             model_loaded_ru_maxrss = getrusage(RUSAGE_SELF).ru_maxrss
             if args.loadTrainedModel == 1:
-                model.load_state_dict(torch.load("ogbn-DBLP-FM-GSaint.model"))
+                model.load_state_dict(torch.load(
+                    "/shared_mnt/Conf_Y2015/dblp-2022-03-01_URI_Only_Conf_Y2015_DBLP_conf_2015_GSAINT_FM.model"))
+
                 model.eval()
                 out = model.inference(x_dict, edge_index_dict, key2int)
                 out = out[key2int['rec']]
@@ -449,7 +458,8 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
                 out_df = pd.DataFrame({"y_pred": pred_lst, "y_true": out_lst})
                 # print(y_pred, data.y_dict['paper'])
                 # print(out_df)
-                out_df.to_csv("GSaint_DBLP_conf_output.csv", index=None)
+                out_df.to_csv("/shared_mnt/Conf_Y2015/GSaint_DBLP_conf_2015_output.csv", index=None)
+                quit()
             else:
                 print("start test")
                 test()  # Test if inference on GPU succeeds.
@@ -460,7 +470,11 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
                     for epoch in range(1, 1 + args.epochs):
                         loss = train(epoch)
                         torch.cuda.empty_cache()
-                        result = test()
+                        if epoch == args.epochs:
+                            result = test(True)
+                        else:
+                            result = test(False)
+
                         logger.add_result(run, result)
                         train_acc, valid_acc, test_acc = result
                         print(f'Run: {run + 1:02d}, '
@@ -496,17 +510,7 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
                                "/shared_mnt/Conf_Y2015/" + dataset_name + "_DBLP_conf_2015_GSAINT_QM.model")
                 if train_FM == 1:
                     pd.DataFrame(dic_results).transpose().to_csv(
-                        "shared_mnt/Conf_Y2015/OGBN_DBLP_GSAINT_Conf_2015_FM_times" + ".csv", index=False)
-                    shutil.rmtree("/shared_mnt/Conf_Y2015/" + dataset_name)
+                        "/shared_mnt/Conf_Y2015/OGBN_DBLP_GSAINT_Conf_2015_FM_times" + ".csv", index=False)
+                    shutil.rmtree("/shared_mnt/" + dataset_name)
                     torch.save(model.state_dict(),
                                "/shared_mnt/Conf_Y2015/" + dataset_name + "_DBLP_conf_2015_GSAINT_FM.model")
-
-                    out = model.inference(x_dict, edge_index_dict, key2int)
-                    out = out[key2int['rec']]
-                    y_pred = out.argmax(dim=-1, keepdim=True).cpu()
-                    y_true = data.y_dict['rec']
-                    out_lst = torch.flatten(y_true).tolist()
-                    pred_lst = torch.flatten(y_pred).tolist()
-                    out_df = pd.DataFrame({"y_pred": pred_lst, "y_true": out_lst})
-                    out_df.to_csv("/shared_mnt/Conf_Y2015/GSaint_DBLP_conf_2015_output.csv", index=None)
-                    quit()

@@ -12,7 +12,7 @@ from ogb.linkproppred import PygLinkPropPredDataset, Evaluator
 
 from logger import Logger
 
-
+import datetime
 class GCN(torch.nn.Module):
     def __init__(self, in_channels, hidden_channels, out_channels, num_layers,
                  dropout):
@@ -202,7 +202,7 @@ def main():
     parser = argparse.ArgumentParser(description='OGBL-COLLAB (GNN)')
     parser.add_argument('--device', type=int, default=0)
     parser.add_argument('--log_steps', type=int, default=1)
-    parser.add_argument('--use_sage', action='store_true')
+    parser.add_argument('--use_sage', action='store_false')
     parser.add_argument('--use_valedges_as_input', action='store_true')
     parser.add_argument('--num_layers', type=int, default=3)
     parser.add_argument('--hidden_channels', type=int, default=256)
@@ -214,7 +214,7 @@ def main():
     parser.add_argument('--runs', type=int, default=10)
     args = parser.parse_args()
     print(args)
-
+    start_t = datetime.datetime.now()
     device = f'cuda:{args.device}' if torch.cuda.is_available() else 'cpu'
     device = torch.device(device)
 
@@ -236,12 +236,16 @@ def main():
         data.full_adj_t = data.adj_t
 
     data = data.to(device)
-
+    end_t = datetime.datetime.now()
+    print("dataset init time=", end_t - start_t, " sec.")
+    start_t = datetime.datetime.now()
     if args.use_sage:
+        print("LP_GSage")
         model = SAGE(data.num_features, args.hidden_channels,
                      args.hidden_channels, args.num_layers,
                      args.dropout).to(device)
     else:
+        print("LP_GCN")
         model = GCN(data.num_features, args.hidden_channels,
                     args.hidden_channels, args.num_layers,
                     args.dropout).to(device)
@@ -255,8 +259,11 @@ def main():
         'Hits@50': Logger(args.runs, args),
         'Hits@100': Logger(args.runs, args),
     }
+    end_t = datetime.datetime.now()
+    print("Model init time=", end_t - start_t, " sec.")
 
     for run in range(args.runs):
+        start_t = datetime.datetime.now()
         model.reset_parameters()
         predictor.reset_parameters()
         optimizer = torch.optim.Adam(
@@ -288,6 +295,8 @@ def main():
         for key in loggers.keys():
             print(key)
             loggers[key].print_statistics(run)
+        end_t = datetime.datetime.now()
+        print("Run:",run," Model Training time=", end_t - start_t, " sec.")
 
     for key in loggers.keys():
         print(key)
