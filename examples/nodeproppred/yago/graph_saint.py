@@ -15,8 +15,9 @@ import psutil
 
 import sys
 from pathlib import Path
-sys.path.insert(1,'/shared_mnt/ogb/ogb/nodeproppred/')
-print("sys.path=",sys.path)
+
+sys.path.insert(1, '/shared_mnt/ogb/ogb/nodeproppred/')
+print("sys.path=", sys.path)
 
 from logger import Logger
 from evaluate import Evaluator
@@ -146,15 +147,8 @@ class RGCN(torch.nn.Module):
         device = list(x_dict.values())[0].device
 
         x_dict = copy(x_dict)
-
-        # paper_count=len(x_dict[2])
-        # paper_count = len(x_dict[3])
         for key, emb in self.emb_dict.items():
             x_dict[int(key)] = emb
-            # print(key," size=",x_dict[int(key)].size())
-
-        # print(key2int)
-        # print("x_dict keys=",x_dict.keys())
 
         adj_t_dict = {}
         for key, (row, col) in edge_index_dict.items():
@@ -170,17 +164,8 @@ class RGCN(torch.nn.Module):
             for keys, adj_t in adj_t_dict.items():
                 src_key, target_key = keys[0], keys[-1]
                 out = out_dict[key2int[target_key]]
-                # print("keys=",keys)
-                # print("adj_t=",adj_t)
-                # print("key2int[src_key]=",key2int[src_key])
-                # print("x_dict[key2int[src_key]]=",x_dict[key2int[src_key]].size())
                 tmp = adj_t.matmul(x_dict[key2int[src_key]], reduce='mean')
-                # print("out size=",out.size())
-                # print("tmp size=",conv.rel_lins[key2int[keys]](tmp).size())
-                ################## fill missed rows hsh############################
-                # mp=conv.rel_lins[key2int[keys]](tmp)
                 tmp = conv.rel_lins[key2int[keys]](tmp).resize_([out.size()[0], out.size()[1]])
-                # tmp=conv.rel_lins[key2int[keys]](tmp).reshape([out.size()[0],out.size()[1]])
                 out.add_(tmp)
 
             if i != self.num_layers - 1:
@@ -219,20 +204,22 @@ def train(epoch):
     return total_loss / total_examples
 
 
+# question 'rec' should be replaced with what? 'rec' in dbp , 'paper' in mag, 'place' in yago
+# TODO make sure the nodeType is properly serialized in converter since node type is not part of uri in yago
 @torch.no_grad()
 def test(export_output=False):
     model.eval()
 
     out = model.inference(x_dict, edge_index_dict, key2int)
-    out = out[key2int['rec']]
+    out = out[key2int['Place']]
 
     y_pred = out.argmax(dim=-1, keepdim=True).cpu()
-    y_true = data.y_dict['rec']
+    y_true = data.y_dict['Place']
     if export_output == True:
         out_lst = torch.flatten(y_true).tolist()
         pred_lst = torch.flatten(y_pred).tolist()
         out_df = pd.DataFrame({"y_pred": pred_lst, "y_true": out_lst})
-        out_df.to_csv("/shared_mnt/Conf_Y2015/GSaint_DBLP_conf_2015_output.csv", index=None)
+        out_df.to_csv("/shared_mnt/YAGO/GSaint_YAGO_output.csv", index=None)
 
     train_acc = evaluator.eval({
         'y_true': y_true[split_idx['train']['rec']],
@@ -250,7 +237,8 @@ def test(export_output=False):
     return train_acc, valid_acc, test_acc
 
 
-parser = argparse.ArgumentParser(description='OGBN-MAG (GraphSAINT)')
+# TODO change description
+parser = argparse.ArgumentParser(description='YAGO (GraphSAINT)')
 parser.add_argument('--device', type=int, default=0)
 parser.add_argument('--num_layers', type=int, default=2)
 parser.add_argument('--hidden_channels', type=int, default=64)
@@ -262,13 +250,14 @@ parser.add_argument('--batch_size', type=int, default=20000)
 parser.add_argument('--walk_length', type=int, default=2)
 parser.add_argument('--num_steps', type=int, default=30)
 parser.add_argument('--loadTrainedModel', type=int, default=0)
-# init_ru_maxrss = getrusage(RUSAGE_SELF).ru_maxrss
 args = parser.parse_args()
 print(args)
-# fieldOfStudy_Coverage_df = pd.read_csv("/media/hussein/UbuntuData/OGBN_Datasets/ogbn_mag_fieldOfStudy_Coverage_top_10000.csv")
-fieldOfStudy_Coverage_df = pd.read_csv("/shared_mnt/BDLP_Papers_Per_Affaliation_conf.csv")
-fieldOfStudy_Coverage_df = fieldOfStudy_Coverage_df[fieldOfStudy_Coverage_df["do_train"] == 1].reset_index(
-    drop=True)
+
+# TODO change this to the csv containing different usecases
+
+fieldOfStudy_Coverage_df = pd.read_csv("/shared_mnt/YAGO/YAGO_place_usecases.csv")
+# fieldOfStudy_Coverage_df = fieldOfStudy_Coverage_df[fieldOfStudy_Coverage_df["do_train"] == 1].reset_index(
+#     drop=True)
 dic_results = {}
 sampledQueries = {
     "StarQuery": "StarQuery",
@@ -281,16 +270,17 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
     gsaint_start_t = datetime.datetime.now()
     dataset_name = ""
     if i >= 0:
+        # TODO change dataset_name to converted full_yago and converted usecase folders
         for sample_key in sampledQueries.keys():
             start_t = datetime.datetime.now()
             if train_FM == 1:
-                dataset_name = "dblp-2022-03-01_URI_Only_Conf_Y2015"
+                dataset_name = "yago-2022-05-26"
                 dataset = PygNodePropPredDataset_hsh(name=dataset_name, root='/shared_mnt/', numofClasses='5050')
             else:
-                dataset_name = "OBGN_QM_DBLP_conf_" + sample_key + "Usecase_" + str(int(aff_row["Q_idx"])) + "_" + str(
-                    str(aff_row["affiliation"]).strip().replace(" ", "_").replace("/", "_").replace(",", "_"))
-                dataset = PygNodePropPredDataset_hsh(name=dataset_name, root='/shared_mnt/Conf_Y2015/',
-                                                     numofClasses='5050')
+                dataset_name = "OBGN_YAGO_" + sample_key + "Usecase_" + str(
+                    int(aff_row["Q_idx"])) + "_" + str(aff_row["subtype_uri"]).split("/")[-1]
+                dataset = PygNodePropPredDataset_hsh(name=dataset_name, root='/shared_mnt/YAGO/YAGO_Usecases',
+                                                     numofClasses='2500')
 
             print("dataset_name=", dataset_name)
             dic_results[dataset_name] = {}
@@ -301,18 +291,15 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
 
             # print(getrusage(RUSAGE_SELF))
             start_t = datetime.datetime.now()
-
-            # dataset = PygNodePropPredDataset(name=dataset_name)
-            # dataset = PygNodePropPredDataset(name='ogbn-mag-QM2')
-            # dataset = PygNodePropPredDataset(name='ogbn-mag-QM3')
-            # dataset = PygNodePropPredDataset(name='ogbn-mag')
-            # dataset = PygNodePropPredDataset(name='ogbn-mag-QM1-BPQ')
-            # dataset = PygNodePropPredDataset(name='ogbn-mag-QM4')
             data = dataset[0]
+
+            # this returns us the split index for train , test and valid
             split_idx = dataset.get_idx_split()
             end_t = datetime.datetime.now()
             print("dataset init time=", end_t - start_t, " sec.")
             dic_results[dataset_name]["GSaint_data_init_time"] = (end_t - start_t).total_seconds()
+
+            # TODO change the name
             evaluator = Evaluator(name='ogbn-mag')
             logger = Logger(args.runs, args)
 
@@ -321,43 +308,42 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
             data.node_year_dict = None
             data.edge_reltype_dict = None
 
-            remove_subject_object = [
-                'doi',
-                'sameAs',
-                'rdf',
-                'net',
-                'differentFrom',
-                'otherHomepage',
-                'primaryElectronicEdition',
-                'otherElectronicEdition',
-                'archivedElectronicEdition',
-                'entity',
-                'db'
-            ]
-            remove_pedicates = ['schema#awardWebpage', 'schema#webpage', 'schema#archivedWebpage',
-                                'schema#primaryHomepage', 'schema#wikipedia', 'schema#orcid',
-                                'schema#publishedAsPartOf']
-            to_remove_rels = []
+            # remove_subject_object = [
+            #     'doi',
+            #     'sameAs',
+            #     'rdf',
+            #     'net',
+            #     'differentFrom',
+            #     'otherHomepage',
+            #     'primaryElectronicEdition',
+            #     'otherElectronicEdition',
+            #     'archivedElectronicEdition',
+            #     'entity',
+            #     'db'
+            # ]
+            # remove_pedicates = ['schema#awardWebpage', 'schema#webpage', 'schema#archivedWebpage',
+            #                     'schema#primaryHomepage', 'schema#wikipedia', 'schema#orcid',
+            #                     'schema#publishedAsPartOf']
+            # to_remove_rels = []
             # INFO: keys is {subject, predicate, object}
-            # TODO : why this filtering is done at this stage ?
-            # TODO: where is the inverse relationship added ?
+            # question what is row, col?
             # the problem is that the inverse relations are not added yet so what is the point of adding them to remove_relss?
-            for keys, (row, col) in data.edge_index_dict.items():
-                if (keys[2] in remove_subject_object) or (keys[0] in remove_subject_object):
-                    # print("to remove keys=",keys)
-                    to_remove_rels.append(keys)
-
-            for keys, (row, col) in data.edge_index_dict.items():
-                if (keys[1] in remove_pedicates):
-                    # print("to remove keys=",keys)
-                    to_remove_rels.append(keys)
-                    to_remove_rels.append((keys[2], 'inv_' + keys[1], keys[0]))
-
-            for elem in to_remove_rels:
-                data.edge_index_dict.pop(elem, None)
-
-            for key in remove_subject_object:
-                data.num_nodes_dict.pop(key, None)
+            # for keys, (row, col) in data.edge_index_dict.items():
+            #     if (keys[2] in remove_subject_object) or (keys[0] in remove_subject_object):
+            #         # print("to remove keys=",keys)
+            #         to_remove_rels.append(keys)
+            #
+            # for keys, (row, col) in data.edge_index_dict.items():
+            #     if (keys[1] in remove_pedicates):
+            #         # print("to remove keys=",keys)
+            #         to_remove_rels.append(keys)
+            #         to_remove_rels.append((keys[2], 'inv_' + keys[1], keys[0]))
+            #
+            # for elem in to_remove_rels:
+            #     data.edge_index_dict.pop(elem, None)
+            #
+            # for key in remove_subject_object:
+            #     data.num_nodes_dict.pop(key, None)
 
             dic_results[dataset_name]["data"] = str(data)
 
@@ -369,48 +355,18 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
 
             print(data)
 
-            #             # We need to add reverse edges to the heterogeneous graph.
-            #             if ('author', 'affiliated_with', 'institution') in edge_index_dict.keys():
-            #                 r, c = edge_index_dict[('author', 'affiliated_with', 'institution')]
-            #                 edge_index_dict[('institution', 'to', 'author')] = torch.stack([c, r])
-
-            #             if ('author', 'writes', 'paper') in edge_index_dict.keys():
-            #                 r, c = edge_index_dict[('author', 'writes', 'paper')]
-            #                 edge_index_dict[('paper', 'to', 'author')] = torch.stack([c, r])
-
-            #             if ('paper', 'has_topic', 'field_of_study') in edge_index_dict.keys():
-            #                 r, c = edge_index_dict[('paper', 'has_topic', 'field_of_study')]
-            #                 edge_index_dict[('field_of_study', 'to', 'paper')] = torch.stack([c, r])
-
-            #             # Convert to undirected paper <-> paper relation.
-            #             if ('paper', 'cites', 'paper') in edge_index_dict.keys():
-            #                 edge_index = to_undirected(edge_index_dict[('paper', 'cites', 'paper')])
-            #                 edge_index_dict[('paper', 'cites', 'paper')] = edge_index
-
-            # We convert the individual graphs into a single big one, so that sampling
-            # neighbors does not need to care about different edge types.
-            # This will return the following:
-            # * `edge_index`: The new global edge connectivity.
-            # * `edge_type`: The edge type for each edge.
-            # * `node_type`: The node type for each node.
-            # * `local_node_idx`: The original index for each node.
-            # * `local2global`: A dictionary mapping original (local) node indices of
-            #    type `key` to global ones.
-            # `key2int`: A dictionary that maps original keys to their new canonical type.
-            print_memory_usage()
             out = group_hetero_graph(data.edge_index_dict, data.num_nodes_dict)
             edge_index, edge_type, node_type, local_node_idx, local2global, key2int = out
-            print_memory_usage()
 
             homo_data = Data(edge_index=edge_index, edge_attr=edge_type,
                              node_type=node_type, local_node_idx=local_node_idx,
                              num_nodes=node_type.size(0))
 
             homo_data.y = node_type.new_full((node_type.size(0), 1), -1)
-            homo_data.y[local2global['rec']] = data.y_dict['rec']
+            homo_data.y[local2global['Place']] = data.y_dict['Place']
 
             homo_data.train_mask = torch.zeros((node_type.size(0)), dtype=torch.bool)
-            homo_data.train_mask[local2global['rec'][split_idx['train']['rec']]] = True
+            homo_data.train_mask[local2global['Place'][split_idx['train']['Place']]] = True
             # print(homo_data)
             train_loader = GraphSAINTRandomWalkSampler(homo_data,
                                                        batch_size=args.batch_size,
@@ -421,12 +377,12 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
 
             # Map informations to their canonical type.
             #######################intialize random features ###############################
-            feat = torch.Tensor(data.num_nodes_dict['rec'], 128)
+            feat = torch.Tensor(data.num_nodes_dict['Place'], 128)
             torch.nn.init.xavier_uniform_(feat)
-            feat_dic = {'rec': feat}
+            feat_dic = {'Place': feat}
             ################################################################
             x_dict = {}
-            # for key, x in data.x_dict.items():
+
             for key, x in feat_dic.items():
                 x_dict[key2int[key]] = x
 
@@ -438,6 +394,8 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
             print("model init time CPU=", end_t - start_t, " sec.")
             dic_results[dataset_name]["model init Time"] = (end_t - start_t).total_seconds()
             device = f'cuda:{args.device}' if torch.cuda.is_available() else 'cpu'
+
+            # question since we don't have features, first argument should be 1? no it should use random feature vector of length 128
             model = RGCN(128, args.hidden_channels, dataset.num_classes, args.num_layers,
                          args.dropout, num_nodes_dict, list(x_dict.keys()),
                          len(edge_index_dict.keys())).to(device)
@@ -445,23 +403,23 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
             x_dict = {k: v.to(device) for k, v in x_dict.items()}
             print("x_dict=", x_dict.keys())
             optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
-            # model_loaded_ru_maxrss = getrusage(RUSAGE_SELF).ru_maxrss
+
             if args.loadTrainedModel == 1:
-                model.load_state_dict(torch.load(
-                    "/shared_mnt/Conf_Y2015/dblp-2022-03-01_URI_Only_Conf_Y2015_DBLP_conf_2015_GSAINT_FM.model"))
-
-                model.eval()
-                out = model.inference(x_dict, edge_index_dict, key2int)
-                out = out[key2int['rec']]
-                y_pred = out.argmax(dim=-1, keepdim=True).cpu()
-                y_true = data.y_dict['rec']
-
-                out_lst = torch.flatten(y_true).tolist()
-                pred_lst = torch.flatten(y_pred).tolist()
-                out_df = pd.DataFrame({"y_pred": pred_lst, "y_true": out_lst})
-                # print(y_pred, data.y_dict['paper'])
-                # print(out_df)
-                out_df.to_csv("/shared_mnt/Conf_Y2015/GSaint_DBLP_conf_2015_output.csv", index=None)
+                # model.load_state_dict(torch.load(
+                #     "/shared_mnt/Conf_Y2015/dblp-2022-03-01_URI_Only_Conf_Y2015_DBLP_conf_2015_GSAINT_FM.model"))
+                #
+                # model.eval()
+                # out = model.inference(x_dict, edge_index_dict, key2int)
+                # out = out[key2int['rec']]
+                # y_pred = out.argmax(dim=-1, keepdim=True).cpu()
+                # y_true = data.y_dict['rec']
+                #
+                # out_lst = torch.flatten(y_true).tolist()
+                # pred_lst = torch.flatten(y_pred).tolist()
+                # out_df = pd.DataFrame({"y_pred": pred_lst, "y_true": out_lst})
+                # # print(y_pred, data.y_dict['paper'])
+                # # print(out_df)
+                # out_df.to_csv("/shared_mnt/Conf_Y2015/GSaint_DBLP_conf_2015_output.csv", index=None)
                 quit()
             else:
                 print("start test")
@@ -505,15 +463,17 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
                 dic_results[dataset_name]["runs_count"] = args.runs
                 dic_results[dataset_name]["avg_train_time"] = total_run_t
                 dic_results[dataset_name]["rgcn_total_time"] = (gsaint_end_t - gsaint_start_t).total_seconds()
+
+                # TODO change the paths
                 if train_FM == 0:
                     pd.DataFrame(dic_results).transpose().to_csv(
-                        "/shared_mnt/Conf_Y2015/OGBN_DBLP_GSAINT_Conf_2015_times" + ".csv", index=False)
-                    shutil.rmtree("/shared_mnt/Conf_Y2015/" + dataset_name)
+                        "/shared_mnt/YAGO/GSAINT_Results/times" + ".csv", index=False)
+                    shutil.rmtree("/shared_mnt/YAGO/GSAINT_Results/" + dataset_name)
                     torch.save(model.state_dict(),
-                               "/shared_mnt/Conf_Y2015/" + dataset_name + "_DBLP_conf_2015_GSAINT_QM.model")
+                               "/shared_mnt/YAGO/GSAINT_Results/" + dataset_name + "GSAINT_QM.model")
                 if train_FM == 1:
                     pd.DataFrame(dic_results).transpose().to_csv(
-                        "/shared_mnt/Conf_Y2015/OGBN_DBLP_GSAINT_Conf_2015_FM_times" + ".csv", index=False)
+                        "/shared_mnt/YAGO/GSAINT_Results/times" + ".csv", index=False)
                     shutil.rmtree("/shared_mnt/" + dataset_name)
                     torch.save(model.state_dict(),
-                               "/shared_mnt/Conf_Y2015/" + dataset_name + "_DBLP_conf_2015_GSAINT_FM.model")
+                               "/shared_mnt/YAGO/GSAINT_Results/" + dataset_name + "GSAINT_FM.model")
