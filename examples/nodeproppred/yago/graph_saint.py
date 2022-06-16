@@ -221,16 +221,16 @@ def test(export_output=False):
         out_df.to_csv("/shared_mnt/YAGO/GSaint_YAGO_output.csv", index=None)
 
     train_acc = evaluator.eval({
-        'y_true': y_true[split_idx['train']['rec']],
-        'y_pred': y_pred[split_idx['train']['rec']],
+        'y_true': y_true[split_idx['train']['Place']],
+        'y_pred': y_pred[split_idx['train']['Place']],
     })['acc']
     valid_acc = evaluator.eval({
-        'y_true': y_true[split_idx['valid']['rec']],
-        'y_pred': y_pred[split_idx['valid']['rec']],
+        'y_true': y_true[split_idx['valid']['Place']],
+        'y_pred': y_pred[split_idx['valid']['Place']],
     })['acc']
     test_acc = evaluator.eval({
-        'y_true': y_true[split_idx['test']['rec']],
-        'y_pred': y_pred[split_idx['test']['rec']],
+        'y_true': y_true[split_idx['test']['Place']],
+        'y_pred': y_pred[split_idx['test']['Place']],
     })['acc']
 
     return train_acc, valid_acc, test_acc
@@ -278,7 +278,7 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
             else:
                 dataset_name = "OBGN_YAGO_" + sample_key + "Usecase_" + str(
                     int(aff_row["Q_idx"])) + "_" + str(aff_row["subtype_uri"]).split("/")[-1]
-                dataset = PygNodePropPredDataset_hsh(name=dataset_name, root='/shared_mnt/YAGO/OGBN_Format/YAGO_Usecases',
+                dataset = PygNodePropPredDataset_hsh(name=dataset_name, root='/shared_mnt/YAGO/OGBN_Format/YAGO_Usecases/',
                                                      numofClasses='2500')
 
             print("dataset_name=", dataset_name)

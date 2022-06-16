@@ -73,7 +73,7 @@ class PygNodePropPredDataset_hsh(InMemoryDataset):
         self.meta_info['has_node_attr'] = True
         self.meta_info['has_edge_attr'] = False
         self.meta_info['split'] = 'random'
-        self.meta_info['additional node files']=''
+        self.meta_info['additional node files']='node_type'
         self.meta_info['additional edge files'] = 'edge_reltype'
         self.meta_info['is hetero'] = 'True'
         self.meta_info['binary'] = 'False'
