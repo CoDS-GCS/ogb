@@ -19,7 +19,6 @@ from pathlib import Path
 sys.path.insert(1, '/shared_mnt/ogb/ogb/nodeproppred/')
 print("sys.path=", sys.path)
 
-from logger import Logger
 from evaluate import Evaluator
 from dataset_pyg_hsh import PygNodePropPredDataset_hsh
 from logger import Logger
@@ -262,24 +261,24 @@ dic_results = {}
 sampledQueries = {
     "StarQuery": "StarQuery",
     "BStarQuery": "BStarQuery",
-    "PathQuery": "PathQuery",
-    "BPathQuery": "BPathQuery"
+    # "PathQuery": "PathQuery",
+    # "BPathQuery": "BPathQuery"
 }
-train_FM = 1
+train_FM = 0
 for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
     gsaint_start_t = datetime.datetime.now()
     dataset_name = ""
-    if i >= 0:
+    if i == 21:
         # TODO change dataset_name to converted full_yago and converted usecase folders
         for sample_key in sampledQueries.keys():
             start_t = datetime.datetime.now()
             if train_FM == 1:
                 dataset_name = "yago-2022-05-26"
-                dataset = PygNodePropPredDataset_hsh(name=dataset_name, root='/shared_mnt/', numofClasses='5050')
+                dataset = PygNodePropPredDataset_hsh(name=dataset_name, root='/shared_mnt/', numofClasses='2500')
             else:
                 dataset_name = "OBGN_YAGO_" + sample_key + "Usecase_" + str(
                     int(aff_row["Q_idx"])) + "_" + str(aff_row["subtype_uri"]).split("/")[-1]
-                dataset = PygNodePropPredDataset_hsh(name=dataset_name, root='/shared_mnt/YAGO/YAGO_Usecases',
+                dataset = PygNodePropPredDataset_hsh(name=dataset_name, root='/shared_mnt/YAGO/OGBN_Format/YAGO_Usecases',
                                                      numofClasses='2500')
 
             print("dataset_name=", dataset_name)
