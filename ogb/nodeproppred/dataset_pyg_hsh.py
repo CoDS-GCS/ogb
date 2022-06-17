@@ -5,9 +5,16 @@ import shutil, os
 import os.path as osp
 import torch
 import numpy as np
-from ogb.utils.url import decide_download, download_url, extract_zip
-from ogb.io.read_graph_pyg import read_graph_pyg, read_heterograph_pyg
-from ogb.io.read_graph_raw import read_node_label_hetero, read_nodesplitidx_split_hetero
+
+import sys
+
+sys.path.insert(1, '/shared_mnt/ogb/ogb/io/')
+sys.path.insert(1, '/shared_mnt/ogb/ogb/utils/')
+print("sys.path=", sys.path)
+
+from url import decide_download, download_url, extract_zip
+from read_graph_pyg import read_graph_pyg, read_heterograph_pyg
+from read_graph_raw import read_node_label_hetero, read_nodesplitidx_split_hetero
 
 # TODO number of classes (countries ?)
 
@@ -96,6 +103,7 @@ class PygNodePropPredDataset_hsh(InMemoryDataset):
         if split_type is None:
             split_type = self.meta_info['split']
         path = osp.join(self.root, 'split', split_type)
+        print("Split path ", path)
 
         # short-cut if split_dict.pt exists
         if os.path.isfile(os.path.join(path, 'split_dict.pt')):
