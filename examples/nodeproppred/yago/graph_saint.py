@@ -293,7 +293,7 @@ for i, aff_row in fieldOfStudy_Coverage_df.iterrows():
             data = dataset[0]
 
             # this returns us the split index for train , test and valid
-            split_idx = dataset.get_idx_split()
+            split_idx = dataset.get_idx_split(split_type="random")
             end_t = datetime.datetime.now()
             print("dataset init time=", end_t - start_t, " sec.")
             dic_results[dataset_name]["GSaint_data_init_time"] = (end_t - start_t).total_seconds()
