@@ -638,6 +638,7 @@ def read_nodesplitidx_split_hetero(split_dir):
     for nodetype in df.keys():
         has_label = df[nodetype].values[0]
         if has_label:
+            print("Has_label ", nodetype)
             train_dict[nodetype] = pd.read_csv(osp.join(split_dir, nodetype, 'train.csv.gz'), compression='gzip', header = None).values.T[0]
             valid_dict[nodetype] = pd.read_csv(osp.join(split_dir, nodetype, 'valid.csv.gz'), compression='gzip', header = None).values.T[0]
             test_dict[nodetype] = pd.read_csv(osp.join(split_dir, nodetype, 'test.csv.gz'), compression='gzip', header = None).values.T[0]
