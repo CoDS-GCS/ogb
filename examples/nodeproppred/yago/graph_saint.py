@@ -22,9 +22,6 @@ from evaluate import Evaluator
 from dataset_pyg_hsh import PygNodePropPredDataset_hsh
 from logger import Logger
 
-train_FM = sys.argv[1]
-dataset_name = sys.argv[2]
-
 
 def print_memory_usage():
     print('used virtual memory GB:', psutil.virtual_memory().used / (1024.0 ** 3), " percent",
@@ -218,7 +215,7 @@ def test(export_output=False):
         out_lst = torch.flatten(y_true).tolist()
         pred_lst = torch.flatten(y_pred).tolist()
         out_df = pd.DataFrame({"y_pred": pred_lst, "y_true": out_lst})
-        out_df.to_csv("/shared_mnt/YAGO/GSaint_YAGO_",dataset_name,"_output.csv", index=None)
+        out_df.to_csv("/shared_mnt/YAGO/GSaint_YAGO_", dataset_name, "_output.csv", index=None)
 
     train_acc = evaluator.eval({
         'y_true': y_true[split_idx['train']['Place']],
@@ -235,7 +232,10 @@ def test(export_output=False):
 
     return train_acc, valid_acc, test_acc
 
+
 parser = argparse.ArgumentParser(description='YAGO (GraphSAINT)')
+parser.add_argument('--train_FM', type = bool, default= True)
+parser.add_argument('--dataset_name', type=str, default="YAGO_FM")
 parser.add_argument('--device', type=int, default=0)
 parser.add_argument('--num_layers', type=int, default=2)
 parser.add_argument('--hidden_channels', type=int, default=64)
@@ -250,9 +250,9 @@ parser.add_argument('--loadTrainedModel', type=int, default=0)
 args = parser.parse_args()
 print(args)
 
+dataset_name = args.dataset_name
 fieldOfStudy_Coverage_df = pd.read_csv("/shared_mnt/YAGO/YAGO_place_usecases.csv")
-# fieldOfStudy_Coverage_df = fieldOfStudy_Coverage_df[fieldOfStudy_Coverage_df["do_train"] == 1].reset_index(
-#     drop=True)
+
 dic_results = {}
 sampledQueries = {
     "StarQuery": "StarQuery",
@@ -264,7 +264,7 @@ for aff_row in fieldOfStudy_Coverage_df.iterrows():
     gsaint_start_t = datetime.datetime.now()
     for sample_key in sampledQueries.keys():
         start_t = datetime.datetime.now()
-        if train_FM == 1:
+        if args.train_FM:
             dataset = PygNodePropPredDataset_hsh(name=dataset_name, root="/shared_mnt/YAGO/OGBN_Format/",
                                                  numofClasses='500')
         else:
@@ -280,7 +280,7 @@ for aff_row in fieldOfStudy_Coverage_df.iterrows():
         print("dataset_name=", dataset_name)
         dic_results[dataset_name] = {}
         dic_results[dataset_name]["GNN_Model"] = "GSaint"
-        dic_results[dataset_name]["q_idx"] = int(aff_row["Q_idx"])
+        # dic_results[dataset_name]["q_idx"] = int(aff_row["Q_idx"])
         dic_results[dataset_name]["usecase"] = dataset_name
         dic_results[dataset_name]["gnn_hyper_params"] = str(args)
 
@@ -422,13 +422,19 @@ for aff_row in fieldOfStudy_Coverage_df.iterrows():
             dic_results[dataset_name]["avg_train_time"] = total_run_t
             dic_results[dataset_name]["rgcn_total_time"] = (gsaint_end_t - gsaint_start_t).total_seconds()
 
-            if train_FM == 0:
-                pd.DataFrame(dic_results).transpose().to_csv(
-                    "/shared_mnt/YAGO/GSAINT_Results/times" + ".csv", index=False)
-                torch.save(model.state_dict(),
-                           "/shared_mnt/YAGO/GSAINT_Results/QM/" + dataset_name + ".model")
-            if train_FM == 1:
+            if args.train_FM:
                 pd.DataFrame(dic_results).transpose().to_csv(
                     "/shared_mnt/YAGO/GSAINT_Results/times" + ".csv", index=False)
                 torch.save(model.state_dict(),
                            "/shared_mnt/YAGO/GSAINT_Results/FM/" + dataset_name + ".model")
+            else:
+                pd.DataFrame(dic_results).transpose().to_csv(
+                    "/shared_mnt/YAGO/GSAINT_Results/times" + ".csv", index=False)
+                torch.save(model.state_dict(),
+                           "/shared_mnt/YAGO/GSAINT_Results/QM/" + dataset_name + ".model")
+
+
+
+
+
+
