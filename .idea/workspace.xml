@@ -4,12 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d7625012-b420-4433-8a77-9af082890cd1" name="Changes" comment="OGB_MAG 350 Usecases">
-      <change afterPath="$PROJECT_DIR$/ogb/linkproppred/dataset_pyg_hsh.py" afterDir="false" />
+    <list default="true" id="d7625012-b420-4433-8a77-9af082890cd1" name="Changes" comment="DBLP Varying Nodes/edges- Node Classifcation">
+      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-plugin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_10_22,_2_58_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_10_22,_2_58_PM_[Changes]1/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/linkproppred/collab/gnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/linkproppred/collab/gnn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/linkproppred/citation2/graph_saint.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/linkproppred/citation2/graph_saint.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_Varying_nodes_edges.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_Varying_nodes_edges.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ogb/linkproppred/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/linkproppred/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ogb/linkproppred/dataset_pyg_hsh.py" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/linkproppred/dataset_pyg_hsh.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ogb/linkproppred/master.csv" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/linkproppred/master.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -39,29 +43,34 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="26tjtOrkcXrJJxPbLVmzT1VSYHU" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ogb/linkproppred" />
+    <property name="TODO_SCOPE" value="All Places" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/examples/nodeproppred/mag" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="project.scopes" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_Varying_nodes_edges_v2.py" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/ogb/linkproppred" />
       <recent name="$PROJECT_DIR$/examples/nodeproppred/mag" />
+      <recent name="$PROJECT_DIR$/ogb/linkproppred" />
       <recent name="$PROJECT_DIR$/ogb/nodeproppred" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.gnn">
-    <configuration name="dataset_pyg_hsh" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.graph_saint_DBLP_GA">
+    <configuration name="graph_saint" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ogb" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -69,11 +78,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ogb/nodeproppred" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples/linkproppred/citation2" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg_hsh.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/linkproppred/citation2/graph_saint.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -82,49 +91,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="gnn" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="ogb" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples/linkproppred/collab" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/linkproppred/collab/gnn.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="module" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="ogb" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/anaconda3/envs/ogb/lib/python3.9/site-packages/torch/nn/modules" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/anaconda3/envs/ogb/lib/python3.9/site-packages/torch/nn/modules/module.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="rgcn" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="graph_saint_DBLP" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ogb" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -136,7 +103,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -145,7 +112,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="rgcn_DBLP" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="graph_saint_DBLP_GA" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ogb" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -157,7 +124,49 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn_DBLP.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="graph_saint_DBLP_Varying_nodes_edges" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ogb" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples/nodeproppred/mag" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_Varying_nodes_edges.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="read_graph_raw" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ogb" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ogb/io" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ogb/io/read_graph_raw.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -168,11 +177,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.gnn" />
-        <item itemvalue="Python.rgcn_DBLP" />
-        <item itemvalue="Python.module" />
-        <item itemvalue="Python.rgcn" />
-        <item itemvalue="Python.dataset_pyg_hsh" />
+        <item itemvalue="Python.graph_saint_DBLP_GA" />
+        <item itemvalue="Python.graph_saint_DBLP_Varying_nodes_edges" />
+        <item itemvalue="Python.read_graph_raw" />
+        <item itemvalue="Python.graph_saint_DBLP" />
+        <item itemvalue="Python.graph_saint" />
       </list>
     </recent_temporary>
   </component>
@@ -262,7 +271,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651933415366</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="DBLP Varying Nodes/edges- Node Classifcation">
+      <created>1654790035750</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1654790035750</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -277,9 +293,11 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="OGB_MAG_QM" />
     <MESSAGE value="OGB_MAG 350 Usecases" />
-    <option name="LAST_COMMIT_MESSAGE" value="OGB_MAG 350 Usecases" />
+    <MESSAGE value="DBLP Varying Nodes/edges- Node Classifcation" />
+    <option name="LAST_COMMIT_MESSAGE" value="DBLP Varying Nodes/edges- Node Classifcation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -288,11 +306,6 @@
           <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/rgcn.py</url>
           <line>105</line>
           <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ogb/io/read_graph_raw.py</url>
-          <line>32</line>
-          <option name="timeStamp" value="40" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ogb/graphproppred/dataset.py</url>
@@ -379,7 +392,96 @@
           <line>620</line>
           <option name="timeStamp" value="87" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ogb/io/read_graph_raw.py</url>
+          <line>507</line>
+          <option name="timeStamp" value="93" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ogb/io/read_graph_raw.py</url>
+          <line>506</line>
+          <option name="timeStamp" value="94" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/linkproppred/citation2/graph_saint.py</url>
+          <line>51</line>
+          <option name="timeStamp" value="95" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/linkproppred/citation2/graph_saint.py</url>
+          <line>135</line>
+          <option name="timeStamp" value="97" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/linkproppred/citation2/graph_saint.py</url>
+          <line>121</line>
+          <option name="timeStamp" value="100" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/ogb/lib/python3.9/site-packages/torch_sparse/storage.py</url>
+          <line>65</line>
+          <option name="timeStamp" value="101" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/linkproppred/citation2/graph_saint.py</url>
+          <line>192</line>
+          <option name="timeStamp" value="102" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_Varying_nodes_edges.py</url>
+          <line>295</line>
+          <option name="timeStamp" value="103" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ogb/io/read_graph_raw.py</url>
+          <line>37</line>
+          <option name="timeStamp" value="104" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ogb/io/read_graph_raw.py</url>
+          <line>285</line>
+          <option name="timeStamp" value="105" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ogb/io/read_graph_raw.py</url>
+          <line>520</line>
+          <option name="timeStamp" value="106" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_Varying_nodes_edges.py</url>
+          <line>521</line>
+          <option name="timeStamp" value="108" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py</url>
+          <line>665</line>
+          <option name="timeStamp" value="114" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py</url>
+          <line>608</line>
+          <option name="timeStamp" value="116" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py</url>
+          <line>330</line>
+          <option name="timeStamp" value="121" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py</url>
+          <line>338</line>
+          <option name="timeStamp" value="122" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="weight.shape" language="Python" />
+        <watch expression="bias.shape" language="Python" />
+        <watch expression="data.num_nodes" language="Python" />
+        <watch expression="x.shape" language="Python" />
+        <watch expression="adj.shape" language="Python" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

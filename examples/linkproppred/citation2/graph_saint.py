@@ -6,11 +6,12 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
 from torch_sparse import SparseTensor
-from torch_geometric.data import GraphSAINTRandomWalkSampler
+# from torch_geometric.data import GraphSAINTRandomWalkSampler
+from torch_geometric.loader import GraphSAINTRandomWalkSampler
 from torch_geometric.nn import GCNConv
 from torch_geometric.utils import to_undirected
 
-from ogb.linkproppred import PygLinkPropPredDataset, Evaluator
+from ogb.linkproppred import PygLinkPropPredDataset,PygLinkPropPredDataset_hsh, Evaluator
 
 from logger import Logger
 
@@ -174,17 +175,24 @@ def main():
     parser.add_argument('--lr', type=float, default=0.001)
     parser.add_argument('--epochs', type=int, default=200)
     parser.add_argument('--num_steps', type=int, default=100)
-    parser.add_argument('--eval_steps', type=int, default=10)
-    parser.add_argument('--runs', type=int, default=10)
+    parser.add_argument('--eval_steps', type=int, default=1)
+    parser.add_argument('--runs', type=int, default=2)
     args = parser.parse_args()
     print(args)
 
     device = f'cuda:{args.device}' if torch.cuda.is_available() else 'cpu'
     device = torch.device(device)
 
-    dataset = PygLinkPropPredDataset(name='ogbl-citation2')
+    # dataset = PygLinkPropPredDataset(name='ogbl-citation2')
+    # dataset = PygNodePropPredDataset_hsh(name=dataset_name,)
+    # dataset = PygLinkPropPredDataset_hsh(name='OGBL-CitiationV2', root='/media/hussein/UbuntuData/GithubRepos/KG-EaaS/DataTransform/')
+    dataset = PygLinkPropPredDataset_hsh(name='OBGL_FM_DBLP_Author_Papers_filterYear_2018',root='/media/hussein/UbuntuData/OGBL_Datasets/DBLP/')
+    # dataset = PygLinkPropPredDataset_hsh(name='ogbl-citation2_org')
+
+
     split_edge = dataset.get_edge_split()
     data = dataset[0]
+    print("data=", dataset[0])
     data.edge_index = to_undirected(data.edge_index, data.num_nodes)
 
     loader = GraphSAINTRandomWalkSampler(data, batch_size=args.batch_size,
@@ -201,7 +209,12 @@ def main():
         'target_node': split_edge['train']['target_node'][idx],
         'target_node_neg': split_edge['valid']['target_node_neg'],
     }
-
+    #######################intialize random features ###############################
+    # feat = torch.Tensor(data.num_nodes, 128)
+    feat = torch.Tensor(data.num_nodes - 2, 128)
+    torch.nn.init.xavier_uniform_(feat)
+    data.x = feat
+    ################################################################################
     model = GCN(data.x.size(-1), args.hidden_channels, args.hidden_channels,
                 args.num_layers, args.dropout).to(device)
     predictor = LinkPredictor(args.hidden_channels, args.hidden_channels, 1,
@@ -231,7 +244,8 @@ def main():
                 print('Learning failed. Rerun...')
                 break
 
-            if epoch > 49 and epoch % args.eval_steps == 0:
+            if epoch > 0 and epoch % args.eval_steps == 0:
+            # if epoch > 0:
                 result = test(model, predictor, data, split_edge, evaluator,
                               batch_size=64 * 1024, device=device)
                 logger.add_result(run_idx, result)

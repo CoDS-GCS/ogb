@@ -38,6 +38,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/examples/nodeproppred/mag/DBLP_AllPapers_triplet-type-list.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/examples/nodeproppred/mag/DBLP_OGBN_EdgeTypes.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/examples/nodeproppred/mag/GCN_mag_output.csv">
           <value>
             <Attribute>
