@@ -4,17 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d7625012-b420-4433-8a77-9af082890cd1" name="Changes" comment="DBLP Varying Nodes/edges- Node Classifcation">
-      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py" afterDir="false" />
+    <list default="true" id="d7625012-b420-4433-8a77-9af082890cd1" name="Changes" comment="GraphSaint Genetic Algo">
+      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY2017_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class_GA_18_GSAINT_dic.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_baised.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_10_22,_2_58_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_10_22,_2_58_PM_[Changes]1/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/linkproppred/citation2/graph_saint.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/linkproppred/citation2/graph_saint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_Varying_nodes_edges.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_Varying_nodes_edges.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ogb/linkproppred/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/linkproppred/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ogb/linkproppred/dataset_pyg_hsh.py" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/linkproppred/dataset_pyg_hsh.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ogb/linkproppred/master.csv" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/linkproppred/master.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ogb/io/read_graph_pyg.py" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/io/read_graph_pyg.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ogb/io/read_graph_raw.py" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/io/read_graph_raw.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +58,7 @@
     <property name="TODO_SCOPE" value="All Places" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/examples/nodeproppred/mag" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
-    <property name="settings.editor.selected.configurable" value="project.scopes" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_Varying_nodes_edges_v2.py" />
   </component>
   <component name="RecentsManager">
@@ -70,7 +69,7 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.graph_saint_DBLP_GA">
-    <configuration name="graph_saint" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="_monitor" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ogb" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -78,11 +77,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples/linkproppred/citation2" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/anaconda3/envs/ogb/lib/python3.9/site-packages/tqdm" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/linkproppred/citation2/graph_saint.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/anaconda3/envs/ogb/lib/python3.9/site-packages/tqdm/_monitor.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -91,7 +90,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="graph_saint_DBLP" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="graph_saint_DBLP_2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ogb" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -103,7 +102,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -133,7 +132,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="graph_saint_DBLP_Varying_nodes_edges" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="graph_saint_DBLP_GA_baised" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ogb" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -145,7 +144,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_Varying_nodes_edges.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -154,7 +153,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="read_graph_raw" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="saint" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ogb" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -162,11 +161,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ogb/io" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/anaconda3/envs/ogb/lib/python3.9/site-packages/torch_sparse" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ogb/io/read_graph_raw.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/anaconda3/envs/ogb/lib/python3.9/site-packages/torch_sparse/saint.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -178,10 +177,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.graph_saint_DBLP_GA" />
-        <item itemvalue="Python.graph_saint_DBLP_Varying_nodes_edges" />
-        <item itemvalue="Python.read_graph_raw" />
-        <item itemvalue="Python.graph_saint_DBLP" />
-        <item itemvalue="Python.graph_saint" />
+        <item itemvalue="Python.graph_saint_DBLP_2" />
+        <item itemvalue="Python.saint" />
+        <item itemvalue="Python.graph_saint_DBLP_GA_baised" />
+        <item itemvalue="Python._monitor" />
       </list>
     </recent_temporary>
   </component>
@@ -278,7 +277,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654790035750</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="GraphSaint Genetic Algo">
+      <created>1656369416060</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1656369416061</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -297,7 +303,8 @@
     <MESSAGE value="OGB_MAG_QM" />
     <MESSAGE value="OGB_MAG 350 Usecases" />
     <MESSAGE value="DBLP Varying Nodes/edges- Node Classifcation" />
-    <option name="LAST_COMMIT_MESSAGE" value="DBLP Varying Nodes/edges- Node Classifcation" />
+    <MESSAGE value="GraphSaint Genetic Algo" />
+    <option name="LAST_COMMIT_MESSAGE" value="GraphSaint Genetic Algo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -389,17 +396,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ogb/io/read_graph_raw.py</url>
-          <line>620</line>
-          <option name="timeStamp" value="87" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ogb/io/read_graph_raw.py</url>
-          <line>507</line>
+          <line>509</line>
           <option name="timeStamp" value="93" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ogb/io/read_graph_raw.py</url>
-          <line>506</line>
+          <line>508</line>
           <option name="timeStamp" value="94" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -439,12 +441,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ogb/io/read_graph_raw.py</url>
-          <line>285</line>
+          <line>286</line>
           <option name="timeStamp" value="105" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ogb/io/read_graph_raw.py</url>
-          <line>520</line>
+          <line>522</line>
           <option name="timeStamp" value="106" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -453,29 +455,80 @@
           <option name="timeStamp" value="108" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py</url>
-          <line>665</line>
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py</url>
+          <line>745</line>
           <option name="timeStamp" value="114" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py</url>
-          <line>608</line>
-          <option name="timeStamp" value="116" />
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py</url>
+          <line>704</line>
+          <option name="timeStamp" value="123" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py</url>
+          <line>730</line>
+          <option name="timeStamp" value="125" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py</url>
+          <line>720</line>
+          <option name="timeStamp" value="127" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py</url>
+          <line>354</line>
+          <option name="timeStamp" value="128" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py</url>
+          <line>727</line>
+          <option name="timeStamp" value="136" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/ogb/lib/python3.9/threading.py</url>
+          <line>315</line>
+          <option name="timeStamp" value="137" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg_hsh.py</url>
+          <line>175</line>
+          <option name="timeStamp" value="144" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ogb/io/read_graph_pyg.py</url>
+          <line>53</line>
+          <option name="timeStamp" value="145" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py</url>
-          <line>330</line>
-          <option name="timeStamp" value="121" />
+          <line>545</line>
+          <option name="timeStamp" value="146" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py</url>
-          <line>338</line>
-          <option name="timeStamp" value="122" />
+          <line>552</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py</url>
+          <line>543</line>
+          <option name="timeStamp" value="148" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py</url>
+          <line>537</line>
+          <option name="timeStamp" value="149" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py</url>
+          <line>769</line>
+          <option name="timeStamp" value="150" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
+        <watch expression="local2global['rec']" language="Python" />
         <watch expression="weight.shape" language="Python" />
         <watch expression="bias.shape" language="Python" />
         <watch expression="data.num_nodes" language="Python" />

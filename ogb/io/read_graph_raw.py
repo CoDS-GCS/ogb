@@ -93,7 +93,7 @@ def read_csv_graph_raw(raw_dir, add_inverse_edge = False, additional_node_files 
 
     print('Processing graphs...')
     for num_node, num_edge in tqdm(zip(num_node_list, num_edge_list), total=len(num_node_list)):
-
+    # for num_node, num_edge in zip(num_node_list, num_edge_list):
         graph = dict()
 
         ### handling edge
@@ -196,6 +196,7 @@ def read_binary_graph_raw(raw_dir, add_inverse_edge = False):
 
     print('Processing graphs...')
     for num_nodes, num_edges in tqdm(zip(num_nodes_list, num_edges_list), total=len(num_nodes_list)):
+    # for num_nodes, num_edges in zip(num_nodes_list, num_edges_list):
 
         graph = dict()
 
@@ -376,6 +377,7 @@ def read_csv_heterograph_raw(raw_dir, add_inverse_edge = False, additional_node_
 
     print('Processing graphs...')
     for i in tqdm(range(num_graphs)):
+    # for i in range(num_graphs):
 
         graph = dict()
 
@@ -553,8 +555,8 @@ def read_binary_heterograph_raw(raw_dir, add_inverse_edge = False):
     num_edges_accum_dict = {triplet: 0 for triplet in triplet_type_list}
 
     print('Processing graphs...')
-    for i in tqdm(range(num_graphs)):
-
+    # for i in tqdm(range(num_graphs)):
+    for i in range(num_graphs):
         graph = dict()
 
         ### set up default atribute

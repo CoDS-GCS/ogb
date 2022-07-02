@@ -73,6 +73,41 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/examples/nodeproppred/mag/dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY2017_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class/mapping/Object_schema#otherAffiliation_entidx2name.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/examples/nodeproppred/mag/dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY2017_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class/mapping/Object_schema#primaryAffiliation_entidx2name.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/examples/nodeproppred/mag/dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY2017_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class/mapping/otherElectronicEdition_entidx2name.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/examples/nodeproppred/mag/dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY2017_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class/mapping/rec_entidx2name.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/examples/nodeproppred/mag/dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY2017_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class/mapping/wiki_entidx2name.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/mag_AtmosphericSciences_papers_venue_QM1/mapping/author_entidx2name.csv">
           <value>
             <Attribute>

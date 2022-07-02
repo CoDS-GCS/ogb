@@ -2,7 +2,7 @@ from copy import copy
 import argparse
 import shutil
 import pandas as pd
-# from tqdm import tqdm
+from tqdm import tqdm
 import datetime
 import torch
 import torch.nn.functional as F
@@ -10,7 +10,7 @@ from torch.nn import ModuleList, Linear, ParameterDict, Parameter
 from torch_sparse import SparseTensor
 from torch_geometric.utils import to_undirected
 from torch_geometric.data import Data
-from torch_geometric.loader import  GraphSAINTRandomWalkSampler
+from torch_geometric.loader import  GraphSAINTRandomWalkSampler , GraphSAINTTaskBaisedRandomWalkSampler
 from torch_geometric.utils.hetero import group_hetero_graph
 from torch_geometric.nn import MessagePassing
 import sys
@@ -24,14 +24,15 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import cross_val_score
 import traceback
 import sys
+
 sys.path.insert(0, '/shared_mnt/github_repos/ogb/')
 from ogb.nodeproppred import PygNodePropPredDataset, Evaluator, PygNodePropPredDataset_hsh
 from resource import *
 from logger import Logger
-import faulthandler; 
-faulthandler.enable()
-import pickle
-import subprocess
+
+
+# import faulthandler;
+# faulthandler.enable()
 def print_memory_usage():
     # print("max_mem_GB=",psutil.Process().memory_info().rss / (1024 * 1024*1024))
     # print("get_process_memory=",getrusage(RUSAGE_SELF).ru_maxrss/(1024*1024))
@@ -143,7 +144,8 @@ class RGCN(torch.nn.Module):
                 local_node_idx):
 
         x = self.group_input(x_dict, node_type, local_node_idx)
-
+        #To Do
+        # custom weight for each edge type
         for i, conv in enumerate(self.convs):
             x = conv(x, edge_index, edge_type, node_type)
             if i != self.num_layers - 1:
@@ -198,13 +200,17 @@ class RGCN(torch.nn.Module):
             x_dict = out_dict
 
         return x_dict
+
+
 dic_results = {}
-def graphSaint(to_remove_pedicates,to_remove_subject_object,to_keep_edge_idx_map,GA_Index,GA_dataset_name):
+
+
+def graphSaint(to_remove_pedicates, to_remove_subject_object, to_keep_edge_idx_map, GA_Index, dataset, GA_dataset_name,baised_sampler):
     def train(epoch):
         model.train()
-        # tqdm.monitor_interval = 0
-        # pbar = tqdm(total=args.num_steps * args.batch_size)
-        # pbar.set_description(f'Epoch {epoch:02d}')
+
+        pbar = tqdm(total=args.num_steps * args.batch_size)
+        pbar.set_description(f'Epoch {epoch:02d}')
 
         total_loss = total_examples = 0
         for data in train_loader:
@@ -217,21 +223,21 @@ def graphSaint(to_remove_pedicates,to_remove_subject_object,to_keep_edge_idx_map
             loss = F.nll_loss(out, y)
             loss.backward()
             optimizer.step()
+
             num_examples = data.train_mask.sum().item()
             total_loss += loss.item() * num_examples
             total_examples += num_examples
-            # pbar.update(args.batch_size)
+            pbar.update(args.batch_size)
 
-        # pbar.refresh()  # force print final state
-        # pbar.close()
-        # pbar.reset()
+        pbar.refresh()  # force print final state
+        pbar.close()
+        pbar.reset()
         return total_loss / total_examples
-
 
     @torch.no_grad()
     def test():
         model.eval()
-        
+
         out = model.inference(x_dict, edge_index_dict, key2int)
         out = out[key2int['rec']]
 
@@ -252,7 +258,6 @@ def graphSaint(to_remove_pedicates,to_remove_subject_object,to_keep_edge_idx_map
         })['acc']
         return train_acc, valid_acc, test_acc
 
-
     parser = argparse.ArgumentParser(description='OGBN-MAG (GraphSAINT)')
     parser.add_argument('--device', type=int, default=0)
     parser.add_argument('--num_layers', type=int, default=2)
@@ -260,33 +265,26 @@ def graphSaint(to_remove_pedicates,to_remove_subject_object,to_keep_edge_idx_map
     parser.add_argument('--dropout', type=float, default=0.3)
     parser.add_argument('--lr', type=float, default=0.05)
     # parser.add_argument('--epochs', type=int, default=30)
-    parser.add_argument('--epochs', type=int, default=2)
+    parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--runs', type=int, default=1)
-    parser.add_argument('--batch_size', type=int, default=2000)
+    # parser.add_argument('--batch_size', type=int, default=20000)
+    parser.add_argument('--batch_size', type=int, default=1000)
     parser.add_argument('--walk_length', type=int, default=2)
-    parser.add_argument('--num_steps', type=int, default=5)
+    parser.add_argument('--num_steps', type=int, default=30)
     parser.add_argument('--loadTrainedModel', type=int, default=0)
     init_ru_maxrss = getrusage(RUSAGE_SELF).ru_maxrss
     args = parser.parse_args()
     print(args)
-    gsaint_Final_Test=0
+    gsaint_Final_Test = 0
     try:
         gsaint_start_t = datetime.datetime.now()
-        ###################################Delete Folder if exist #############################
-        dir_path="/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/"+GA_dataset_name
-        try:
-            shutil.rmtree(dir_path)
-            print("Folder Deleted")
-        except OSError as e:
-            print("Error Deleting : %s : %s" % (dir_path, e.strerror))
-       ####################
-        dataset = PygNodePropPredDataset_hsh(name=GA_dataset_name, root='/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/',numofClasses=str(50))
-        dataset_name=GA_dataset_name+"_GA_"+str(GA_Index)
-        print("dataset_name=",dataset_name)
+        dataset = init_graphSaintDataset('/home/hussein/Downloads/', GA_dataset_name, 50)
+        dataset_name = GA_dataset_name + "_GA_" + str(GA_Index)
+        print("dataset_name=", dataset_name)
         dic_results[dataset_name] = {}
         dic_results[dataset_name]["GNN_Model"] = "GSaint"
         dic_results[dataset_name]["GA_Index"] = GA_Index
-        dic_results[dataset_name]["to_keep_edge_idx_map"] = to_keep_edge_idx_map        
+        dic_results[dataset_name]["to_keep_edge_idx_map"] = to_keep_edge_idx_map
         dic_results[dataset_name]["usecase"] = dataset_name
         dic_results[dataset_name]["gnn_hyper_params"] = str(args)
 
@@ -341,11 +339,10 @@ def graphSaint(to_remove_pedicates,to_remove_subject_object,to_keep_edge_idx_map
 
         for elem in to_remove_rels:
             data.edge_index_dict.pop(elem, None)
-            data.edge_reltype.pop(elem,None)
+            data.edge_reltype.pop(elem, None)
 
         for key in to_remove_subject_object:
             data.num_nodes_dict.pop(key, None)
-
 
         dic_results[dataset_name]["data"] = str(data)
         ##############add inverse edges ###################
@@ -355,7 +352,7 @@ def graphSaint(to_remove_pedicates,to_remove_subject_object,to_keep_edge_idx_map
             r, c = edge_index_dict[(key[0], key[1], key[2])]
             edge_index_dict[(key[2], 'inv_' + key[1], key[0])] = torch.stack([c, r])
 
-        print("data after filter=",str(data))
+        print("data after filter=", str(data))
         print_memory_usage()
         out = group_hetero_graph(data.edge_index_dict, data.num_nodes_dict)
         edge_index, edge_type, node_type, local_node_idx, local2global, key2int = out
@@ -372,13 +369,23 @@ def graphSaint(to_remove_pedicates,to_remove_subject_object,to_keep_edge_idx_map
         homo_data.train_mask[local2global['rec'][split_idx['train']['rec']]] = True
         # print(homo_data)
         start_t = datetime.datetime.now()
-        print("dataset.processed_dir",dataset.processed_dir)
-        train_loader = GraphSAINTRandomWalkSampler(homo_data,
+
+        if baised_sampler:
+            train_loader = GraphSAINTTaskBaisedRandomWalkSampler(homo_data,
+                                                                 batch_size=args.batch_size,
+                                                                 walk_length=args.num_layers,
+                                                                 Subject_indices=local2global['rec'],
+                                                                 num_steps=args.num_steps,
+                                                                 sample_coverage=0,
+                                                                 save_dir=dataset.processed_dir)
+        else:
+            train_loader = GraphSAINTRandomWalkSampler(homo_data,
                                                    batch_size=args.batch_size,
                                                    walk_length=args.num_layers,
                                                    num_steps=args.num_steps,
                                                    sample_coverage=0,
                                                    save_dir=dataset.processed_dir)
+
 
         end_t = datetime.datetime.now()
         print("Sampling time=", end_t - start_t, " sec.")
@@ -434,11 +441,6 @@ def graphSaint(to_remove_pedicates,to_remove_subject_object,to_keep_edge_idx_map
                 model.reset_parameters()
                 for epoch in range(1, 1 + args.epochs):
                     loss = train(epoch)
-                    ##############
-                    if loss==-1:
-                        return 0.001                    
-                   ##############
-                    
                     torch.cuda.empty_cache()
                     result = test()
                     logger.add_result(run, result)
@@ -464,29 +466,33 @@ def graphSaint(to_remove_pedicates,to_remove_subject_object,to_keep_edge_idx_map
             dic_results[dataset_name]["Highest_Train"] = Highest_Train.item()
             dic_results[dataset_name]["Highest_Valid"] = Highest_Valid.item()
             dic_results[dataset_name]["Final_Train"] = Final_Train.item()
-            gsaint_Final_Test= Final_Train.item()
+            gsaint_Final_Test = Final_Train.item()
             dic_results[dataset_name]["Final_Test"] = Final_Test.item()
             dic_results[dataset_name]["runs_count"] = args.runs
             dic_results[dataset_name]["avg_train_time"] = total_run_t
             dic_results[dataset_name]["rgcn_total_time"] = (gsaint_end_t - gsaint_start_t).total_seconds()
-            pd.DataFrame(dic_results).transpose().to_csv("/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/OGBN_DBLP_GSAINT" + GA_dataset_name + "_EdgesCount_5_GA_Times.csv", index=False)
+            pd.DataFrame(dic_results).transpose().to_csv(
+                "/shared_mnt/DBLP/OGBN_DBLP_GSAINT" + GA_dataset_name + "_GA_Times.csv", index=False)
             # shutil.rmtree("/shared_mnt/DBLP/" + dataset_name)
             # torch.save(model.state_dict(), "/shared_mnt/DBLP/" + dataset_name + "_DBLP_conf__GSAINT_QM.model")
     except Exception as e:
         print(e)
         print(traceback.format_exc())
         print("dataset_name Exception")
-    del train_loader
     return gsaint_Final_Test
 
-def init_graphSaintDataset(dataset_root_folder,dataset_name,class_count):
+
+def init_graphSaintDataset(dataset_root_folder, dataset_name, class_count):
     print("dataset_name=", dataset_name)
-    dataset = PygNodePropPredDataset_hsh(name=dataset_name, root=dataset_root_folder,numofClasses=str(class_count))
+    dataset = PygNodePropPredDataset_hsh(name=dataset_name, root=dataset_root_folder, numofClasses=str(class_count))
     return dataset
 
+
 DBLP_OGBN_EdgeTypes_df = pd.read_csv("DBLP_OGBN_EdgeTypes.csv")
-DBLP_OGBN_EdgeTypes_lst=DBLP_OGBN_EdgeTypes_df["EdgeType"].unique().tolist()
-def genetic_algo(data,dataset_name, population_size,features_count, Variance_threshold, Fittnes_threshold, top_number):
+DBLP_OGBN_EdgeTypes_lst = DBLP_OGBN_EdgeTypes_df["EdgeType"].unique().tolist()
+
+
+def genetic_algo(data, dataset_name, population_size, features_count, tol_level, top_number):
     def init_population(population_size, c, top_number):
         population = []
         for i in range(population_size):
@@ -516,75 +522,48 @@ def genetic_algo(data,dataset_name, population_size,features_count, Variance_thr
     #                              cv=10)  # using f1_score as it is an imbalanced dataset
     #     print(scores.mean())
     #     return scores.mean()
-    def calculate_fitness(to_remove_pedicates, to_remove_subject_object,to_keep_edge_idx_map, dataset,dataset_name):
+    def calculate_fitness(to_remove_pedicates, to_remove_subject_object, to_keep_edge_idx_map, dataset, dataset_name):
         if not hasattr(calculate_fitness, "GA_Index"):
             calculate_fitness.GA_Index = 0  # it doesn't exist yet, so initialize it
         calculate_fitness.GA_Index += 1
-
-        # dataset = init_graphSaintDataset('/shared_mnt/DBLP/DBLP_GA/', dataset_name, 50)
-        # dataset = PygNodePropPredDataset_hsh(name=dataset_name, root=/shared_mnt/DBLP/DBLP_GA/',numofClasses=str(class_count))
-        # print(to_remove_pedicates)
-        # print(to_remove_subject_object)
-        # print(to_keep_edge_idx_map)
-        # print(dataset_name)
-        GSAINT_Dic = {
-            'to_remove_pedicates': to_remove_pedicates,
-            'to_remove_subject_object':to_remove_subject_object,
-            'to_keep_edge_idx_map':to_keep_edge_idx_map,
-            'GA_Index':calculate_fitness.GA_Index,
-            'dataset_name':dataset_name,
-
-             }
-        dic_path=dataset_name+'_GA_'+str(calculate_fitness.GA_Index)+'_GSAINT_dic.pickle'
-        with open(dic_path, 'wb') as handle:
-            pickle.dump(GSAINT_Dic, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        acc=50
         try:
-            gsaint_output = subprocess.check_output("python graph_saint_DBLP_2.py --graphsaint_dic_path " + dic_path, shell=True)
-            # gsaint_output=os.popen("python graph_saint_DBLP_2.py --graphsaint_dic_path " + dic_path).read()
-            # gsaint_output=os.system(" python graph_saint_DBLP_2.py --graphsaint_dic_path " + dic_path)
-            # print ("GSAINT Output=",gsaint_output)
-            acc=float(str(gsaint_output).split("\\n")[-2])
-            print(dic_path, ' ACC:', acc)
+            dataset = init_graphSaintDataset('/shared_mnt/DBLP/', dataset_name, 50)
+            return graphSaint(to_remove_pedicates, to_remove_subject_object, to_keep_edge_idx_map,
+                              calculate_fitness.GA_Index, dataset, dataset_name)
         except:
-            print("error in indv")
-            # with open('filename.pickle', 'rb') as handle:
-        #     b = pickle.load(handle)
-        os.remove(dic_path)
-        # return graphSaint(to_remove_pedicates, to_remove_subject_object,to_keep_edge_idx_map, calculate_fitness.GA_Index,dataset_name)
-        # return random(1,100)
-        return acc
+            return 0.1
 
-
-    def get_filtred_edges_nodes(to_remove_edges_idx,to_keep_edges_idx):
+    def get_filtred_edges_nodes(to_remove_edges_idx, to_keep_edges_idx):
         features_count = len(DBLP_OGBN_EdgeTypes_df)
         # remove_edges_idx_lst = [1, 5, 7, 13, 25]
         to_remove_pedicates = []
         to_remove_subject_object = []
-        to_keep_edge_idx_map=[]
+        to_keep_edge_idx_map = []
         for idx in to_remove_edges_idx:
             to_remove_pedicates.append(DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["EdgeType"].values[0])
             if DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["ObjectType"].values[0].startswith("Object"):
                 to_remove_subject_object.append(DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["ObjectType"].values[0])
         for idx in to_keep_edges_idx:
-            to_keep_edge_idx_map.append(DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["edge_idx"].values[0])            
-        return to_remove_pedicates,to_remove_subject_object,to_keep_edge_idx_map
+            to_keep_edge_idx_map.append(DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["edge_idx"].values[0])
+        return to_remove_pedicates, to_remove_subject_object, to_keep_edge_idx_map
 
-    def get_fitness(population,dataset):
+    def get_fitness(population, dataset):
         fitness_values = []
         for individual in population:
             i = 0
-            to_remove_edges_idx=[]
-            to_keep_edges_idx=[]
-            print("individual=",individual)
-            for idx,val in enumerate(individual):
+            to_remove_edges_idx = []
+            to_keep_edges_idx = []
+            print("individual=", individual)
+            for idx, val in enumerate(individual):
                 if (val == 0):
                     to_remove_edges_idx.append(idx)
                 else:
                     to_keep_edges_idx.append(idx)
-                
-            to_remove_pedicates,to_remove_subject_object,to_keep_edge_idx_map=get_filtred_edges_nodes(to_remove_edges_idx,to_keep_edges_idx)
-            individual_fitness = calculate_fitness(to_remove_pedicates, to_remove_subject_object,to_keep_edge_idx_map,dataset,dataset_name)
+
+            to_remove_pedicates, to_remove_subject_object, to_keep_edge_idx_map = get_filtred_edges_nodes(
+                to_remove_edges_idx, to_keep_edges_idx)
+            individual_fitness = calculate_fitness(to_remove_pedicates, to_remove_subject_object, to_keep_edge_idx_map,
+                                                   dataset, dataset_name)
             fitness_values.append(individual_fitness)
 
         return fitness_values
@@ -669,67 +648,43 @@ def genetic_algo(data,dataset_name, population_size,features_count, Variance_thr
 
         return crossover_population
 
-    def run(population_size,features_count,top_number,Variance_threshold,Fittnes_threshold,dataset):
-        all_pop=[]
-        all_fitness=[]
+    def run(population_size, features_count, top_number, tol_level, dataset):
         c = features_count
         population = init_population(population_size, c, top_number)
-        fitness_values = get_fitness(population, dataset)
-        for elem in population:
-            all_pop.append(elem)
         print("init_population done")
-        for elem in fitness_values:
-            all_fitness.append(elem)
+        fitness_values = get_fitness(population, dataset)
         print("get_fitness done")
+        parents = select_parents(population, fitness_values)
+        print("select_parents done")
+        crossover_population = two_point_crossover(parents, 0.78)
+        print("two_point_crossover done")
+        population = crossover_population
+        p = random.uniform(0, 1)
+        if (p <= 0.001):
+            mutated_population = mutation(crossover_population)
+            population = mutated_population
+        fitness_values = get_fitness(population, dataset)
+        print("get_fitness for gen 0 done")
         variance_of_population = statistics.variance(fitness_values)
         print("variance for gen:0 is ", variance_of_population)
         gen = 1
-        max_fit = max(fitness_values)
-        if (variance_of_population > Variance_threshold) and (max_fit<Fittnes_threshold):
+
+        # repeating algorithm til stopping criterion is met
+        while (variance_of_population > tol_level):
             parents = select_parents(population, fitness_values)
-            print("select_parents done")
+            print("select_parents for gen: ", gen, " done")
             crossover_population = two_point_crossover(parents, 0.78)
-            print("two_point_crossover done")
+            print("crossover_population for gen: ", gen, " done")
             population = crossover_population
             p = random.uniform(0, 1)
-            if (p <= 0.001):
+            if (p <= 0.001):  # mutation prob here
                 mutated_population = mutation(crossover_population)
                 population = mutated_population
-            fitness_values = get_fitness(population, dataset)
-
-            for elem in population:
-                all_pop.append(elem)
-            print("init_population done")
-            for elem in fitness_values:
-                all_fitness.append(elem)
-
-            print("get_fitness for gen 0 done")
+            fitness_values = get_fitness(population, data)
+            print("get_fitness for gen: ", gen, " done")
             variance_of_population = statistics.variance(fitness_values)
-            print("variance for gen:0 is ", variance_of_population)
-            gen = 1
-            max_fit=max(fitness_values)
-            # repeating algorithm til stopping criterion is met
-            while ((variance_of_population > Variance_threshold) and (max_fit<Fittnes_threshold)):
-                parents = select_parents(population, fitness_values)
-                print("select_parents for gen: ",gen," done")
-                crossover_population = two_point_crossover(parents, 0.78)
-                print("crossover_population for gen: ",gen," done")
-                population = crossover_population
-                p = random.uniform(0, 1)
-                if (p <= 0.001):  # mutation prob here
-                    mutated_population = mutation(crossover_population)
-                    population = mutated_population
-                fitness_values = get_fitness(population, data)
-                for elem in population:
-                    all_pop.append(elem)
-                print("init_population done")
-                for elem in fitness_values:
-                    all_fitness.append(elem)
-                print("get_fitness for gen: ",gen," done")
-                variance_of_population = statistics.variance(fitness_values)
-                max_fit = max(fitness_values)
-                print("variance for gen:",gen ," is ", variance_of_population)
-                gen += 1
+            print("variance for gen:", gen, " is ", variance_of_population)
+            gen += 1
 
         best_features = []
         best_f1_score = 0
@@ -737,52 +692,59 @@ def genetic_algo(data,dataset_name, population_size,features_count, Variance_thr
         print('avg optimal_fitness is: ', optimal_fitness)
         for index, fitness_value in enumerate(fitness_values):
             error = abs((fitness_value - optimal_fitness) / optimal_fitness)
-            if (error <= 10):
+            if (error <= 0.01):
                 best_features = population[index]
                 best_f1_score = fitness_value
         print(best_features)
-        return best_features, best_f1_score,all_pop,all_fitness
+        return best_features, best_f1_score
 
-    return run(population_size,features_count,top_number,Variance_threshold,Fittnes_threshold,dataset)
+    return run(population_size, features_count, top_number, tol_level, dataset)
+
 
 if __name__ == '__main__':
-    dataset_name = "dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY2017_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class"
-    # dataset = init_graphSaintDataset('/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/', dataset_name, 50)
-    dataset=None
-    features_count=len(DBLP_OGBN_EdgeTypes_df)
-    variance_threshould=20
-    Fittnes_threshold=77.9
-    keep_edges_count=10
-    population_size=10
-    top_features, best_f1_score,population,fitness_values = genetic_algo(dataset,dataset_name,population_size ,features_count, variance_threshould,Fittnes_threshold,keep_edges_count)
-    # printing top features selected through genetic algorithm
-    i = 0
-    list_of_features = []
-    for i in range(len(top_features)):
-        if (top_features[i] == 1):
-            list_of_features.append(DBLP_OGBN_EdgeTypes_df.iloc[[i]]["EdgeType"].values[0])
-    print(top_features)
-    print(list_of_features)
-    print(best_f1_score)
+    dataset_name = "dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY1900_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class"
+    # dataset_name= "dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY2017_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class"
+    dataset = init_graphSaintDataset('/home/hussein/Downloads/', dataset_name, 50)
+
+    # keep_edges=["owl#sameAs","schema#archivedElectronicEdition","schema#doi","schema#yearOfEvent"]
+    # keep_edges_idx=[]
+    # for elem in keep_edges:
+    #     keep_edges_idx.append(DBLP_OGBN_EdgeTypes_df[DBLP_OGBN_EdgeTypes_df["EdgeType"]==elem].index)
+    # features_count = len(DBLP_OGBN_EdgeTypes_df)
+    to_remove_edges_idx=[]
+    individual = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1]
+    # individual = [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0]
+    for idx,val in enumerate(individual):
+        if val ==0:
+            to_remove_edges_idx.append(idx)
+    # remove_edges_idx_lst = [1, 5, 7, 13, 25]
+    to_remove_pedicates = []
+    to_remove_subject_object = []
+    for idx in to_remove_edges_idx:
+        to_remove_pedicates.append(DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["EdgeType"].values[0])
+        if DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["ObjectType"].values[0].startswith("Object"):
+            to_remove_subject_object.append(DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["ObjectType"].values[0])
+
+    # print("un baised Sampler")
+    # acc = graphSaint(to_remove_pedicates, to_remove_subject_object, [], 0, dataset, dataset_name,False)
+    print("baised Sampler")
+    acc=graphSaint(to_remove_pedicates, to_remove_subject_object,[], 0, dataset, dataset_name,True)
 
 
-    pop_features=[]
-    for indv in population:
-        list_of_features = []
-        for i in range(len(indv)):
-            if (indv[i] == 1):
-                try:
-                    list_of_features.append(DBLP_OGBN_EdgeTypes_df.iloc[[i]]["EdgeType"].values[0])
-                except:
-                    print("")
-        pop_features.append([indv,list_of_features,fitness_values[i]])
-
-    print(pop_features)
-
+    # features_count=len(DBLP_OGBN_EdgeTypes_df)
+    # top_features, best_f1_score = genetic_algo(dataset,dataset_name,10,features_count, 0.0005, 6)
+    # # printing top features selected through genetic algorithm
+    # i = 0
+    # list_of_features = []
+    # for i in range(len(top_features)):
+    #     if (top_features[i] == 1):
+    #         list_of_features.append(DBLP_OGBN_EdgeTypes_df.iloc[[i]]["EdgeType"].values[0])
+    # print(top_features)
+        # print(list_of_features)
+    # print(best_f1_score)
 
 
 
 
 
 
-    
