@@ -185,11 +185,9 @@ def main():
 
     # dataset = PygLinkPropPredDataset(name='ogbl-citation2')
     # dataset = PygNodePropPredDataset_hsh(name=dataset_name,)
-    # dataset = PygLinkPropPredDataset_hsh(name='OGBL-CitiationV2', root='/media/hussein/UbuntuData/GithubRepos/KG-EaaS/DataTransform/')
-    dataset = PygLinkPropPredDataset_hsh(name='OBGL_FM_DBLP_Author_Papers_filterYear_2018',root='/media/hussein/UbuntuData/OGBL_Datasets/DBLP/')
+    dataset = PygLinkPropPredDataset_hsh(name='OGBL-CitiationV2', root='/media/hussein/UbuntuData/GithubRepos/KG-EaaS/DataTransform/')
+    # dataset = PygLinkPropPredDataset_hsh(name='OBGL_FM_DBLP_Author_Papers_filterYear_2018',root='/media/hussein/UbuntuData/OGBL_Datasets/DBLP/')
     # dataset = PygLinkPropPredDataset_hsh(name='ogbl-citation2_org')
-
-
     split_edge = dataset.get_edge_split()
     data = dataset[0]
     print("data=", dataset[0])

@@ -75,7 +75,7 @@ class RGCNConv(torch.nn.Module):
         for key, adj_t in adj_t_dict.items():
             key_str = f'{key[0]}_{key[1]}_{key[2]}'
             x = x_dict[key[0]]
-            out = self.rel_lins[key_str](adj_t.matmul(x, reduce='max'))
+            out = self.rel_lins[key_str](adj_t.matmul(x, reduce='mean'))
             out_dict[key[2]].add_(out)
 
         return out_dict

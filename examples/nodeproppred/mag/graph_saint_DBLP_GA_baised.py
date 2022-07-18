@@ -267,8 +267,8 @@ def graphSaint(to_remove_pedicates, to_remove_subject_object, to_keep_edge_idx_m
     # parser.add_argument('--epochs', type=int, default=30)
     parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--runs', type=int, default=1)
-    # parser.add_argument('--batch_size', type=int, default=20000)
-    parser.add_argument('--batch_size', type=int, default=1000)
+    parser.add_argument('--batch_size', type=int, default=20000)
+    # parser.add_argument('--batch_size', type=int, default=1000)
     parser.add_argument('--walk_length', type=int, default=2)
     parser.add_argument('--num_steps', type=int, default=30)
     parser.add_argument('--loadTrainedModel', type=int, default=0)
@@ -714,6 +714,7 @@ if __name__ == '__main__':
     to_remove_edges_idx=[]
     individual = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1]
     # individual = [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0]
+    individual=[1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
     for idx,val in enumerate(individual):
         if val ==0:
             to_remove_edges_idx.append(idx)

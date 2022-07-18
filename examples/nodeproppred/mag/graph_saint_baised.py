@@ -252,22 +252,22 @@ def test():
     model.eval()
 
     out = model.inference(x_dict, edge_index_dict, key2int)
-    out = out[key2int['rec']]
+    out = out[key2int[subject_node]]
 
     y_pred = out.argmax(dim=-1, keepdim=True).cpu()
-    y_true = data.y_dict['rec']
+    y_true = data.y_dict[subject_node]
 
     train_acc = evaluator.eval({
-        'y_true': y_true[split_idx['train']['rec']],
-        'y_pred': y_pred[split_idx['train']['rec']],
+        'y_true': y_true[split_idx['train'][subject_node]],
+        'y_pred': y_pred[split_idx['train'][subject_node]],
     })['acc']
     valid_acc = evaluator.eval({
-        'y_true': y_true[split_idx['valid']['rec']],
-        'y_pred': y_pred[split_idx['valid']['rec']],
+        'y_true': y_true[split_idx['valid'][subject_node]],
+        'y_pred': y_pred[split_idx['valid'][subject_node]],
     })['acc']
     test_acc = evaluator.eval({
-        'y_true': y_true[split_idx['test']['rec']],
-        'y_pred': y_pred[split_idx['test']['rec']],
+        'y_true': y_true[split_idx['test'][subject_node]],
+        'y_pred': y_pred[split_idx['test'][subject_node]],
     })['acc']
     return train_acc, valid_acc, test_acc
 
@@ -281,15 +281,19 @@ parser.add_argument('--lr', type=float, default=0.005)
 parser.add_argument('--epochs', type=int, default=30)
 parser.add_argument('--runs', type=int, default=1)
 parser.add_argument('--batch_size', type=int, default=20000)
-parser.add_argument('--walk_length', type=int, default=2)
-parser.add_argument('--num_steps', type=int, default=30)
+parser.add_argument('--walk_length', type=int, default=3)
+parser.add_argument('--num_steps', type=int, default=10)
 parser.add_argument('--loadTrainedModel', type=int, default=0)
 init_ru_maxrss=getrusage(RUSAGE_SELF).ru_maxrss
 args = parser.parse_args()
 print(args)
-
+# subject_node='rec'
+subject_node='paper'
+nclasses=350
 dic_results = {}
-dataset_name = "dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY1900_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class"
+gsaint_start_t = datetime.datetime.now()
+# dataset_name = "dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY1900_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class"
+dataset_name = "mag"
 print("dataset_name=", dataset_name)
 dic_results[dataset_name] = {}
 dic_results[dataset_name]["GNN_Model"] = "GSaint"
@@ -298,7 +302,7 @@ dic_results[dataset_name]["gnn_hyper_params"] = str(args)
 
 print(getrusage(RUSAGE_SELF))
 start_t = datetime.datetime.now()
-dataset=PygNodePropPredDataset_hsh(name=dataset_name, root='/home/hussein/Downloads/', numofClasses=str(50))
+dataset=PygNodePropPredDataset_hsh(name=dataset_name, root='/media/hussein/UbuntuData/OGBN_Datasets/', numofClasses=str(nclasses))
 data = dataset[0]
 split_idx = dataset.get_idx_split()
 end_t = datetime.datetime.now()
@@ -334,27 +338,27 @@ homo_data = Data(edge_index=edge_index, edge_attr=edge_type,
                  num_nodes=node_type.size(0))
 
 homo_data.y = node_type.new_full((node_type.size(0), 1), -1)
-homo_data.y[local2global['rec']] = data.y_dict['rec']
+homo_data.y[local2global[subject_node]] = data.y_dict[subject_node]
 
 homo_data.train_mask = torch.zeros((node_type.size(0)), dtype=torch.bool)
-homo_data.train_mask[local2global['rec'][split_idx['train']['rec']]] = True
+homo_data.train_mask[local2global[subject_node][split_idx['train'][subject_node]]] = True
 
 print(homo_data)
 
-# train_loader = GraphSAINTTaskBaisedRandomWalkSampler(homo_data,
-train_loader = GraphSAINTRandomWalkSampler(homo_data,
+train_loader = GraphSAINTTaskBaisedRandomWalkSampler(homo_data,
+# train_loader = GraphSAINTRandomWalkSampler(homo_data,
                                            batch_size=args.batch_size,
                                            walk_length=args.num_layers,
-                                           # Subject_indices=local2global['rec'],
+                                           Subject_indices=local2global[subject_node],
                                            num_steps=args.num_steps,
                                            sample_coverage=0,
                                            save_dir=dataset.processed_dir)
 
 # Map informations to their canonical type.
 #######################intialize random features ###############################
-feat = torch.Tensor(data.num_nodes_dict['rec'], 128)
+feat = torch.Tensor(data.num_nodes_dict[subject_node], 128)
 torch.nn.init.xavier_uniform_(feat)
-feat_dic = {'rec': feat}
+feat_dic = {subject_node: feat}
 ################################################################
 x_dict = {}
 # for key, x in data.x_dict.items():

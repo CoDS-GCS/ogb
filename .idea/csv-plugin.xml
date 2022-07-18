@@ -66,6 +66,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/examples/nodeproppred/mag/OGBN_DBLP_GSAINTKGTOSA_MAG_StarQuery_10M_EdgesCount_5_GA_Times.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/examples/nodeproppred/mag/OGBN_DBLP_GSAINTKGTOSA_MAG_StarQuery_EdgesCount_5_GA_Times.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/examples/nodeproppred/mag/OGBN_DBLP_GSAINTdblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY2017_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class_EdgesCount_5_GA_Times.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/examples/nodeproppred/mag/RGCN_mag_output.csv">
           <value>
             <Attribute>
