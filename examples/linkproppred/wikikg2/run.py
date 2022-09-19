@@ -20,7 +20,7 @@ from model import KGEModel
 from dataloader import TrainDataset
 from dataloader import BidirectionalOneShotIterator
 
-from ogb.linkproppred import LinkPropPredDataset, Evaluator
+from ogb.linkproppred import LinkPropPredDataset,PygLinkPropPredDataset_hsh, Evaluator
 from collections import defaultdict
 from tqdm import tqdm
 import time
@@ -33,13 +33,18 @@ def parse_args(args=None):
     )
 
     parser.add_argument('--cuda', action='store_true', help='use GPU')
-    
-    parser.add_argument('--do_train', action='store_true')
-    parser.add_argument('--do_valid', action='store_true')
-    parser.add_argument('--do_test', action='store_true')
+    # parser.add_argument('--do_train', action='store_true')
+    parser.add_argument('--do_train', action='store_false')
+    # parser.add_argument('--do_valid', action='store_true')
+    parser.add_argument('--do_valid', action='store_false')
+    # parser.add_argument('--do_test', action='store_true')
+    parser.add_argument('--do_test', action='store_false')
     parser.add_argument('--evaluate_train', action='store_true', help='Evaluate on training data')
     
-    parser.add_argument('--dataset', type=str, default='ogbl-wikikg2', help='dataset name, default to wikikg2')
+    # parser.add_argument('--dataset', type=str, default='ogbl-wikikg2', help='dataset name, default to wikikg2')
+    parser.add_argument('--dataset', type=str, default='wikikg-v2_edge_id_338', help='dataset name, default to wikikg-v2_edge_id_338')
+
+
     parser.add_argument('--model', default='TransE', type=str)
     parser.add_argument('-de', '--double_entity_embedding', action='store_true')
     parser.add_argument('-dr', '--double_relation_embedding', action='store_true')
@@ -132,7 +137,7 @@ def set_logger(args):
         format='%(asctime)s %(levelname)-8s %(message)s',
         level=logging.INFO,
         datefmt='%Y-%m-%d %H:%M:%S',
-        filename=log_file,
+            filename=log_file,
         filemode='w'
     )
 
@@ -165,12 +170,16 @@ def main(args):
     # Write logs to checkpoint and console
     set_logger(args)
     
-    dataset = LinkPropPredDataset(name = args.dataset)
-    split_dict = dataset.get_edge_split()
-    nentity = dataset.graph['num_nodes']
-    nrelation = int(max(dataset.graph['edge_reltype'])[0])+1
+    # dataset = LinkPropPredDataset(name = args.dataset)
+    dataset = PygLinkPropPredDataset_hsh(name=args.dataset,root="/media/hussein/UbuntuData/OGBL_Datasets/")
 
-    evaluator = Evaluator(name = args.dataset)
+    split_dict = dataset.get_edge_split()
+    nentity = dataset[0].num_nodes
+    print(dataset[0])
+    # nrelation = int(max(dataset.graph['edge_reltype'])[0])+1
+    nrelation =535
+
+    evaluator = Evaluator(name = "ogbl-wikikg2")
 
     args.nentity = nentity
     args.nrelation = nrelation

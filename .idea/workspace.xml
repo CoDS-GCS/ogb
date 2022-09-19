@@ -4,18 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d7625012-b420-4433-8a77-9af082890cd1" name="Changes" comment="GraphSaint Genetic Algo sub process">
-      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_KGTOSA_MAG.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn-KGTOSA_MAG.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/temp.py" afterDir="false" />
+    <list default="true" id="d7625012-b420-4433-8a77-9af082890cd1" name="Changes" comment="Genetic Algo Edge Selection + KGTOSA_MAG Classifiers">
+      <change afterPath="$PROJECT_DIR$/examples/linkproppred/wikikg2/log/wikikg-v2_edge_id_338/TransE/500-12.0/1658253964.502572/train.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/linkproppred/wikikg2/log/wikikg-v2_edge_id_338/TransE/500-12.0/1658253989.0527873/train.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/linkproppred/wikikg2/log/wikikg-v2_edge_id_338/TransE/500-12.0/1658254102.626983/train.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/linkproppred/wikikg2/log/wikikg-v2_edge_id_338/TransE/500-12.0/1658254194.413206/train.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/linkproppred/wikikg2/log/wikikg-v2_edge_id_338/TransE/500-12.0/1658254267.9457963/train.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/linkproppred/wikikg2/log/wikikg-v2_edge_id_338/TransE/500-12.0/1658254338.2205906/train.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/linkproppred/wikikg2/log/wikikg-v2_edge_id_338/TransE/500-12.0/1658254413.6500437/train.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/linkproppred/wikikg2/log/wikikg-v2_edge_id_338/TransE/500-12.0/1658254607.1251385/train.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/linkproppred/wikikg2/log/wikikg-v2_edge_id_338/TransE/500-12.0/1658255297.9667263/train.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_Shadow_KGTOSA_DBLP.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_Shadow_KGTOSA_MAG.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn-KGTOSA_MAG (2).py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn_DBLP_FM (1).py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn_KGTOSA_DBLP.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/products/obgn-product_graph_saint.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-plugin.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/linkproppred/citation2/graph_saint.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/linkproppred/citation2/graph_saint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY2017_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class_GA_18_GSAINT_dic.pickle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/linkproppred/wikikg2/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/linkproppred/wikikg2/run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_baised.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_baised.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn_DBLP.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/rgcn_DBLP.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_KGTOSA_MAG.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_KGTOSA_MAG.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/products/graph_saint.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/products/graph_saint.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg.py" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/nodeproppred/dataset_pyg.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ogb/nodeproppred/master.csv" beforeDir="false" afterPath="$PROJECT_DIR$/ogb/nodeproppred/master.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +70,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TODO_SCOPE" value="All Places" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/examples/nodeproppred/mag" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_Varying_nodes_edges_v2.py" />
@@ -70,8 +82,8 @@
       <recent name="$PROJECT_DIR$/ogb/nodeproppred" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.graph_saint_KGTOSA_MAG">
-    <configuration name="graph_saint (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.main_pyg">
+    <configuration name="graph_saint (2)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ogb" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -79,53 +91,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/anaconda3/envs/ogb/lib/python3.9/site-packages/torch_geometric/loader" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples/nodeproppred/products" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/anaconda3/envs/ogb/lib/python3.9/site-packages/torch_geometric/loader/graph_saint.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="graph_saint" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="ogb" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples/linkproppred/citation2" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/linkproppred/citation2/graph_saint.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="graph_saint_DBLP_GA_baised" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="ogb" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples/nodeproppred/mag" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/nodeproppred/products/graph_saint.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -176,13 +146,55 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="main_pyg" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ogb" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples/graphproppred/ppa" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/graphproppred/ppa/main_pyg.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ogb" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples/linkproppred/wikikg2" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/linkproppred/wikikg2/run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main_pyg" />
         <item itemvalue="Python.graph_saint_KGTOSA_MAG" />
+        <item itemvalue="Python.graph_saint (2)" />
+        <item itemvalue="Python.run" />
         <item itemvalue="Python.graph_saint_baised" />
-        <item itemvalue="Python.graph_saint (1)" />
-        <item itemvalue="Python.graph_saint" />
-        <item itemvalue="Python.graph_saint_DBLP_GA_baised" />
       </list>
     </recent_temporary>
   </component>
@@ -293,7 +305,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656802075138</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Genetic Algo Edge Selection + KGTOSA_MAG Classifiers">
+      <created>1658152762645</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1658152762645</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -314,7 +333,8 @@
     <MESSAGE value="DBLP Varying Nodes/edges- Node Classifcation" />
     <MESSAGE value="GraphSaint Genetic Algo" />
     <MESSAGE value="GraphSaint Genetic Algo sub process" />
-    <option name="LAST_COMMIT_MESSAGE" value="GraphSaint Genetic Algo sub process" />
+    <MESSAGE value="Genetic Algo Edge Selection + KGTOSA_MAG Classifiers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Genetic Algo Edge Selection + KGTOSA_MAG Classifiers" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -441,7 +461,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py</url>
-          <line>746</line>
+          <line>749</line>
           <option name="timeStamp" value="114" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -451,12 +471,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py</url>
-          <line>731</line>
+          <line>734</line>
           <option name="timeStamp" value="125" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py</url>
-          <line>721</line>
+          <line>724</line>
           <option name="timeStamp" value="127" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -466,7 +486,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA_baised.py</url>
-          <line>728</line>
+          <line>731</line>
           <option name="timeStamp" value="136" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -526,8 +546,32 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_KGTOSA_MAG.py</url>
-          <line>216</line>
-          <option name="timeStamp" value="176" />
+          <line>230</line>
+          <option name="timeStamp" value="182" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_KGTOSA_MAG.py</url>
+          <line>423</line>
+          <option name="timeStamp" value="183" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_KGTOSA_MAG.py</url>
+          <line>435</line>
+          <option name="timeStamp" value="184" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_KGTOSA_MAG.py</url>
+          <line>430</line>
+          <option name="timeStamp" value="185" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/products/graph_saint.py</url>
+          <line>77</line>
+          <option name="timeStamp" value="187" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py</url>
+          <option name="timeStamp" value="188" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -540,6 +584,11 @@
         <watch expression="x.shape" language="Python" />
         <watch expression="adj.shape" language="Python" />
         <watch expression="len(out)" language="Python" />
+        <watch expression="data" language="Python" />
+        <watch expression="data.train_mask" language="Python" />
+        <watch expression="out" language="Python" />
+        <watch expression="max(data.root_n_id)" language="Python" />
+        <watch expression="torch.index_select(out, 0, data.root_n_id).shape" language="Python" />
       </configuration>
     </watches-manager>
   </component>

@@ -33,9 +33,8 @@ import faulthandler
 
 faulthandler.enable()
 import pickle
-
+torch.multiprocessing.set_sharing_strategy('file_system')
 subject_node = 'Paper'
-
 
 def print_memory_usage():
     # print("max_mem_GB=",psutil.Process().memory_info().rss / (1024 * 1024*1024))
@@ -287,7 +286,7 @@ def graphSaint():
     parser.add_argument('--lr', type=float, default=0.005)
     # parser.add_argument('--epochs', type=int, default=30)
     parser.add_argument('--epochs', type=int, default=30)
-    parser.add_argument('--runs', type=int, default=3)
+    parser.add_argument('--runs', type=int, default=2)
     parser.add_argument('--batch_size', type=int, default=20000)
     parser.add_argument('--walk_length', type=int, default=2)
     parser.add_argument('--num_steps', type=int, default=30)
@@ -311,28 +310,36 @@ def graphSaint():
     # GA_dataset_name="KGTOSA_MAG_StarQuery_10M"
     # GA_dataset_name="KGTOSA_MAG_StarQuery"
     # GA_dataset_name = "KGTOSA_MAG_Paper_Discipline_StarQuery"
-    MAG_datasets = [
-        # "ogbn-mag-ReleventSubGraph_Venue",
-        # "ogbn-mag-ReleventSubGraph_Discipline",
-        # "KGTOSA_MAG_Paper_Discipline_StarQuery",
-        # "KGTOSA_MAG_Paper_Venue_StarQuery",
-        # "KGTOSA_MAG_Paper_Venue_BStarQuery",
-        # "KGTOSA_MAG_Paper_Discipline_BStarQuery",
-        "mag"]
+    MAG_datasets=[
+        #################################################################
+        # "DBLP_Paper_Venue_ReleventsubGraph_allPapers_RemoveAllLiterals_SY1900_EY2021_50Class",
+        # "DBLP_Paper_Venue_StarQuery_allPapers_RemoveAllLiterals_SY1900_EY2021_50Class",
+        # "DBLP_Paper_Venue_BStarQuery_allPapers_RemoveAllLiterals_SY1900_EY2021_50Class",
+        # "DBLP_Paper_Venue_PathQuery_allPapers_RemoveAllLiterals_SY1900_EY2021_50Class",
+        # "DBLP_Paper_Venue_BPathQuery_allPapers_RemoveAllLiterals_SY1900_EY2021_50Class",
+        # "DBLP_Paper_Venue_FM_Literals2Nodes_SY1900_EY2021_50Class",
+        # ##############################
+        # "DBLP_Affaliation_Country_ReleventSubGraph_Author_Affaliation_RemoveAllLiterals",
+        # "DBLP_Affaliation_Country_StarQuery_Author_Affaliation_RemoveAllLiterals",
+        "DBLP_Affaliation_Country_BStarQuery_Author_Affaliation_RemoveAllLiterals",
+        "DBLP_Affaliation_Country_PathQuery_Author_Affaliation_RemoveAllLiterals",
+        # "DBLP_Affaliation_Country_BPathQuery_Author_Affaliation_RemoveAllLiterals",
+        # "DBLP_Affliation_Country_FM_Author_Affaliation_RemoveAllLiterals",            
+        ]    
     print(args)
     gsaint_Final_Test = 0
     for GA_dataset_name in MAG_datasets:
         try:
             gsaint_start_t = datetime.datetime.now()
             ###################################Delete Folder if exist #############################
-            dir_path = "/shared_mnt/KGTOSA_MAG/" + GA_dataset_name
+            dir_path = "/shared_mnt/DBLP/KGTOSA_DBLP_Datasets/" + GA_dataset_name
             try:
                 shutil.rmtree(dir_path)
                 print("Folder Deleted")
             except OSError as e:
                 print("Error Deleting : %s : %s" % (dir_path, e.strerror))
             #         ####################
-            dataset = PygNodePropPredDataset_hsh(name=GA_dataset_name, root='/media/hussein/UbuntuData/OGBN_Datasets/',
+            dataset = PygNodePropPredDataset_hsh(name=GA_dataset_name, root='/shared_mnt/DBLP/KGTOSA_DBLP_Datasets/',
                                                  numofClasses=str(350))
             dataset_name = GA_dataset_name + "_GA_" + str(GA_Index)
             print("dataset_name=", dataset_name)
@@ -428,9 +435,9 @@ def graphSaint():
             print(homo_data)
             start_t = datetime.datetime.now()
             print("dataset.processed_dir", dataset.processed_dir)
-            kwargs = {'batch_size': 16384, 'num_workers': 12, 'persistent_workers': True}
+            kwargs = {'batch_size': 16384, 'num_workers': 64, 'persistent_workers': True}
             print("homo_data.train_mask=",len(homo_data.train_mask==False))
-            train_loader = ShaDowKHopSampler(homo_data, depth=3, num_neighbors=4,
+            train_loader = ShaDowKHopSampler(homo_data, depth=2, num_neighbors=3,
                                              node_idx=homo_data.train_mask,
                                              # node_idx = None,
                                              # node_idx=local2global[subject_node]

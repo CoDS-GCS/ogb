@@ -1,0 +1,58 @@
+Namespace(device=0, log_steps=1, inductive=False, num_layers=3, hidden_channels=256, dropout=0.5, batch_size=20000, walk_length=3, lr=0.01, num_steps=30, epochs=20, eval_steps=2, runs=10)
+This will download 1.38GB. Will you proceed? (y/N)
+y
+Downloading http://snap.stanford.edu/ogb/data/nodeproppred/products.zip
+Downloaded 1.38 GB: 100%|██████████| 1414/1414 [31:36<00:00,  1.34s/it]
+Extracting dataset/products.zip
+Processing...
+Loading necessary files...
+This might take a while.
+Processing graphs...
+100%|██████████| 1/1 [00:01<00:00,  1.59s/it]
+100%|██████████| 1/1 [00:00<00:00, 11184.81it/s]
+Converting graphs into PyG objects...
+Saving...
+Done!
+/home/hussein/anaconda3/envs/ogb/lib/python3.9/site-packages/torch_geometric/deprecation.py:12: UserWarning: 'data.GraphSAINTRandomWalkSampler' is deprecated, use 'loader.GraphSAINTRandomWalkSampler' instead
+  warnings.warn(out)
+/home/hussein/anaconda3/envs/ogb/lib/python3.9/site-packages/torch_geometric/deprecation.py:12: UserWarning: 'data.NeighborSampler' is deprecated, use 'loader.NeighborSampler' instead
+  warnings.warn(out)
+Run: 01, Epoch: 01, Loss: 1.3227
+Run: 01, Epoch: 02, Loss: 0.5132
+Run: 01, Epoch: 03, Loss: 0.4329
+Run: 01, Epoch: 04, Loss: 0.3997
+Run: 01, Epoch: 05, Loss: 0.3795
+Run: 01, Epoch: 06, Loss: 0.3701
+Run: 01, Epoch: 07, Loss: 0.3549
+Run: 01, Epoch: 08, Loss: 0.3503
+Run: 01, Epoch: 09, Loss: 0.3424
+Run: 01, Epoch: 10, Loss: 0.3353
+Evaluating: 100%|██████████| 7347087/7347087 [04:09<00:00, 29469.99it/s]
+Run: 01, Epoch: 10, Train: 92.07%, Valid: 91.03% Test: 78.23%
+Run: 01, Epoch: 11, Loss: 0.3334
+Run: 01, Epoch: 12, Loss: 0.3344
+Evaluating: 100%|██████████| 7347087/7347087 [04:11<00:00, 29255.14it/s]
+Run: 01, Epoch: 12, Train: 92.26%, Valid: 91.40% Test: 78.41%
+Run: 01, Epoch: 13, Loss: 0.3290
+Run: 01, Epoch: 14, Loss: 0.3247
+Evaluating: 100%|██████████| 7347087/7347087 [04:06<00:00, 29835.32it/s]
+Run: 01, Epoch: 14, Train: 92.33%, Valid: 91.44% Test: 78.76%
+Run: 01, Epoch: 15, Loss: 0.3217
+Evaluating:   0%|          | 0/7347087 [00:00<?, ?it/s]Run: 01, Epoch: 16, Loss: 0.3165
+Evaluating: 100%|██████████| 7347087/7347087 [04:11<00:00, 29262.37it/s]
+Run: 01, Epoch: 16, Train: 92.62%, Valid: 91.44% Test: 78.36%
+Run: 01, Epoch: 17, Loss: 0.3158
+Run: 01, Epoch: 18, Loss: 0.3141
+Evaluating: 100%|██████████| 7347087/7347087 [04:06<00:00, 29778.85it/s]
+Run: 01, Epoch: 18, Train: 92.65%, Valid: 91.44% Test: 79.36%
+Run: 01, Epoch: 19, Loss: 0.3125
+Run: 01, Epoch: 20, Loss: 0.3094
+Evaluating: 100%|██████████| 7347087/7347087 [04:00<00:00, 30526.94it/s]
+Run: 01, Epoch: 20, Train: 92.78%, Valid: 91.65% Test: 79.17%
+Run 01:
+Highest Train: 92.78
+Highest Valid: 91.65
+  Final Train: 92.78
+   Final Test: 79.17
+
+Train Time: 4940 Sec.

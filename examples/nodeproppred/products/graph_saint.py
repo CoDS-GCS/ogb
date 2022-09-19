@@ -4,7 +4,7 @@ import torch
 from tqdm import tqdm
 import torch.nn.functional as F
 
-from torch_geometric.data import GraphSAINTRandomWalkSampler, NeighborSampler
+from torch_geometric.data import GraphSAINTRandomWalkSampler, NeighborSampler,ShaDowKHopSampler
 from torch_geometric.nn import SAGEConv
 from torch_geometric.utils import subgraph
 
@@ -66,15 +66,22 @@ def train(model, loader, optimizer, device):
     model.train()
 
     total_loss = 0
+    print(" len(loader)=", len(loader))
+    idx=0
     for data in loader:
         data = data.to(device)
         optimizer.zero_grad()
         out = model(data.x, data.edge_index)
+        out=torch.index_select(out, 0, data.root_n_id)
         y = data.y.squeeze(1)
-        loss = F.nll_loss(out[data.train_mask], y[data.train_mask])
+        # print(data)
+        # loss = F.nll_loss(out[data.train_mask], y[data.train_mask])
+        loss = F.nll_loss(out, y)
+        print("idx=",idx,"loss=",loss)
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
+        idx+=1
 
     return total_loss / len(loader)
 
@@ -154,13 +161,15 @@ def main():
     if args.inductive:
         sampler_data = to_inductive(data)
 
-    loader = GraphSAINTRandomWalkSampler(sampler_data,
-                                         batch_size=args.batch_size,
-                                         walk_length=args.walk_length,
-                                         num_steps=args.num_steps,
-                                         sample_coverage=0,
-                                         save_dir=dataset.processed_dir)
-
+    # loader = GraphSAINTRandomWalkSampler(sampler_data,
+    #                                      batch_size=args.batch_size,
+    #                                      walk_length=args.walk_length,
+    #                                      num_steps=args.num_steps,
+    #                                      sample_coverage=0,
+    #                                      save_dir=dataset.processed_dir)
+    kwargs = {'batch_size': 100024, 'num_workers': 6, 'persistent_workers': True}
+    loader = ShaDowKHopSampler(sampler_data, depth=2, num_neighbors=3,
+                                     **kwargs)
     model = SAGE(data.x.size(-1), args.hidden_channels, dataset.num_classes,
                  args.num_layers, args.dropout).to(device)
 

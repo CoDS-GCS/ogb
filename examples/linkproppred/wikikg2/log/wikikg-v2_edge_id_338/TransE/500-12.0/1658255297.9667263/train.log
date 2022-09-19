@@ -1,0 +1,21 @@
+2022-07-19 14:28:22 INFO     Model: TransE
+2022-07-19 14:28:22 INFO     Dataset: wikikg-v2_edge_id_338
+2022-07-19 14:28:22 INFO     #entity: 2500604
+2022-07-19 14:28:22 INFO     #relation: 535
+2022-07-19 14:28:22 INFO     #train: 16109182
+2022-07-19 14:28:22 INFO     #valid: 51
+2022-07-19 14:28:22 INFO     #test: 362
+2022-07-19 15:59:02 INFO     Model Parameter Configuration:
+2022-07-19 15:59:02 INFO     Parameter gamma: torch.Size([1]), require_grad = False
+2022-07-19 15:59:02 INFO     Parameter embedding_range: torch.Size([1]), require_grad = False
+2022-07-19 15:59:02 INFO     Parameter entity_embedding: torch.Size([2500604, 500]), require_grad = True
+2022-07-19 15:59:02 INFO     Parameter relation_embedding: torch.Size([535, 500]), require_grad = True
+2022-07-19 15:59:02 INFO     Ramdomly Initializing TransE Model...
+2022-07-19 15:59:02 INFO     Start Training...
+2022-07-19 15:59:02 INFO     init_step = 0
+2022-07-19 15:59:02 INFO     batch_size = 1024
+2022-07-19 15:59:02 INFO     negative_adversarial_sampling = 0
+2022-07-19 15:59:02 INFO     hidden_dim = 500
+2022-07-19 15:59:02 INFO     gamma = 12.000000
+2022-07-19 15:59:02 INFO     negative_adversarial_sampling = False
+2022-07-19 15:59:02 INFO     learning_rate = 0

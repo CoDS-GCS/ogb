@@ -264,8 +264,8 @@ def graphSaint(to_remove_pedicates, to_remove_subject_object, to_keep_edge_idx_m
     parser.add_argument('--hidden_channels', type=int, default=64)
     parser.add_argument('--dropout', type=float, default=0.3)
     parser.add_argument('--lr', type=float, default=0.05)
-    # parser.add_argument('--epochs', type=int, default=30)
-    parser.add_argument('--epochs', type=int, default=10)
+    parser.add_argument('--epochs', type=int, default=30)
+    # parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--runs', type=int, default=1)
     parser.add_argument('--batch_size', type=int, default=20000)
     # parser.add_argument('--batch_size', type=int, default=1000)
@@ -278,7 +278,7 @@ def graphSaint(to_remove_pedicates, to_remove_subject_object, to_keep_edge_idx_m
     gsaint_Final_Test = 0
     try:
         gsaint_start_t = datetime.datetime.now()
-        dataset = init_graphSaintDataset('/home/hussein/Downloads/', GA_dataset_name, 50)
+        dataset = init_graphSaintDataset('/shared_mnt/DBLP/', GA_dataset_name, 50)
         dataset_name = GA_dataset_name + "_GA_" + str(GA_Index)
         print("dataset_name=", dataset_name)
         dic_results[dataset_name] = {}
@@ -702,9 +702,11 @@ def genetic_algo(data, dataset_name, population_size, features_count, tol_level,
 
 
 if __name__ == '__main__':
-    dataset_name = "dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY1900_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class"
+    # dataset_name = "dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY1900_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class"
+    # dataset_name="DBLP_Paper_Venue_FMPathQuery_allPapers_RemoveAllLiterals_SY1900_EY2021_50Class"
+    dataset_name="DBLP_Paper_Venue_FM_BStarQuery_allPapers_RemoveAllLiterals_SY1900_EY2021_50Class"
     # dataset_name= "dblp-2022-03-01_URI_Only_allPapers_Literals2Nodes_SY2017_EY2021_MAG03_AllEdgeTypes_PairsIdx_0_50Class"
-    dataset = init_graphSaintDataset('/home/hussein/Downloads/', dataset_name, 50)
+    dataset = init_graphSaintDataset('/shared_mnt/DBLP/', dataset_name, 50)
 
     # keep_edges=["owl#sameAs","schema#archivedElectronicEdition","schema#doi","schema#yearOfEvent"]
     # keep_edges_idx=[]
@@ -712,24 +714,25 @@ if __name__ == '__main__':
     #     keep_edges_idx.append(DBLP_OGBN_EdgeTypes_df[DBLP_OGBN_EdgeTypes_df["EdgeType"]==elem].index)
     # features_count = len(DBLP_OGBN_EdgeTypes_df)
     to_remove_edges_idx=[]
-    individual = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1]
-    # individual = [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0]
-    individual=[1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
-    for idx,val in enumerate(individual):
-        if val ==0:
-            to_remove_edges_idx.append(idx)
+    # individual = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1]
+    # # individual = [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0]
+    # # individual=[1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
+    # individual=[]
+    # for idx,val in enumerate(individual):
+    #     if val ==0:
+    #         to_remove_edges_idx.append(idx)
     # remove_edges_idx_lst = [1, 5, 7, 13, 25]
     to_remove_pedicates = []
     to_remove_subject_object = []
-    for idx in to_remove_edges_idx:
-        to_remove_pedicates.append(DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["EdgeType"].values[0])
-        if DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["ObjectType"].values[0].startswith("Object"):
-            to_remove_subject_object.append(DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["ObjectType"].values[0])
+    # for idx in to_remove_edges_idx:
+    #     to_remove_pedicates.append(DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["EdgeType"].values[0])
+    #     if DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["ObjectType"].values[0].startswith("Object"):
+    #         to_remove_subject_object.append(DBLP_OGBN_EdgeTypes_df.iloc[[idx]]["ObjectType"].values[0])
 
     # print("un baised Sampler")
     # acc = graphSaint(to_remove_pedicates, to_remove_subject_object, [], 0, dataset, dataset_name,False)
     print("baised Sampler")
-    acc=graphSaint(to_remove_pedicates, to_remove_subject_object,[], 0, dataset, dataset_name,True)
+    acc=graphSaint(to_remove_pedicates, to_remove_subject_object,[], 0, dataset, dataset_name,False)
 
 
     # features_count=len(DBLP_OGBN_EdgeTypes_df)

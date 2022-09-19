@@ -56,7 +56,7 @@ class PygNodePropPredDataset(InMemoryDataset):
         #     if input('Will you update the dataset now? (y/N)\n').lower() == 'y':
         #         shutil.rmtree(self.root)
 
-        shutil.rmtree(self.root)
+        # shutil.rmtree(self.root)
         self.download_name = self.meta_info['download_name'] ## name of downloaded file, e.g., tox21
 
         self.num_tasks = int(self.meta_info['num tasks'])

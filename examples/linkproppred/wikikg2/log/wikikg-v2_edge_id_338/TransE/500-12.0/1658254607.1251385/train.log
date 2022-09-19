@@ -1,0 +1,7 @@
+2022-07-19 14:16:48 INFO     Model: TransE
+2022-07-19 14:16:48 INFO     Dataset: wikikg-v2_edge_id_338
+2022-07-19 14:16:48 INFO     #entity: 2500604
+2022-07-19 14:16:48 INFO     #relation: 535
+2022-07-19 14:16:48 INFO     #train: 16109182
+2022-07-19 14:16:48 INFO     #valid: 51
+2022-07-19 14:16:48 INFO     #test: 362

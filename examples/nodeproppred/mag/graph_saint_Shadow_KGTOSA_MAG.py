@@ -34,9 +34,8 @@ import faulthandler
 faulthandler.enable()
 import pickle
 
+torch.multiprocessing.set_sharing_strategy('file_system')
 subject_node = 'Paper'
-
-
 def print_memory_usage():
     # print("max_mem_GB=",psutil.Process().memory_info().rss / (1024 * 1024*1024))
     # print("get_process_memory=",getrusage(RUSAGE_SELF).ru_maxrss/(1024*1024))
@@ -287,7 +286,7 @@ def graphSaint():
     parser.add_argument('--lr', type=float, default=0.005)
     # parser.add_argument('--epochs', type=int, default=30)
     parser.add_argument('--epochs', type=int, default=30)
-    parser.add_argument('--runs', type=int, default=3)
+    parser.add_argument('--runs', type=int, default=2)
     parser.add_argument('--batch_size', type=int, default=20000)
     parser.add_argument('--walk_length', type=int, default=2)
     parser.add_argument('--num_steps', type=int, default=30)
@@ -311,14 +310,13 @@ def graphSaint():
     # GA_dataset_name="KGTOSA_MAG_StarQuery_10M"
     # GA_dataset_name="KGTOSA_MAG_StarQuery"
     # GA_dataset_name = "KGTOSA_MAG_Paper_Discipline_StarQuery"
-    MAG_datasets = [
-        # "ogbn-mag-ReleventSubGraph_Venue",
-        # "ogbn-mag-ReleventSubGraph_Discipline",
-        # "KGTOSA_MAG_Paper_Discipline_StarQuery",
-        # "KGTOSA_MAG_Paper_Venue_StarQuery",
-        # "KGTOSA_MAG_Paper_Venue_BStarQuery",
-        # "KGTOSA_MAG_Paper_Discipline_BStarQuery",
-        "mag"]
+    MAG_datasets=[
+                  "ogbn-mag-ReleventSubGraph_Venue",
+                  "ogbn-mag-ReleventSubGraph_Discipline", 
+                  "KGTOSA_MAG_Paper_Discipline_StarQuery",
+                  "KGTOSA_MAG_Paper_Venue_StarQuery",
+                  "KGTOSA_MAG_Paper_Venue_BStarQuery",
+                  "KGTOSA_MAG_Paper_Discipline_BStarQuery"]
     print(args)
     gsaint_Final_Test = 0
     for GA_dataset_name in MAG_datasets:
@@ -332,7 +330,7 @@ def graphSaint():
             except OSError as e:
                 print("Error Deleting : %s : %s" % (dir_path, e.strerror))
             #         ####################
-            dataset = PygNodePropPredDataset_hsh(name=GA_dataset_name, root='/media/hussein/UbuntuData/OGBN_Datasets/',
+            dataset = PygNodePropPredDataset_hsh(name=GA_dataset_name, root='/shared_mnt/KGTOSA_MAG/',
                                                  numofClasses=str(350))
             dataset_name = GA_dataset_name + "_GA_" + str(GA_Index)
             print("dataset_name=", dataset_name)
@@ -428,9 +426,9 @@ def graphSaint():
             print(homo_data)
             start_t = datetime.datetime.now()
             print("dataset.processed_dir", dataset.processed_dir)
-            kwargs = {'batch_size': 16384, 'num_workers': 12, 'persistent_workers': True}
+            kwargs = {'batch_size': 16384, 'num_workers': 64, 'persistent_workers': True}
             print("homo_data.train_mask=",len(homo_data.train_mask==False))
-            train_loader = ShaDowKHopSampler(homo_data, depth=3, num_neighbors=4,
+            train_loader = ShaDowKHopSampler(homo_data, depth=2, num_neighbors=3,
                                              node_idx=homo_data.train_mask,
                                              # node_idx = None,
                                              # node_idx=local2global[subject_node]
@@ -526,7 +524,7 @@ def graphSaint():
                 dic_results[dataset_name]["avg_train_time"] = total_run_t
                 dic_results[dataset_name]["rgcn_total_time"] = (gsaint_end_t - gsaint_start_t).total_seconds()
                 pd.DataFrame(dic_results).transpose().to_csv(
-                    "/shared_mnt/KGTOSA_MAG/GSAINT_" + GA_dataset_name + "_Times.csv", index=False)
+                    "/shared_mnt/KGTOSA_MAG/ShadowSAINT_" + GA_dataset_name + "_Times.csv", index=False)
                 # shutil.rmtree("/shared_mnt/DBLP/" + dataset_name)
                 # torch.save(model.state_dict(), "/shared_mnt/DBLP/" + dataset_name + "_DBLP_conf__GSAINT_QM.model")
         except Exception as e:
