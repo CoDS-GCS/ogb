@@ -38,7 +38,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/examples/nodeproppred/mag/DBLP_AllPapers_num-node-dict.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/examples/nodeproppred/mag/DBLP_AllPapers_triplet-type-list.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/examples/nodeproppred/mag/DBLP_FG_DecodedSubgraph/DBLP_FG_BiasedGS_DecodedSubgraph_1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -88,6 +102,13 @@
           </value>
         </entry>
         <entry key="/examples/nodeproppred/mag/RGCN_mag_output.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/examples/nodeproppred/mag/YAGO_PC_FM50_DecodedSubgraph/YAGO_PC_FM50_BiasedGS_DecodedSubgraph_1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

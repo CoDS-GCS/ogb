@@ -520,7 +520,6 @@ def genetic_algo(data,dataset_name, population_size,features_count, Variance_thr
         if not hasattr(calculate_fitness, "GA_Index"):
             calculate_fitness.GA_Index = 0  # it doesn't exist yet, so initialize it
         calculate_fitness.GA_Index += 1
-
         # dataset = init_graphSaintDataset('/shared_mnt/DBLP/DBLP_GA/', dataset_name, 50)
         # dataset = PygNodePropPredDataset_hsh(name=dataset_name, root=/shared_mnt/DBLP/DBLP_GA/',numofClasses=str(class_count))
         # print(to_remove_pedicates)
@@ -533,8 +532,7 @@ def genetic_algo(data,dataset_name, population_size,features_count, Variance_thr
             'to_keep_edge_idx_map':to_keep_edge_idx_map,
             'GA_Index':calculate_fitness.GA_Index,
             'dataset_name':dataset_name,
-
-             }
+        }
         dic_path=dataset_name+'_GA_'+str(calculate_fitness.GA_Index)+'_GSAINT_dic.pickle'
         with open(dic_path, 'wb') as handle:
             pickle.dump(GSAINT_Dic, handle, protocol=pickle.HIGHEST_PROTOCOL)
@@ -549,12 +547,11 @@ def genetic_algo(data,dataset_name, population_size,features_count, Variance_thr
         except:
             print("error in indv")
             # with open('filename.pickle', 'rb') as handle:
-        #     b = pickle.load(handle)
+            # b = pickle.load(handle)
         os.remove(dic_path)
         # return graphSaint(to_remove_pedicates, to_remove_subject_object,to_keep_edge_idx_map, calculate_fitness.GA_Index,dataset_name)
         # return random(1,100)
         return acc
-
 
     def get_filtred_edges_nodes(to_remove_edges_idx,to_keep_edges_idx):
         features_count = len(DBLP_OGBN_EdgeTypes_df)
@@ -651,7 +648,6 @@ def genetic_algo(data,dataset_name, population_size,features_count, Variance_thr
                 crossover_population.append(remaining_parents)
 
         return crossover_population
-
     # low probability mutation
     # mutation_probability is generally low to avoid a lot of randomness
     def mutation(crossover_population):
