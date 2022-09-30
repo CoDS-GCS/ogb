@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d7625012-b420-4433-8a77-9af082890cd1" name="Changes" comment="Shadow KHop Sampler">
-      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_SubGraphDecoder.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_SubGraphDecoder_DBLP_GA.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/csv-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/nodeproppred/mag/graph_saint_DBLP_GA.py" afterDir="false" />
-    </list>
+    <list default="true" id="d7625012-b420-4433-8a77-9af082890cd1" name="Changes" comment="generate Sub Graphs" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -302,7 +295,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663597333403</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="generate Sub Graphs">
+      <created>1664570952532</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1664570952532</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -325,7 +325,8 @@
     <MESSAGE value="GraphSaint Genetic Algo sub process" />
     <MESSAGE value="Genetic Algo Edge Selection + KGTOSA_MAG Classifiers" />
     <MESSAGE value="Shadow KHop Sampler" />
-    <option name="LAST_COMMIT_MESSAGE" value="Shadow KHop Sampler" />
+    <MESSAGE value="generate Sub Graphs" />
+    <option name="LAST_COMMIT_MESSAGE" value="generate Sub Graphs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
