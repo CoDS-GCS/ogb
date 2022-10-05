@@ -29,6 +29,9 @@ from ogb.nodeproppred import PygNodePropPredDataset, Evaluator, PygNodePropPredD
 from resource import *
 from logger import Logger
 import faulthandler
+from examples.nodeproppred.mag.GenerateSubgraphNodesScores import generateSubgraphNodeScoresFromdDF
+from examples.nodeproppred.mag.EntitiesMetaSampler import EntitiesMetaSampler as Entities
+from examples.nodeproppred.mag.pgy_rgcn_regressor import loadModel,getTopKNodes
 faulthandler.enable()
 import pickle
 subject_node='Paper'
@@ -211,6 +214,21 @@ def graphSaint():
                 subgraph.local_node_idx[subgraph.edge_index[1][idx]].item()  # Dest Node ID
             ])
         return triples_list
+    ##return global edge/node ids
+    def getSubgraphNodes(org_dataset, subgraph):
+        triples_list = []
+        node_types = list(org_dataset.num_nodes_dict.keys())
+        edge_types = list(org_dataset.edge_index_dict.keys())
+        for idx in range(0, subgraph.edge_index.shape[1]):
+            triples_list.append([
+                edge_types[subgraph.edge_attr[idx]][0],  ## Src node type
+                subgraph.edge_index[0][idx].item(),  # Src node ID
+                edge_types[subgraph.edge_attr[idx]][1],  # relation type
+                subgraph.edge_attr[idx].item(),
+                edge_types[subgraph.edge_attr[idx]][2],  # Dest Node Type
+                subgraph.edge_index[1][idx].item()  # Dest Node ID
+            ])
+        return triples_list
 
 
     def train(epoch,org_dataset=None):
@@ -224,34 +242,56 @@ def graphSaint():
         for data in train_loader:
             Subgraph_idx += 1
             print("data=", data)
-            DecodedSubgraph_lst = getDecodedSubgraph(org_dataset, data)
-            DecodedSubgraph_df = pd.DataFrame(DecodedSubgraph_lst,
-                                              columns=['Src_Node_Type', 'Src_Node_ID', 'Rel_type', 'Dest_Node_Type',
-                                                       'Dest_Node_ID'])
-            print(DecodedSubgraph_df[DecodedSubgraph_df["Src_Node_Type"].isin([subject_node])])
+            # DecodedSubgraph_lst = getDecodedSubgraph(org_dataset, data)
+            # DecodedSubgraph_df = pd.DataFrame(DecodedSubgraph_lst,columns=['Src_Node_Type', 'Src_Node_ID', 'Rel_type','Dest_Node_Type','Dest_Node_ID'])
+            DecodedSubgraph_lst = getSubgraphNodes(org_dataset, data)
+            DecodedSubgraph_df = pd.DataFrame(DecodedSubgraph_lst,columns=['Src_Node_Type', 'Src_Node_ID', 'Rel_type','Rel_ID', 'Dest_Node_Type','Dest_Node_ID'])
+            normalized_df,all_labels_df,train,test,nt_df=generateSubgraphNodeScoresFromdDF(DecodedSubgraph_df)
+            dataset= Entities(MaxNodeCount=40000,Triples_df=nt_df,labels_df=all_labels_df,Train_df=train,Test_df=test)
+            # print(DecodedSubgraph_df[DecodedSubgraph_df["Src_Node_Type"].isin([subject_node])])
+            # DecodedSubgraph_df.to_csv("DBLP_FG_DecodedSubgraph/DBLP_FG_GS_SubgraphNodes_" + str(Subgraph_idx) + ".csv", index=None)
+            # DecodedSubgraph_df.to_csv("YAGO_PC_FM50_DecodedSubgraph/YAGO_PC_FM51_GS_SubgraphNodes_" + str(Subgraph_idx) + ".csv",index=None)
             # DecodedSubgraph_df.to_csv("DBLP_FG_BiasedGS_DecodedSubgraph_" + str(Subgraph_idx) + ".csv", index=None)
             # DecodedSubgraph_df.to_csv("DBLP_FG_WeightedGS_DecodedSubgraph_" + str(Subgraph_idx) + ".csv", index=None)
             # DecodedSubgraph_df.to_csv("YAGO_PC_FM50_DecodedSubgraph_" + str(Subgraph_idx) + ".csv", index=None)
             # DecodedSubgraph_df.to_csv("YAGO_PC_FM51_WeightesGS_DecodedSubgraph_" + str(Subgraph_idx) + ".csv", index=None)
             # DecodedSubgraph_df.to_csv("MAG_RS_BiasedGS_DecodedSubgraph_" + str(Subgraph_idx) + ".csv", index=None)
-            DecodedSubgraph_df.to_csv("MAG_RS_DecodedSubgraph/MAG_RS_WeightedGS_DecodedSubgraph_" + str(Subgraph_idx) + ".csv", index=None)
-            data = data.to(device)
+            # DecodedSubgraph_df.to_csv("MAG_RS_DecodedSubgraph/MAG_RS_WeightedGS_DecodedSubgraph_" + str(Subgraph_idx) + ".csv", index=None)
+            MetaSampleData = dataset.data.to(device)
+            path = '/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/DBLP_FG_DecodedSubgraph/'
+            MetaSampleModel = loadModel(None, path, "DBLP_FG_GS_SubgraphNodes_MetaSampler")
+            top_k_nodes,nodes_dict=getTopKNodes(MetaSampleModel,MetaSampleData,75)
+            # Remove non important nodes
+            src_node = data.edge_index[0].tolist()
+            dest_node = data.edge_index[1].tolist()
+            edges=data.edge_attr.tolist()
+            new_src_node,new_dest_node,new_edges=[],[],[]
+            for i in range(0, len(src_node)):
+                if src_node[i] in top_k_nodes and dest_node[i] in top_k_nodes:
+                    new_src_node.append(src_node[i])
+                    new_dest_node.append(dest_node[i])
+                    new_edges.append(edges[i])
+            del src_node
+            del dest_node
+            del edges
+            data.edge_index= torch.tensor([new_src_node,new_dest_node])
+            data.edge_attr=torch.IntTensor(new_edges)
+            print(data)
             # print(data.num_nodes)
             # print(data.edge_index)
             # print(data.edge_attr)
             # print(data.node_type)
 
-            # optimizer.zero_grad()
-            # out = model(x_dict, data.edge_index, data.edge_attr, data.node_type,
-            #             data.local_node_idx)
-            # out = out[data.train_mask]
-            # y = data.y[data.train_mask].squeeze()
-            # loss = F.nll_loss(out, y)
-            # loss.backward()
-            # optimizer.step()
-            #
+            optimizer.zero_grad()
+            out = model(x_dict, data.edge_index, data.edge_attr, data.node_type,
+                        data.local_node_idx)
+            out = out[data.train_mask]
+            y = data.y[data.train_mask].squeeze()
+            loss = F.nll_loss(out, y)
+            loss.backward()
+            optimizer.step()
             num_examples = data.train_mask.sum().item()
-            # total_loss += loss.item() * num_examples
+            total_loss += loss.item() * num_examples
             total_examples += num_examples
             pbar.update(args.batch_size)
             break
@@ -340,25 +380,25 @@ def graphSaint():
     GA_Index = 0
     # GA_dataset_name="KGTOSA_MAG_StarQuery_10M"
     # GA_dataset_name="KGTOSA_MAG_StarQuery"
-    # MAG_datasets=["DBLP_Paper_Venue_FM_Literals2Nodes_SY1900_EY2021_50Class"]
+    MAG_datasets=["DBLP_Paper_Venue_FM_Literals2Nodes_SY1900_EY2021_50Class"]
     # MAG_datasets = ["YAGO_FM51"]
-    MAG_datasets = ["mag"]
+    # MAG_datasets = ["mag"]
     print(args)
     gsaint_Final_Test=0
     for GA_dataset_name in MAG_datasets:  
         try:
             gsaint_start_t = datetime.datetime.now()
             ###################################Delete Folder if exist #############################
-            # dir_path="/media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_DBLP/"+GA_dataset_name
+            dir_path="/media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_DBLP/"+GA_dataset_name
             # dir_path = "/media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_YAGO/" + GA_dataset_name
-            dir_path = "/media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_MAG/" + GA_dataset_name
+            # dir_path = "/media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_MAG/" + GA_dataset_name
             try:
                 shutil.rmtree(dir_path)
                 print("Folder Deleted")
             except OSError as e:
                 print("Error Deleting : %s : %s" % (dir_path, e.strerror))
     #         ####################
-            dataset = PygNodePropPredDataset_hsh(name=GA_dataset_name, root='/media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_MAG/',numofClasses=str(50))
+            dataset = PygNodePropPredDataset_hsh(name=GA_dataset_name, root='/media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_DBLP/',numofClasses=str(50))
             dataset_name=GA_dataset_name+"_GA_"+str(GA_Index)
             print("dataset_name=",dataset_name)
             dic_results[dataset_name] = {}
@@ -439,16 +479,17 @@ def graphSaint():
             # weights_dic={'CreativeWork': 0.3, 'datePublished': 0.1, 'actor': 0.1,
             #  'countryOfOrigin': 0.1, 'producer': 0.1, 'duration': 0.1, 'contentLocation': 0.1,
             #  'inLanguage': 0.1}
-            weights_dic = {'paper': 0.3, 'author': 0.2, 'field_of_study': 0.3, 'institution': 0.2}
-            NodesWeightDic={}
-            for key in weights_dic.keys():
-                NodesWeightDic[(min(local2global[key]).item(),max(local2global[key]).item())]=weights_dic[key]
-            train_loader=GraphSAINTTaskWeightedRandomWalkSampler(
+            # weights_dic = {'paper': 0.3, 'author': 0.2, 'field_of_study': 0.3, 'institution': 0.2}
+            # NodesWeightDic={}
+            # for key in weights_dic.keys():
+            #     NodesWeightDic[(min(local2global[key]).item(),max(local2global[key]).item())]=weights_dic[key]
+            # train_loader=GraphSAINTTaskWeightedRandomWalkSampler(
+            train_loader=GraphSAINTRandomWalkSampler(
                  homo_data,
                  batch_size=args.batch_size,
                  walk_length=args.num_layers,
                  # Subject_indices=local2global[subject_node],
-                 NodesWeightDic=NodesWeightDic,
+                 # NodesWeightDic=NodesWeightDic,
                  num_steps=args.num_steps,
                  sample_coverage=0,
                  save_dir=dataset.processed_dir)
