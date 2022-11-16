@@ -18,6 +18,8 @@ dataset/
 *RELEASE_*
 *.csv.gz
 *.zip
+*.tsv
+*.pt
 *.csv
 *.model
 *submission_

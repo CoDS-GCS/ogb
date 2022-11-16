@@ -1,5 +1,6 @@
 from copy import copy
 import argparse
+import numpy as np
 import shutil
 import pandas as pd
 from tqdm import tqdm
@@ -13,6 +14,8 @@ from torch_geometric.data import Data
 from torch_geometric.loader import  GraphSAINTRandomWalkSampler, GraphSAINTTaskBaisedRandomWalkSampler,GraphSAINTTaskWeightedRandomWalkSampler
 from torch_geometric.utils.hetero import group_hetero_graph
 from torch_geometric.nn import MessagePassing
+import multiprocessing
+from multiprocessing import Pool
 import sys
 import os
 import psutil
@@ -29,9 +32,12 @@ from ogb.nodeproppred import PygNodePropPredDataset, Evaluator, PygNodePropPredD
 from resource import *
 from logger import Logger
 import faulthandler
-from examples.nodeproppred.mag.GenerateSubgraphNodesScores import generateSubgraphNodeScoresFromdDF
+from examples.nodeproppred.mag.GenerateSubgraphNodesScores import generateSubgraphNodeScoresFromdDF,generateTargetLabedlSubgraph
 from examples.nodeproppred.mag.EntitiesMetaSampler import EntitiesMetaSampler as Entities
 from examples.nodeproppred.mag.pgy_rgcn_regressor import loadModel,getTopKNodes
+import warnings
+from pandas.core.common import SettingWithCopyWarning
+warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
 faulthandler.enable()
 import pickle
 subject_node='Paper'
@@ -200,6 +206,14 @@ class RGCN(torch.nn.Module):
 
         return x_dict
 dic_results = {}
+
+
+def checkIndex(item):
+    nodes_idx = []
+    for i in range(item[3], item[4]):
+        if item[0][i] in item[2] and item[1][i] in item[2]:
+            nodes_idx.append(i)
+    return nodes_idx
 def graphSaint():
     def getDecodedSubgraph(org_dataset, subgraph):
         triples_list = []
@@ -230,6 +244,19 @@ def graphSaint():
             ])
         return triples_list
 
+    def getNodesIndex_multiprocessing(src_nodes,dest_nodes,top_k_nodes, n_processes: int = multiprocessing.cpu_count()):
+        nodes_count=len(src_nodes)
+        p = Pool(processes=n_processes)
+        items=[]
+        results=[]
+        for i in range(0,nodes_count,int(nodes_count/n_processes)):
+            items.append([src_nodes,dest_nodes,top_k_nodes,i,i+int(nodes_count/n_processes)+1])
+        p_results = p.map_async(checkIndex, items)
+        for result in p_results.get():
+            results.append(result)
+        p.close()
+        p.join()
+        return results
 
     def train(epoch,org_dataset=None):
         global Subgraph_idx
@@ -239,15 +266,21 @@ def graphSaint():
         pbar.set_description(f'Epoch {epoch:02d}')
 
         total_loss = total_examples = 0
+        path = '/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/DBLP_FG_DecodedSubgraph/'
+        MetaSampleModel = loadModel(None, path, "DBLP_FG_GS_SubgraphNodes_MetaSampler")
         for data in train_loader:
             Subgraph_idx += 1
             print("data=", data)
-            # DecodedSubgraph_lst = getDecodedSubgraph(org_dataset, data)
-            # DecodedSubgraph_df = pd.DataFrame(DecodedSubgraph_lst,columns=['Src_Node_Type', 'Src_Node_ID', 'Rel_type','Dest_Node_Type','Dest_Node_ID'])
+            t_time = datetime.datetime.now()
             DecodedSubgraph_lst = getSubgraphNodes(org_dataset, data)
             DecodedSubgraph_df = pd.DataFrame(DecodedSubgraph_lst,columns=['Src_Node_Type', 'Src_Node_ID', 'Rel_type','Rel_ID', 'Dest_Node_Type','Dest_Node_ID'])
-            normalized_df,all_labels_df,train,test,nt_df=generateSubgraphNodeScoresFromdDF(DecodedSubgraph_df)
+            print("GSAINT subgraph to df triples time=",datetime.datetime.now()-t_time)
+            t_time = datetime.datetime.now()
+            # normalized_df,all_labels_df,train,test,nt_df=generateSubgraphNodeScoresFromdDF(DecodedSubgraph_df,'rec')
+            all_labels_df, train, test, nt_df = generateTargetLabedlSubgraph(DecodedSubgraph_df,'rec')
             dataset= Entities(MaxNodeCount=40000,Triples_df=nt_df,labels_df=all_labels_df,Train_df=train,Test_df=test)
+            print("Labeling The Sampled Subgraph time=", datetime.datetime.now() - t_time)
+            t_time = datetime.datetime.now()
             # print(DecodedSubgraph_df[DecodedSubgraph_df["Src_Node_Type"].isin([subject_node])])
             # DecodedSubgraph_df.to_csv("DBLP_FG_DecodedSubgraph/DBLP_FG_GS_SubgraphNodes_" + str(Subgraph_idx) + ".csv", index=None)
             # DecodedSubgraph_df.to_csv("YAGO_PC_FM50_DecodedSubgraph/YAGO_PC_FM51_GS_SubgraphNodes_" + str(Subgraph_idx) + ".csv",index=None)
@@ -258,50 +291,55 @@ def graphSaint():
             # DecodedSubgraph_df.to_csv("MAG_RS_BiasedGS_DecodedSubgraph_" + str(Subgraph_idx) + ".csv", index=None)
             # DecodedSubgraph_df.to_csv("MAG_RS_DecodedSubgraph/MAG_RS_WeightedGS_DecodedSubgraph_" + str(Subgraph_idx) + ".csv", index=None)
             MetaSampleData = dataset.data.to(device)
-            path = '/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/DBLP_FG_DecodedSubgraph/'
-            MetaSampleModel = loadModel(None, path, "DBLP_FG_GS_SubgraphNodes_MetaSampler")
-            top_k_nodes,nodes_dict=getTopKNodes(MetaSampleModel,MetaSampleData,75)
+            top_k_nodes,nodes_dict=getTopKNodes(MetaSampleModel,MetaSampleData,90)
+            print("generate top_k_nodes Meta-Sampled Subgraph nodes time=", datetime.datetime.now() - t_time)
+            t_time = datetime.datetime.now()
             # Remove non important nodes
             src_node = data.edge_index[0].tolist()
             dest_node = data.edge_index[1].tolist()
             edges=data.edge_attr.tolist()
-            new_src_node,new_dest_node,new_edges=[],[],[]
-            for i in range(0, len(src_node)):
+            # nodes_idx=getNodesIndex_multiprocessing(data.edge_index[0],data.edge_index[1],top_k_nodes)
+            nodes_idx=[]
+            include_idx=0
+            nodes_count=len(data.edge_index[0])
+            for i in range(0, nodes_count):
                 if src_node[i] in top_k_nodes and dest_node[i] in top_k_nodes:
-                    new_src_node.append(src_node[i])
-                    new_dest_node.append(dest_node[i])
-                    new_edges.append(edges[i])
-            del src_node
-            del dest_node
-            del edges
-            data.edge_index= torch.tensor([new_src_node,new_dest_node])
-            data.edge_attr=torch.IntTensor(new_edges)
+                    nodes_idx.append(include_idx)
+                include_idx+=1
+            nodes_idx=torch.tensor(nodes_idx)
+            data.edge_index= torch.tensor([
+                [src_node[i] for i in nodes_idx],
+                [dest_node[i] for i in nodes_idx]])
+                # src_node[nodes_idx],dest_node[nodes_idx]])
+            data.edge_attr=torch.IntTensor([edges[i] for i in nodes_idx])
+                # torch.index_select(data.edge_attr,1,nodes_idx))
             print(data)
-            # print(data.num_nodes)
-            # print(data.edge_index)
-            # print(data.edge_attr)
-            # print(data.node_type)
-
+            data = data.to(device)
+            print("Filter sub-graph by top-K Nodes time=", datetime.datetime.now() - t_time)
+            t_time = datetime.datetime.now()
             optimizer.zero_grad()
             out = model(x_dict, data.edge_index, data.edge_attr, data.node_type,
                         data.local_node_idx)
             out = out[data.train_mask]
             y = data.y[data.train_mask].squeeze()
             loss = F.nll_loss(out, y)
+            # print("loss=",loss)
             loss.backward()
             optimizer.step()
             num_examples = data.train_mask.sum().item()
             total_loss += loss.item() * num_examples
             total_examples += num_examples
+            print("Train GNN Model on Meta-Sampled Subgraph =", datetime.datetime.now() - t_time)
             pbar.update(args.batch_size)
-            break
 
+        pbar.refresh()  # force print final state
         pbar.close()
-
+        # pbar.reset()
         return total_loss / total_examples
 
 
-        total_loss = total_examples = 0
+
+        # total_loss = total_examples = 0
         # for data in train_loader:
         #     data = data.to(device)
         #     optimizer.zero_grad()
@@ -318,7 +356,7 @@ def graphSaint():
         #     total_examples += num_examples
         #     pbar.update(args.batch_size)
         #
-        # # pbar.refresh()  # force print final state
+        # pbar.refresh()  # force print final state
         # pbar.close()
         # # pbar.reset()
         # return total_loss / total_examples

@@ -1,0 +1,899 @@
+/home/hussein/anaconda3/envs/ogb/bin/python /media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/pgy_rgcn_regressor.py
+data= Data(
+  num_nodes_dict={
+    Object_hasIdentifier=5362963,
+    Object_rdf-schema#label=270819,
+    Object_schema#creatorNote=68,
+    Object_schema#isbn=104,
+    Object_schema#monthOfPublication=12,
+    Object_schema#numberOfCreators=88,
+    Object_schema#orderedCreators=1119791,
+    Object_schema#otherAffiliation=2791,
+    Object_schema#otherFullCreatorName=23348,
+    Object_schema#pagination=102087,
+    Object_schema#primaryAffiliation=6883,
+    Object_schema#primaryFullCreatorName=268978,
+    Object_schema#publicationNote=12,
+    Object_schema#publishedBy=14,
+    Object_schema#publishedInJournal=10,
+    Object_schema#publishedInJournalVolume=403125,
+    Object_schema#publishedInJournalVolumeIssue=46,
+    Object_schema#publishedInSeries=2,
+    Object_schema#publishedInSeriesVolume=160,
+    Object_schema#title=132837,
+    Object_schema#yearOfEvent=58,
+    archive=13176,
+    archivedWebpage=749,
+    awardWebpage=466,
+    db=3190,
+    differentFrom=1036,
+    djvu=1601,
+    document=11,
+    doi=614346,
+    entity=159202,
+    net=5,
+    orcid=102836,
+    otherElectronicEdition=92820,
+    otherHomepage=92305,
+    pid=2893304,
+    primaryElectronicEdition=1103966,
+    primaryHomepage=127920,
+    rdf=13,
+    rec=1123344,
+    sameAs=1505146,
+    webpage=70800,
+    wiki=6877
+  },
+  edge_index_dict={
+    (pid, 22-rdf-syntax-ns#type, rdf)=[2, 5786608],
+    (pid, owl#differentFrom, differentFrom)=[2, 1086],
+    (pid, rdf-schema#label, Object_rdf-schema#label)=[2, 2893304],
+    (pid, schema#archivedWebpage, archivedWebpage)=[2, 749],
+    (pid, schema#awardWebpage, awardWebpage)=[2, 469],
+    (pid, schema#creatorNote, Object_schema#creatorNote)=[2, 1211],
+    (pid, schema#orcid, orcid)=[2, 102836],
+    (pid, schema#otherAffiliation, Object_schema#otherAffiliation)=[2, 30839],
+    (pid, schema#otherFullCreatorName, Object_schema#otherFullCreatorName)=[2, 75825],
+    (pid, schema#otherHomepage, otherHomepage)=[2, 92321],
+    (pid, schema#primaryAffiliation, Object_schema#primaryAffiliation)=[2, 107347],
+    (pid, schema#primaryFullCreatorName, Object_schema#primaryFullCreatorName)=[2, 2893304],
+    (pid, schema#primaryHomepage, primaryHomepage)=[2, 127956],
+    (pid, schema#webpage, webpage)=[2, 70801],
+    (pid, schema#wikipedia, wiki)=[2, 6919],
+    (rec, hasIdentifier, Object_hasIdentifier)=[2, 2243397],
+    (rec, owl#sameAs, sameAs)=[2, 1336213],
+    (rec, schema#archivedElectronicEdition, archive)=[2, 13178],
+    (rec, schema#authoredBy, pid)=[2, 3887765],
+    (rec, schema#bibtexType, net)=[2, 1123344],
+    (rec, schema#doi, doi)=[2, 614346],
+    (rec, schema#editedBy, pid)=[2, 243],
+    (rec, schema#isbn, Object_schema#isbn)=[2, 107],
+    (rec, schema#listedOnTocPage, db)=[2, 1123286],
+    (rec, schema#monthOfPublication, Object_schema#monthOfPublication)=[2, 8954],
+    (rec, schema#numberOfCreators, Object_schema#numberOfCreators)=[2, 1123344],
+    (rec, schema#orderedCreators, Object_schema#orderedCreators)=[2, 1119791],
+    (rec, schema#otherElectronicEdition, otherElectronicEdition)=[2, 92820],
+    (rec, schema#pagination, Object_schema#pagination)=[2, 681347],
+    (rec, schema#primaryElectronicEdition, primaryElectronicEdition)=[2, 1103969],
+    (rec, schema#publicationNote, Object_schema#publicationNote)=[2, 205],
+    (rec, schema#publishedAsPartOf, rec)=[2, 1868],
+    (rec, schema#publishedBy, Object_schema#publishedBy)=[2, 219],
+    (rec, schema#publishedInJournal, Object_schema#publishedInJournal)=[2, 527741],
+    (rec, schema#publishedInJournalVolume, Object_schema#publishedInJournalVolume)=[2, 527741],
+    (rec, schema#publishedInJournalVolumeIssue, Object_schema#publishedInJournalVolumeIssue)=[2, 99318],
+    (rec, schema#publishedInSeries, Object_schema#publishedInSeries)=[2, 219],
+    (rec, schema#publishedInSeriesVolume, Object_schema#publishedInSeriesVolume)=[2, 162],
+    (rec, schema#title, Object_schema#title)=[2, 1120791],
+    (rec, schema#wikidata, entity)=[2, 107414],
+    (rec, schema#yearOfEvent, Object_schema#yearOfEvent)=[2, 594631],
+    (rdf, inv_22-rdf-syntax-ns#type, pid)=[2, 5786608],
+    (differentFrom, inv_owl#differentFrom, pid)=[2, 1086],
+    (Object_rdf-schema#label, inv_rdf-schema#label, pid)=[2, 2893304],
+    (archivedWebpage, inv_schema#archivedWebpage, pid)=[2, 749],
+    (awardWebpage, inv_schema#awardWebpage, pid)=[2, 469],
+    (Object_schema#creatorNote, inv_schema#creatorNote, pid)=[2, 1211],
+    (orcid, inv_schema#orcid, pid)=[2, 102836],
+    (Object_schema#otherAffiliation, inv_schema#otherAffiliation, pid)=[2, 30839],
+    (Object_schema#otherFullCreatorName, inv_schema#otherFullCreatorName, pid)=[2, 75825],
+    (otherHomepage, inv_schema#otherHomepage, pid)=[2, 92321],
+    (Object_schema#primaryAffiliation, inv_schema#primaryAffiliation, pid)=[2, 107347],
+    (Object_schema#primaryFullCreatorName, inv_schema#primaryFullCreatorName, pid)=[2, 2893304],
+    (primaryHomepage, inv_schema#primaryHomepage, pid)=[2, 127956],
+    (webpage, inv_schema#webpage, pid)=[2, 70801],
+    (wiki, inv_schema#wikipedia, pid)=[2, 6919],
+    (Object_hasIdentifier, inv_hasIdentifier, rec)=[2, 2243397],
+    (sameAs, inv_owl#sameAs, rec)=[2, 1336213],
+    (archive, inv_schema#archivedElectronicEdition, rec)=[2, 13178],
+    (pid, inv_schema#authoredBy, rec)=[2, 3887765],
+    (net, inv_schema#bibtexType, rec)=[2, 1123344],
+    (doi, inv_schema#doi, rec)=[2, 614346],
+    (pid, inv_schema#editedBy, rec)=[2, 243],
+    (Object_schema#isbn, inv_schema#isbn, rec)=[2, 107],
+    (db, inv_schema#listedOnTocPage, rec)=[2, 1123286],
+    (Object_schema#monthOfPublication, inv_schema#monthOfPublication, rec)=[2, 8954],
+    (Object_schema#numberOfCreators, inv_schema#numberOfCreators, rec)=[2, 1123344],
+    (Object_schema#orderedCreators, inv_schema#orderedCreators, rec)=[2, 1119791],
+    (otherElectronicEdition, inv_schema#otherElectronicEdition, rec)=[2, 92820],
+    (Object_schema#pagination, inv_schema#pagination, rec)=[2, 681347],
+    (primaryElectronicEdition, inv_schema#primaryElectronicEdition, rec)=[2, 1103969],
+    (Object_schema#publicationNote, inv_schema#publicationNote, rec)=[2, 205],
+    (rec, inv_schema#publishedAsPartOf, rec)=[2, 1868],
+    (Object_schema#publishedBy, inv_schema#publishedBy, rec)=[2, 219],
+    (Object_schema#publishedInJournal, inv_schema#publishedInJournal, rec)=[2, 527741],
+    (Object_schema#publishedInJournalVolume, inv_schema#publishedInJournalVolume, rec)=[2, 527741],
+    (Object_schema#publishedInJournalVolumeIssue, inv_schema#publishedInJournalVolumeIssue, rec)=[2, 99318],
+    (Object_schema#publishedInSeries, inv_schema#publishedInSeries, rec)=[2, 219],
+    (Object_schema#publishedInSeriesVolume, inv_schema#publishedInSeriesVolume, rec)=[2, 162],
+    (Object_schema#title, inv_schema#title, rec)=[2, 1120791],
+    (entity, inv_schema#wikidata, rec)=[2, 107414],
+    (Object_schema#yearOfEvent, inv_schema#yearOfEvent, rec)=[2, 594631]
+  },
+  node_year={},
+  edge_reltype={
+    (pid, 22-rdf-syntax-ns#type, rdf)=[5786608, 1],
+    (pid, owl#differentFrom, differentFrom)=[1086, 1],
+    (pid, rdf-schema#label, Object_rdf-schema#label)=[2893304, 1],
+    (pid, schema#archivedWebpage, archivedWebpage)=[749, 1],
+    (pid, schema#awardWebpage, awardWebpage)=[469, 1],
+    (pid, schema#creatorNote, Object_schema#creatorNote)=[1211, 1],
+    (pid, schema#orcid, orcid)=[102836, 1],
+    (pid, schema#otherAffiliation, Object_schema#otherAffiliation)=[30839, 1],
+    (pid, schema#otherFullCreatorName, Object_schema#otherFullCreatorName)=[75825, 1],
+    (pid, schema#otherHomepage, otherHomepage)=[92321, 1],
+    (pid, schema#primaryAffiliation, Object_schema#primaryAffiliation)=[107347, 1],
+    (pid, schema#primaryFullCreatorName, Object_schema#primaryFullCreatorName)=[2893304, 1],
+    (pid, schema#primaryHomepage, primaryHomepage)=[127956, 1],
+    (pid, schema#webpage, webpage)=[70801, 1],
+    (pid, schema#wikipedia, wiki)=[6919, 1],
+    (rec, hasIdentifier, Object_hasIdentifier)=[2243397, 1],
+    (rec, owl#sameAs, sameAs)=[1336213, 1],
+    (rec, schema#archivedElectronicEdition, archive)=[13178, 1],
+    (rec, schema#authoredBy, pid)=[3887765, 1],
+    (rec, schema#bibtexType, net)=[1123344, 1],
+    (rec, schema#doi, doi)=[614346, 1],
+    (rec, schema#editedBy, pid)=[243, 1],
+    (rec, schema#isbn, Object_schema#isbn)=[107, 1],
+    (rec, schema#listedOnTocPage, db)=[1123286, 1],
+    (rec, schema#monthOfPublication, Object_schema#monthOfPublication)=[8954, 1],
+    (rec, schema#numberOfCreators, Object_schema#numberOfCreators)=[1123344, 1],
+    (rec, schema#orderedCreators, Object_schema#orderedCreators)=[1119791, 1],
+    (rec, schema#otherElectronicEdition, otherElectronicEdition)=[92820, 1],
+    (rec, schema#pagination, Object_schema#pagination)=[681347, 1],
+    (rec, schema#primaryElectronicEdition, primaryElectronicEdition)=[1103969, 1],
+    (rec, schema#publicationNote, Object_schema#publicationNote)=[205, 1],
+    (rec, schema#publishedAsPartOf, rec)=[1868, 1],
+    (rec, schema#publishedBy, Object_schema#publishedBy)=[219, 1],
+    (rec, schema#publishedInJournal, Object_schema#publishedInJournal)=[527741, 1],
+    (rec, schema#publishedInJournalVolume, Object_schema#publishedInJournalVolume)=[527741, 1],
+    (rec, schema#publishedInJournalVolumeIssue, Object_schema#publishedInJournalVolumeIssue)=[99318, 1],
+    (rec, schema#publishedInSeries, Object_schema#publishedInSeries)=[219, 1],
+    (rec, schema#publishedInSeriesVolume, Object_schema#publishedInSeriesVolume)=[162, 1],
+    (rec, schema#title, Object_schema#title)=[1120791, 1],
+    (rec, schema#wikidata, entity)=[107414, 1],
+    (rec, schema#yearOfEvent, Object_schema#yearOfEvent)=[594631, 1]
+  },
+  y_dict={ rec=[1123344, 1] }
+)
+Data(edge_index=[2, 59287976], edge_attr=[59287976], node_type=[15607309], local_node_idx=[15607309], num_nodes=15607309, y=[15607309, 1], train_mask=[15607309])
+dataset.processed_dir /media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_DBLP/DBLP_Paper_Venue_FM_Literals2Nodes_SY1900_EY2021_50Class/processed
+Sampling time= 0:00:06.155301  sec.
+data= Data(
+  num_nodes_dict={
+    Children=63863,
+    CreativeWork=128209,
+    Event=234662,
+    Organization=301403,
+    Person=1692833,
+    Place=1252138,
+    about=621,
+    actor=48973,
+    affiliation=474,
+    alternateName=4562636,
+    alumniOf=21285,
+    author=219,
+    award=7810,
+    birthDate=107228,
+    birthPlace=103228,
+    brand=31,
+    broadcastChannelId=23,
+    byArtist=3920,
+    callSign=43,
+    character=370,
+    citation=1,
+    competitor=7106,
+    composer=658,
+    containedInPlace=94453,
+    containsPlace=108429,
+    contentLocation=775,
+    contributor=52,
+    copyrightHolder=12,
+    countryOfOrigin=152,
+    creator=416,
+    dateCreated=100,
+    datePublished=14368,
+    deathDate=104673,
+    deathPlace=46450,
+    director=11309,
+    dissolutionDate=5155,
+    duns=36,
+    duration=296,
+    editor=7,
+    elevation=3986,
+    endDate=12023,
+    exampleOfWork=1,
+    familyName=38002,
+    faxNumber=880,
+    founder=15192,
+    foundingDate=20348,
+    foundingLocation=3909,
+    gender=7,
+    geo=934802,
+    givenName=8180,
+    hasOccupation=1429,
+    hasPart=1233,
+    height=126,
+    homeLocation=11736,
+    honorificPrefix=48,
+    iataCode=8424,
+    icaoCode=12234,
+    image=1075387,
+    inLanguage=56,
+    isBasedOn=238,
+    isPartOf=7074,
+    isbn=3,
+    iswcCode=119,
+    knowsLanguage=598,
+    leiCode=3512,
+    license=1,
+    location=48113,
+    locationCreated=4,
+    logo=32404,
+    lyricist=565,
+    material=5,
+    memberOf=37509,
+    musicBy=4966,
+    nationality=1044,
+    netWorth=16,
+    numberOfEmployees=231,
+    numberOfEpisodes=163,
+    numberOfPages=4,
+    numberOfSeasons=20,
+    organizer=49,
+    owns=72,
+    parent=51300,
+    parentOrganization=5371,
+    partOfSeries=1,
+    producer=10393,
+    productionCompany=1597,
+    provider=3,
+    publisher=844,
+    sameAs=18920164,
+    servesCuisine=43,
+    sponsor=749,
+    sport=219,
+    spouse=52724,
+    startDate=14342,
+    subEvent=18658,
+    subOrganization=9198,
+    superEvent=10207,
+    telephone=7503,
+    translator=7,
+    url=468773,
+    weight=20,
+    width=3,
+    workExample=1,
+    worksFor=632
+  },
+  edge_index_dict={
+    (CreativeWork, about, about)=[2, 1423],
+    (CreativeWork, actor, actor)=[2, 240559],
+    (CreativeWork, author, author)=[2, 251],
+    (CreativeWork, byArtist, byArtist)=[2, 11205],
+    (CreativeWork, character, character)=[2, 393],
+    (CreativeWork, citation, citation)=[2, 1],
+    (CreativeWork, composer, composer)=[2, 1275],
+    (CreativeWork, contentLocation, contentLocation)=[2, 16863],
+    (CreativeWork, contributor, contributor)=[2, 88],
+    (CreativeWork, copyrightHolder, copyrightHolder)=[2, 14],
+    (CreativeWork, countryOfOrigin, countryOfOrigin)=[2, 21983],
+    (CreativeWork, creator, creator)=[2, 481],
+    (CreativeWork, dateCreated, dateCreated)=[2, 239],
+    (CreativeWork, datePublished, datePublished)=[2, 117243],
+    (CreativeWork, director, director)=[2, 36985],
+    (CreativeWork, duration, duration)=[2, 19560],
+    (CreativeWork, editor, editor)=[2, 7],
+    (CreativeWork, exampleOfWork, exampleOfWork)=[2, 1],
+    (CreativeWork, hasPart, hasPart)=[2, 1259],
+    (CreativeWork, inLanguage, inLanguage)=[2, 13198],
+    (CreativeWork, isBasedOn, isBasedOn)=[2, 276],
+    (CreativeWork, isPartOf, isPartOf)=[2, 13991],
+    (CreativeWork, isbn, isbn)=[2, 3],
+    (CreativeWork, iswcCode, iswcCode)=[2, 119],
+    (CreativeWork, license, license)=[2, 1],
+    (CreativeWork, locationCreated, locationCreated)=[2, 13],
+    (CreativeWork, lyricist, lyricist)=[2, 1125],
+    (CreativeWork, musicBy, musicBy)=[2, 25562],
+    (CreativeWork, numberOfEpisodes, numberOfEpisodes)=[2, 948],
+    (CreativeWork, numberOfPages, numberOfPages)=[2, 4],
+    (CreativeWork, numberOfSeasons, numberOfSeasons)=[2, 676],
+    (CreativeWork, partOfSeries, partOfSeries)=[2, 1],
+    (CreativeWork, producer, producer)=[2, 43485],
+    (CreativeWork, productionCompany, productionCompany)=[2, 13473],
+    (CreativeWork, provider, provider)=[2, 3],
+    (CreativeWork, publisher, publisher)=[2, 8108],
+    (CreativeWork, translator, translator)=[2, 8],
+    (CreativeWork, workExample, workExample)=[2, 1],
+    (Event, competitor, competitor)=[2, 33329],
+    (Event, endDate, endDate)=[2, 25661],
+    (Event, location, location)=[2, 36614],
+    (Event, organizer, organizer)=[2, 59],
+    (Event, sport, sport)=[2, 48572],
+    (Event, startDate, startDate)=[2, 26907],
+    (Event, subEvent, subEvent)=[2, 19065],
+    (Event, superEvent, superEvent)=[2, 43353],
+    (Event, url, url)=[2, 15755],
+    (Organization, brand, brand)=[2, 32],
+    (Organization, dissolutionDate, dissolutionDate)=[2, 20679],
+    (Organization, duns, duns)=[2, 31],
+    (Organization, founder, founder)=[2, 14674],
+    (Organization, foundingDate, foundingDate)=[2, 203705],
+    (Organization, foundingLocation, foundingLocation)=[2, 17435],
+    (Organization, iataCode, iataCode)=[2, 2454],
+    (Organization, icaoCode, icaoCode)=[2, 2998],
+    (Organization, leiCode, leiCode)=[2, 1883],
+    (Organization, logo, logo)=[2, 23356],
+    (Organization, parentOrganization, parentOrganization)=[2, 8145],
+    (Organization, sponsor, sponsor)=[2, 650],
+    (Organization, subOrganization, subOrganization)=[2, 6933],
+    (Person, Children, Children)=[2, 80132],
+    (Person, affiliation, affiliation)=[2, 1029],
+    (Person, alumniOf, alumniOf)=[2, 567601],
+    (Person, birthDate, birthDate)=[2, 1449086],
+    (Person, birthPlace, birthPlace)=[2, 1083682],
+    (Person, callSign, callSign)=[2, 4],
+    (Person, deathDate, deathDate)=[2, 635931],
+    (Person, deathPlace, deathPlace)=[2, 371947],
+    (Person, familyName, familyName)=[2, 564430],
+    (Person, gender, gender)=[2, 825],
+    (Person, givenName, givenName)=[2, 1029874],
+    (Person, hasOccupation, hasOccupation)=[2, 1055132],
+    (Person, height, height)=[2, 394],
+    (Person, homeLocation, homeLocation)=[2, 46465],
+    (Person, honorificPrefix, honorificPrefix)=[2, 2614],
+    (Person, knowsLanguage, knowsLanguage)=[2, 325443],
+    (Person, memberOf, memberOf)=[2, 1308598],
+    (Person, nationality, nationality)=[2, 998830],
+    (Person, netWorth, netWorth)=[2, 19],
+    (Person, owns, owns)=[2, 86],
+    (Person, parent, parent)=[2, 80516],
+    (Person, spouse, spouse)=[2, 57906],
+    (Person, weight, weight)=[2, 17],
+    (Person, worksFor, worksFor)=[2, 704],
+    (Place, alternateName, alternateName)=[2, 1712440],
+    (Place, award, award)=[2, 3362],
+    (Place, broadcastChannelId, broadcastChannelId)=[2, 20],
+    (Place, containedInPlace, containedInPlace)=[2, 1091980],
+    (Place, containsPlace, containsPlace)=[2, 121563],
+    (Place, elevation, elevation)=[2, 66700],
+    (Place, faxNumber, faxNumber)=[2, 704],
+    (Place, geo, geo)=[2, 957678],
+    (Place, image, image)=[2, 519251],
+    (Place, material, material)=[2, 128],
+    (Place, numberOfEmployees, numberOfEmployees)=[2, 590],
+    (Place, sameAs, sameAs)=[2, 9316948],
+    (Place, servesCuisine, servesCuisine)=[2, 326],
+    (Place, telephone, telephone)=[2, 6232],
+    (Place, width, width)=[2, 3],
+    (about, inv_about, CreativeWork)=[2, 1423],
+    (actor, inv_actor, CreativeWork)=[2, 240559],
+    (author, inv_author, CreativeWork)=[2, 251],
+    (byArtist, inv_byArtist, CreativeWork)=[2, 11205],
+    (character, inv_character, CreativeWork)=[2, 393],
+    (citation, inv_citation, CreativeWork)=[2, 1],
+    (composer, inv_composer, CreativeWork)=[2, 1275],
+    (contentLocation, inv_contentLocation, CreativeWork)=[2, 16863],
+    (contributor, inv_contributor, CreativeWork)=[2, 88],
+    (copyrightHolder, inv_copyrightHolder, CreativeWork)=[2, 14],
+    (countryOfOrigin, inv_countryOfOrigin, CreativeWork)=[2, 21983],
+    (creator, inv_creator, CreativeWork)=[2, 481],
+    (dateCreated, inv_dateCreated, CreativeWork)=[2, 239],
+    (datePublished, inv_datePublished, CreativeWork)=[2, 117243],
+    (director, inv_director, CreativeWork)=[2, 36985],
+    (duration, inv_duration, CreativeWork)=[2, 19560],
+    (editor, inv_editor, CreativeWork)=[2, 7],
+    (exampleOfWork, inv_exampleOfWork, CreativeWork)=[2, 1],
+    (hasPart, inv_hasPart, CreativeWork)=[2, 1259],
+    (inLanguage, inv_inLanguage, CreativeWork)=[2, 13198],
+    (isBasedOn, inv_isBasedOn, CreativeWork)=[2, 276],
+    (isPartOf, inv_isPartOf, CreativeWork)=[2, 13991],
+    (isbn, inv_isbn, CreativeWork)=[2, 3],
+    (iswcCode, inv_iswcCode, CreativeWork)=[2, 119],
+    (license, inv_license, CreativeWork)=[2, 1],
+    (locationCreated, inv_locationCreated, CreativeWork)=[2, 13],
+    (lyricist, inv_lyricist, CreativeWork)=[2, 1125],
+    (musicBy, inv_musicBy, CreativeWork)=[2, 25562],
+    (numberOfEpisodes, inv_numberOfEpisodes, CreativeWork)=[2, 948],
+    (numberOfPages, inv_numberOfPages, CreativeWork)=[2, 4],
+    (numberOfSeasons, inv_numberOfSeasons, CreativeWork)=[2, 676],
+    (partOfSeries, inv_partOfSeries, CreativeWork)=[2, 1],
+    (producer, inv_producer, CreativeWork)=[2, 43485],
+    (productionCompany, inv_productionCompany, CreativeWork)=[2, 13473],
+    (provider, inv_provider, CreativeWork)=[2, 3],
+    (publisher, inv_publisher, CreativeWork)=[2, 8108],
+    (translator, inv_translator, CreativeWork)=[2, 8],
+    (workExample, inv_workExample, CreativeWork)=[2, 1],
+    (competitor, inv_competitor, Event)=[2, 33329],
+    (endDate, inv_endDate, Event)=[2, 25661],
+    (location, inv_location, Event)=[2, 36614],
+    (organizer, inv_organizer, Event)=[2, 59],
+    (sport, inv_sport, Event)=[2, 48572],
+    (startDate, inv_startDate, Event)=[2, 26907],
+    (subEvent, inv_subEvent, Event)=[2, 19065],
+    (superEvent, inv_superEvent, Event)=[2, 43353],
+    (url, inv_url, Event)=[2, 15755],
+    (brand, inv_brand, Organization)=[2, 32],
+    (dissolutionDate, inv_dissolutionDate, Organization)=[2, 20679],
+    (duns, inv_duns, Organization)=[2, 31],
+    (founder, inv_founder, Organization)=[2, 14674],
+    (foundingDate, inv_foundingDate, Organization)=[2, 203705],
+    (foundingLocation, inv_foundingLocation, Organization)=[2, 17435],
+    (iataCode, inv_iataCode, Organization)=[2, 2454],
+    (icaoCode, inv_icaoCode, Organization)=[2, 2998],
+    (leiCode, inv_leiCode, Organization)=[2, 1883],
+    (logo, inv_logo, Organization)=[2, 23356],
+    (parentOrganization, inv_parentOrganization, Organization)=[2, 8145],
+    (sponsor, inv_sponsor, Organization)=[2, 650],
+    (subOrganization, inv_subOrganization, Organization)=[2, 6933],
+    (Children, inv_Children, Person)=[2, 80132],
+    (affiliation, inv_affiliation, Person)=[2, 1029],
+    (alumniOf, inv_alumniOf, Person)=[2, 567601],
+    (birthDate, inv_birthDate, Person)=[2, 1449086],
+    (birthPlace, inv_birthPlace, Person)=[2, 1083682],
+    (callSign, inv_callSign, Person)=[2, 4],
+    (deathDate, inv_deathDate, Person)=[2, 635931],
+    (deathPlace, inv_deathPlace, Person)=[2, 371947],
+    (familyName, inv_familyName, Person)=[2, 564430],
+    (gender, inv_gender, Person)=[2, 825],
+    (givenName, inv_givenName, Person)=[2, 1029874],
+    (hasOccupation, inv_hasOccupation, Person)=[2, 1055132],
+    (height, inv_height, Person)=[2, 394],
+    (homeLocation, inv_homeLocation, Person)=[2, 46465],
+    (honorificPrefix, inv_honorificPrefix, Person)=[2, 2614],
+    (knowsLanguage, inv_knowsLanguage, Person)=[2, 325443],
+    (memberOf, inv_memberOf, Person)=[2, 1308598],
+    (nationality, inv_nationality, Person)=[2, 998830],
+    (netWorth, inv_netWorth, Person)=[2, 19],
+    (owns, inv_owns, Person)=[2, 86],
+    (parent, inv_parent, Person)=[2, 80516],
+    (spouse, inv_spouse, Person)=[2, 57906],
+    (weight, inv_weight, Person)=[2, 17],
+    (worksFor, inv_worksFor, Person)=[2, 704],
+    (alternateName, inv_alternateName, Place)=[2, 1712440],
+    (award, inv_award, Place)=[2, 3362],
+    (broadcastChannelId, inv_broadcastChannelId, Place)=[2, 20],
+    (containedInPlace, inv_containedInPlace, Place)=[2, 1091980],
+    (containsPlace, inv_containsPlace, Place)=[2, 121563],
+    (elevation, inv_elevation, Place)=[2, 66700],
+    (faxNumber, inv_faxNumber, Place)=[2, 704],
+    (geo, inv_geo, Place)=[2, 957678],
+    (image, inv_image, Place)=[2, 519251],
+    (material, inv_material, Place)=[2, 128],
+    (numberOfEmployees, inv_numberOfEmployees, Place)=[2, 590],
+    (sameAs, inv_sameAs, Place)=[2, 9316948],
+    (servesCuisine, inv_servesCuisine, Place)=[2, 326],
+    (telephone, inv_telephone, Place)=[2, 6232],
+    (width, inv_width, Place)=[2, 3]
+  },
+  node_year={},
+  edge_reltype={
+    (CreativeWork, about, about)=[1423, 1],
+    (CreativeWork, actor, actor)=[240559, 1],
+    (CreativeWork, author, author)=[251, 1],
+    (CreativeWork, byArtist, byArtist)=[11205, 1],
+    (CreativeWork, character, character)=[393, 1],
+    (CreativeWork, citation, citation)=[1, 1],
+    (CreativeWork, composer, composer)=[1275, 1],
+    (CreativeWork, contentLocation, contentLocation)=[16863, 1],
+    (CreativeWork, contributor, contributor)=[88, 1],
+    (CreativeWork, copyrightHolder, copyrightHolder)=[14, 1],
+    (CreativeWork, countryOfOrigin, countryOfOrigin)=[21983, 1],
+    (CreativeWork, creator, creator)=[481, 1],
+    (CreativeWork, dateCreated, dateCreated)=[239, 1],
+    (CreativeWork, datePublished, datePublished)=[117243, 1],
+    (CreativeWork, director, director)=[36985, 1],
+    (CreativeWork, duration, duration)=[19560, 1],
+    (CreativeWork, editor, editor)=[7, 1],
+    (CreativeWork, exampleOfWork, exampleOfWork)=[1, 1],
+    (CreativeWork, hasPart, hasPart)=[1259, 1],
+    (CreativeWork, inLanguage, inLanguage)=[13198, 1],
+    (CreativeWork, isBasedOn, isBasedOn)=[276, 1],
+    (CreativeWork, isPartOf, isPartOf)=[13991, 1],
+    (CreativeWork, isbn, isbn)=[3, 1],
+    (CreativeWork, iswcCode, iswcCode)=[119, 1],
+    (CreativeWork, license, license)=[1, 1],
+    (CreativeWork, locationCreated, locationCreated)=[13, 1],
+    (CreativeWork, lyricist, lyricist)=[1125, 1],
+    (CreativeWork, musicBy, musicBy)=[25562, 1],
+    (CreativeWork, numberOfEpisodes, numberOfEpisodes)=[948, 1],
+    (CreativeWork, numberOfPages, numberOfPages)=[4, 1],
+    (CreativeWork, numberOfSeasons, numberOfSeasons)=[676, 1],
+    (CreativeWork, partOfSeries, partOfSeries)=[1, 1],
+    (CreativeWork, producer, producer)=[43485, 1],
+    (CreativeWork, productionCompany, productionCompany)=[13473, 1],
+    (CreativeWork, provider, provider)=[3, 1],
+    (CreativeWork, publisher, publisher)=[8108, 1],
+    (CreativeWork, translator, translator)=[8, 1],
+    (CreativeWork, workExample, workExample)=[1, 1],
+    (Event, competitor, competitor)=[33329, 1],
+    (Event, endDate, endDate)=[25661, 1],
+    (Event, location, location)=[36614, 1],
+    (Event, organizer, organizer)=[59, 1],
+    (Event, sport, sport)=[48572, 1],
+    (Event, startDate, startDate)=[26907, 1],
+    (Event, subEvent, subEvent)=[19065, 1],
+    (Event, superEvent, superEvent)=[43353, 1],
+    (Event, url, url)=[15755, 1],
+    (Organization, brand, brand)=[32, 1],
+    (Organization, dissolutionDate, dissolutionDate)=[20679, 1],
+    (Organization, duns, duns)=[31, 1],
+    (Organization, founder, founder)=[14674, 1],
+    (Organization, foundingDate, foundingDate)=[203705, 1],
+    (Organization, foundingLocation, foundingLocation)=[17435, 1],
+    (Organization, iataCode, iataCode)=[2454, 1],
+    (Organization, icaoCode, icaoCode)=[2998, 1],
+    (Organization, leiCode, leiCode)=[1883, 1],
+    (Organization, logo, logo)=[23356, 1],
+    (Organization, parentOrganization, parentOrganization)=[8145, 1],
+    (Organization, sponsor, sponsor)=[650, 1],
+    (Organization, subOrganization, subOrganization)=[6933, 1],
+    (Person, Children, Children)=[80132, 1],
+    (Person, affiliation, affiliation)=[1029, 1],
+    (Person, alumniOf, alumniOf)=[567601, 1],
+    (Person, birthDate, birthDate)=[1449086, 1],
+    (Person, birthPlace, birthPlace)=[1083682, 1],
+    (Person, callSign, callSign)=[4, 1],
+    (Person, deathDate, deathDate)=[635931, 1],
+    (Person, deathPlace, deathPlace)=[371947, 1],
+    (Person, familyName, familyName)=[564430, 1],
+    (Person, gender, gender)=[825, 1],
+    (Person, givenName, givenName)=[1029874, 1],
+    (Person, hasOccupation, hasOccupation)=[1055132, 1],
+    (Person, height, height)=[394, 1],
+    (Person, homeLocation, homeLocation)=[46465, 1],
+    (Person, honorificPrefix, honorificPrefix)=[2614, 1],
+    (Person, knowsLanguage, knowsLanguage)=[325443, 1],
+    (Person, memberOf, memberOf)=[1308598, 1],
+    (Person, nationality, nationality)=[998830, 1],
+    (Person, netWorth, netWorth)=[19, 1],
+    (Person, owns, owns)=[86, 1],
+    (Person, parent, parent)=[80516, 1],
+    (Person, spouse, spouse)=[57906, 1],
+    (Person, weight, weight)=[17, 1],
+    (Person, worksFor, worksFor)=[704, 1],
+    (Place, alternateName, alternateName)=[1712440, 1],
+    (Place, award, award)=[3362, 1],
+    (Place, broadcastChannelId, broadcastChannelId)=[20, 1],
+    (Place, containedInPlace, containedInPlace)=[1091980, 1],
+    (Place, containsPlace, containsPlace)=[121563, 1],
+    (Place, elevation, elevation)=[66700, 1],
+    (Place, faxNumber, faxNumber)=[704, 1],
+    (Place, geo, geo)=[957678, 1],
+    (Place, image, image)=[519251, 1],
+    (Place, material, material)=[128, 1],
+    (Place, numberOfEmployees, numberOfEmployees)=[590, 1],
+    (Place, sameAs, sameAs)=[9316948, 1],
+    (Place, servesCuisine, servesCuisine)=[326, 1],
+    (Place, telephone, telephone)=[6232, 1],
+    (Place, width, width)=[3, 1]
+  },
+  y_dict={ CreativeWork=[128209, 1] }
+)
+Data(edge_index=[2, 49204610], edge_attr=[49204610], node_type=[30781882], local_node_idx=[30781882], num_nodes=30781882, y=[30781882, 1], train_mask=[30781882])
+dataset.processed_dir /media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_YAGO/YAGO_FM51/processed
+Sampling time= 0:00:04.447579  sec.
+data= Data(
+  num_nodes_dict={
+    author=1134649,
+    field_of_study=59965,
+    institution=8740,
+    paper=736389
+  },
+  edge_index_dict={
+    (author, affiliated_with, institution)=[2, 1043998],
+    (author, writes, paper)=[2, 7145660],
+    (paper, cites, paper)=[2, 5416271],
+    (paper, has_topic, field_of_study)=[2, 7505078],
+    (institution, inv_affiliated_with, author)=[2, 1043998],
+    (paper, inv_writes, author)=[2, 7145660],
+    (paper, inv_cites, paper)=[2, 5416271],
+    (field_of_study, inv_has_topic, paper)=[2, 7505078]
+  },
+  x_dict={ paper=[736389, 128] },
+  node_year={ paper=[736389, 1] },
+  edge_reltype={
+    (author, affiliated_with, institution)=[1043998, 1],
+    (author, writes, paper)=[7145660, 1],
+    (paper, cites, paper)=[5416271, 1],
+    (paper, has_topic, field_of_study)=[7505078, 1]
+  },
+  y_dict={ paper=[736389, 1] }
+)
+Data(edge_index=[2, 42222014], edge_attr=[42222014], node_type=[1939743], local_node_idx=[1939743], num_nodes=1939743, y=[1939743, 1], train_mask=[1939743])
+dataset.processed_dir /media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_MAG/mag/processed
+Sampling time= 0:00:05.078051  sec.
+14036176
+loaderds= DBLP_Paper_Venue_FM_Literals2Nodes_SY1900_EY2021_50Class
+data= Data(num_nodes=45055, edge_index=[2, 200830], edge_attr=[200830], node_type=[45055], local_node_idx=[45055], y=[45055, 1], train_mask=[45055])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 1
+data= Data(num_nodes=44756, edge_index=[2, 199730], edge_attr=[199730], node_type=[44756], local_node_idx=[44756], y=[44756, 1], train_mask=[44756])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 2
+data= Data(num_nodes=44965, edge_index=[2, 201366], edge_attr=[201366], node_type=[44965], local_node_idx=[44965], y=[44965, 1], train_mask=[44965])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 3
+data= Data(num_nodes=44816, edge_index=[2, 199616], edge_attr=[199616], node_type=[44816], local_node_idx=[44816], y=[44816, 1], train_mask=[44816])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 4
+data= Data(num_nodes=44882, edge_index=[2, 199608], edge_attr=[199608], node_type=[44882], local_node_idx=[44882], y=[44882, 1], train_mask=[44882])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 5
+data= Data(num_nodes=44781, edge_index=[2, 199708], edge_attr=[199708], node_type=[44781], local_node_idx=[44781], y=[44781, 1], train_mask=[44781])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 6
+data= Data(num_nodes=44748, edge_index=[2, 199102], edge_attr=[199102], node_type=[44748], local_node_idx=[44748], y=[44748, 1], train_mask=[44748])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 7
+data= Data(num_nodes=44595, edge_index=[2, 197982], edge_attr=[197982], node_type=[44595], local_node_idx=[44595], y=[44595, 1], train_mask=[44595])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 8
+data= Data(num_nodes=44892, edge_index=[2, 201026], edge_attr=[201026], node_type=[44892], local_node_idx=[44892], y=[44892, 1], train_mask=[44892])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 9
+data= Data(num_nodes=44864, edge_index=[2, 199486], edge_attr=[199486], node_type=[44864], local_node_idx=[44864], y=[44864, 1], train_mask=[44864])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 10
+loaderds= YAGO_FM51
+data= Data(num_nodes=56520, edge_index=[2, 72342], edge_attr=[72342], node_type=[56520], local_node_idx=[56520], y=[56520, 1], train_mask=[56520])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 1
+data= Data(num_nodes=56462, edge_index=[2, 72360], edge_attr=[72360], node_type=[56462], local_node_idx=[56462], y=[56462, 1], train_mask=[56462])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 2
+data= Data(num_nodes=56535, edge_index=[2, 73088], edge_attr=[73088], node_type=[56535], local_node_idx=[56535], y=[56535, 1], train_mask=[56535])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 3
+data= Data(num_nodes=56522, edge_index=[2, 72998], edge_attr=[72998], node_type=[56522], local_node_idx=[56522], y=[56522, 1], train_mask=[56522])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 4
+data= Data(num_nodes=56565, edge_index=[2, 72408], edge_attr=[72408], node_type=[56565], local_node_idx=[56565], y=[56565, 1], train_mask=[56565])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 5
+data= Data(num_nodes=56590, edge_index=[2, 72968], edge_attr=[72968], node_type=[56590], local_node_idx=[56590], y=[56590, 1], train_mask=[56590])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 6
+data= Data(num_nodes=56435, edge_index=[2, 72504], edge_attr=[72504], node_type=[56435], local_node_idx=[56435], y=[56435, 1], train_mask=[56435])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 7
+data= Data(num_nodes=56474, edge_index=[2, 72580], edge_attr=[72580], node_type=[56474], local_node_idx=[56474], y=[56474, 1], train_mask=[56474])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 8
+data= Data(num_nodes=56401, edge_index=[2, 72762], edge_attr=[72762], node_type=[56401], local_node_idx=[56401], y=[56401, 1], train_mask=[56401])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 9
+data= Data(num_nodes=56497, edge_index=[2, 72460], edge_attr=[72460], node_type=[56497], local_node_idx=[56497], y=[56497, 1], train_mask=[56497])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 10
+loaderds= mag
+data= Data(num_nodes=51191, edge_index=[2, 617266], edge_attr=[617266], node_type=[51191], local_node_idx=[51191], y=[51191, 1], train_mask=[51191])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 1
+data= Data(num_nodes=51136, edge_index=[2, 598548], edge_attr=[598548], node_type=[51136], local_node_idx=[51136], y=[51136, 1], train_mask=[51136])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 2
+data= Data(num_nodes=51294, edge_index=[2, 600564], edge_attr=[600564], node_type=[51294], local_node_idx=[51294], y=[51294, 1], train_mask=[51294])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 3
+data= Data(num_nodes=51236, edge_index=[2, 607276], edge_attr=[607276], node_type=[51236], local_node_idx=[51236], y=[51236, 1], train_mask=[51236])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 4
+data= Data(num_nodes=51183, edge_index=[2, 600624], edge_attr=[600624], node_type=[51183], local_node_idx=[51183], y=[51183, 1], train_mask=[51183])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 5
+data= Data(num_nodes=51158, edge_index=[2, 603788], edge_attr=[603788], node_type=[51158], local_node_idx=[51158], y=[51158, 1], train_mask=[51158])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 6
+data= Data(num_nodes=51199, edge_index=[2, 608614], edge_attr=[608614], node_type=[51199], local_node_idx=[51199], y=[51199, 1], train_mask=[51199])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 7
+data= Data(num_nodes=51271, edge_index=[2, 605328], edge_attr=[605328], node_type=[51271], local_node_idx=[51271], y=[51271, 1], train_mask=[51271])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 8
+data= Data(num_nodes=51174, edge_index=[2, 598424], edge_attr=[598424], node_type=[51174], local_node_idx=[51174], y=[51174, 1], train_mask=[51174])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 9
+data= Data(num_nodes=51192, edge_index=[2, 616916], edge_attr=[616916], node_type=[51192], local_node_idx=[51192], y=[51192, 1], train_mask=[51192])
+/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/GenerateSubgraphNodesScores.py:343: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  nt_df=nt_df.append(is_target_df)
+sample_idx= 10
+Dataset 00, Epoch: 00, MSE: 47924.7653
+Dataset 01, Epoch: 00, MSE: 50198.2141
+Dataset 02, Epoch: 00, MSE: 47797.6165
+Dataset 03, Epoch: 00, MSE: 47145.4709
+Dataset 04, Epoch: 00, MSE: 47673.8402
+Dataset 05, Epoch: 00, MSE: 47874.8195
+Dataset 06, Epoch: 00, MSE: 46332.5643
+Dataset 07, Epoch: 00, MSE: 46457.5283
+Dataset 08, Epoch: 00, MSE: 47192.6377
+Dataset 09, Epoch: 00, MSE: 44466.2301
+Dataset 10, Epoch: 00, MSE: 334.6248
+Dataset 11, Epoch: 00, MSE: 367.5760
+Dataset 12, Epoch: 00, MSE: 357.5991
+Dataset 13, Epoch: 00, MSE: 318.0742
+Dataset 14, Epoch: 00, MSE: 309.1005
+Dataset 15, Epoch: 00, MSE: 363.4134
+Dataset 16, Epoch: 00, MSE: 332.8263
+Dataset 17, Epoch: 00, MSE: 329.5366
+Dataset 18, Epoch: 00, MSE: 302.3795
+Dataset 19, Epoch: 00, MSE: 326.0154
+Dataset 20, Epoch: 00, MSE: 23640.3773
+Dataset 21, Epoch: 00, MSE: 21978.4329
+Dataset 22, Epoch: 00, MSE: 20442.1732
+Dataset 23, Epoch: 00, MSE: 17643.0998
+Dataset 24, Epoch: 00, MSE: 15456.4485
+Dataset 25, Epoch: 00, MSE: 11803.4636
+Dataset 26, Epoch: 00, MSE: 9674.9137
+Dataset 27, Epoch: 00, MSE: 8140.0829
+Dataset 28, Epoch: 00, MSE: 10038.3649
+Dataset 29, Epoch: 00, MSE: 11047.5577
+Dataset 00, Epoch: 01, MSE: 26167.0976
+Dataset 01, Epoch: 01, MSE: 23753.5463
+Dataset 02, Epoch: 01, MSE: 19728.5961
+Dataset 03, Epoch: 01, MSE: 17624.3482
+Dataset 04, Epoch: 01, MSE: 15860.9914
+Dataset 05, Epoch: 01, MSE: 10299.9287
+Dataset 06, Epoch: 01, MSE: 7454.0559
+Dataset 07, Epoch: 01, MSE: 6885.8701
+Dataset 08, Epoch: 01, MSE: 6673.7679
+Dataset 09, Epoch: 01, MSE: 6564.3403
+Dataset 10, Epoch: 01, MSE: 170.3300
+Dataset 11, Epoch: 01, MSE: 196.1234
+Dataset 12, Epoch: 01, MSE: 178.4951
+Dataset 13, Epoch: 01, MSE: 167.5620
+Dataset 14, Epoch: 01, MSE: 171.5702
+Dataset 15, Epoch: 01, MSE: 165.9537
+Dataset 16, Epoch: 01, MSE: 166.1911
+Dataset 17, Epoch: 01, MSE: 145.5017
+Dataset 18, Epoch: 01, MSE: 155.6787
+Dataset 19, Epoch: 01, MSE: 163.5422
+Dataset 20, Epoch: 01, MSE: 148606.7919
+Dataset 21, Epoch: 01, MSE: 86693.9555
+Dataset 22, Epoch: 01, MSE: 46274.7104
+Dataset 23, Epoch: 01, MSE: 21398.8059
+Dataset 24, Epoch: 01, MSE: 10324.4380
+Dataset 25, Epoch: 01, MSE: 6644.1476
+Dataset 26, Epoch: 01, MSE: 6935.9240
+Dataset 27, Epoch: 01, MSE: 8004.7086
+Dataset 28, Epoch: 01, MSE: 11425.2311
+Dataset 29, Epoch: 01, MSE: 14175.4361
+Dataset 00, Epoch: 02, MSE: 11506.5526
+Dataset 01, Epoch: 02, MSE: 12723.1111
+Dataset 02, Epoch: 02, MSE: 4991.6677
+Dataset 03, Epoch: 02, MSE: 2131.0376
+Dataset 04, Epoch: 02, MSE: 3135.3120
+Dataset 05, Epoch: 02, MSE: 3022.1978
+Dataset 06, Epoch: 02, MSE: 2502.1367
+Dataset 07, Epoch: 02, MSE: 3663.3182
+Dataset 08, Epoch: 02, MSE: 6878.0631
+Dataset 09, Epoch: 02, MSE: 9846.9870
+Dataset 10, Epoch: 02, MSE: 265.8181
+Dataset 11, Epoch: 02, MSE: 302.3652
+Dataset 12, Epoch: 02, MSE: 292.8609
+Dataset 13, Epoch: 02, MSE: 263.6528
+Dataset 14, Epoch: 02, MSE: 256.1396
+Dataset 15, Epoch: 02, MSE: 308.2367
+Dataset 16, Epoch: 02, MSE: 280.0668
+Dataset 17, Epoch: 02, MSE: 284.1857
+Dataset 18, Epoch: 02, MSE: 265.3987
+Dataset 19, Epoch: 02, MSE: 287.9824
+Dataset 20, Epoch: 02, MSE: 24143.3487
+Dataset 21, Epoch: 02, MSE: 23757.4725
+Dataset 22, Epoch: 02, MSE: 24137.4747
+Dataset 23, Epoch: 02, MSE: 23454.5050
+Dataset 24, Epoch: 02, MSE: 24219.0665
+Dataset 25, Epoch: 02, MSE: 23282.7702
+Dataset 26, Epoch: 02, MSE: 23639.2212
+Dataset 27, Epoch: 02, MSE: 23055.5236
+Dataset 28, Epoch: 02, MSE: 23093.5788
+Dataset 29, Epoch: 02, MSE: 22669.5315
+Dataset 00, Epoch: 03, MSE: 29275.7725
+Dataset 01, Epoch: 03, MSE: 26486.8929
+Dataset 02, Epoch: 03, MSE: 20882.0046
+Dataset 03, Epoch: 03, MSE: 23881.8192
+Dataset 04, Epoch: 03, MSE: 12617.0208
+Dataset 05, Epoch: 03, MSE: 11102.1985
+Dataset 06, Epoch: 03, MSE: 8273.8915
+Dataset 07, Epoch: 03, MSE: 2111.8602
+Dataset 08, Epoch: 03, MSE: 2510.1536
+Dataset 09, Epoch: 03, MSE: 2872.2552
+Dataset 10, Epoch: 03, MSE: 250.9000
+Dataset 11, Epoch: 03, MSE: 283.6803
+Dataset 12, Epoch: 03, MSE: 267.8125
+Dataset 13, Epoch: 03, MSE: 242.4370
+Dataset 14, Epoch: 03, MSE: 230.8239
+Dataset 15, Epoch: 03, MSE: 271.9865
+Dataset 16, Epoch: 03, MSE: 241.8312
+Dataset 17, Epoch: 03, MSE: 246.7350
+Dataset 18, Epoch: 03, MSE: 232.6466
+Dataset 19, Epoch: 03, MSE: 251.0256
+Dataset 20, Epoch: 03, MSE: 21601.3268
+Dataset 21, Epoch: 03, MSE: 21057.1049
+Dataset 22, Epoch: 03, MSE: 21261.7483
+Dataset 23, Epoch: 03, MSE: 20374.9442
+Dataset 24, Epoch: 03, MSE: 20731.9509
+Dataset 25, Epoch: 03, MSE: 19482.6530
+Dataset 26, Epoch: 03, MSE: 19353.6088
+Dataset 27, Epoch: 03, MSE: 18363.0171
+Dataset 28, Epoch: 03, MSE: 18268.7192
+Dataset 29, Epoch: 03, MSE: 17800.4176
+Dataset 00, Epoch: 04, MSE: 7944.3922
+Dataset 01, Epoch: 04, MSE: 3135.9570
+Dataset 02, Epoch: 04, MSE: 1704.9803
+Dataset 03, Epoch: 04, MSE: 2717.9758
+Dataset 04, Epoch: 04, MSE: 4975.2707
+Dataset 05, Epoch: 04, MSE: 8305.6452
+Dataset 06, Epoch: 04, MSE: 8208.2297
+Dataset 07, Epoch: 04, MSE: 3918.8938
+Dataset 08, Epoch: 04, MSE: 3258.7513
+Dataset 09, Epoch: 04, MSE: 1669.3871
+Dataset 10, Epoch: 04, MSE: 224.8901
+Dataset 11, Epoch: 04, MSE: 254.3595
+Dataset 12, Epoch: 04, MSE: 244.0907
+Dataset 13, Epoch: 04, MSE: 223.5351
+Dataset 14, Epoch: 04, MSE: 215.7045
+Dataset 15, Epoch: 04, MSE: 261.4964
+Dataset 16, Epoch: 04, MSE: 225.8699
+Dataset 17, Epoch: 04, MSE: 240.6359
+Dataset 18, Epoch: 04, MSE: 221.3651
+Dataset 19, Epoch: 04, MSE: 242.7229
+Dataset 20, Epoch: 04, MSE: 16674.5344
+Dataset 21, Epoch: 04, MSE: 16015.2195
+Dataset 22, Epoch: 04, MSE: 16010.0971
+Dataset 23, Epoch: 04, MSE: 14997.3586
+Dataset 24, Epoch: 04, MSE: 14865.6361
+Dataset 25, Epoch: 04, MSE: 13475.9571
+Dataset 26, Epoch: 04, MSE: 13024.3272
+Dataset 27, Epoch: 04, MSE: 11849.0553
+Dataset 28, Epoch: 04, MSE: 11450.4202
+Dataset 29, Epoch: 04, MSE: 10665.2654
+Memory=23,879,356
+Process finished with exit code 1

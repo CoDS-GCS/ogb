@@ -12,6 +12,7 @@ import rdflib as rdf
 from torch_geometric.data import (Data, InMemoryDataset, download_url,extract_tar)
 from rdflib import Graph, Literal, RDF, URIRef, Namespace #basic RDF handling
 
+
 class EntitiesMetaSampler(InMemoryDataset):
     r"""The relational entities networks "AIFB", "MUTAG", "BGS" and "AM" from
     the `"Modeling Relational Data with Graph Convolutional Networks"
@@ -108,16 +109,24 @@ class EntitiesMetaSampler(InMemoryDataset):
             path = download_url(self.url.format(self.name), self.root)
             extract_tar(path, self.raw_dir)
             os.unlink(path)
-
+    def getRelationsNodes_RDFLib(self,Triples_df):
+        g = self.dfToRDFGraph(self.Triples_df)
+        freq = Counter(g.predicates())
+        relations = sorted(set(g.predicates()), key=lambda p: -freq.get(p, 0))
+        subjects = set(g.subjects())
+        objects = set(g.objects())
+        nodes = list(subjects.union(objects))
+        return relations,nodes,g
+    def getRelationsNodes(self,Triples_df):
+        freq=Triples_df.groupby('Rel_ID').count().to_dict()["Src_Node_ID"]
+        relations = dict(sorted(freq.items(),key=lambda item: item[1],reverse=True))
+        nodes = set(Triples_df["Src_Node_ID"].tolist()).union(set(Triples_df["Dest_Node_ID"].tolist()))
+        return relations, nodes
     def process(self):
 
         if self.Triples_df is not None:
-            g=self.dfToRDFGraph(self.Triples_df)
-            freq = Counter(g.predicates())
-            relations = sorted(set(g.predicates()), key=lambda p: -freq.get(p, 0))
-            subjects = set(g.subjects())
-            objects = set(g.objects())
-            nodes = list(subjects.union(objects))
+            # relations, nodes,g = self.getRelationsNodes_RDFLib(self.Triples_df)
+            relations, nodes=self.getRelationsNodes(self.Triples_df )
             try:
                 sorted_nodes_ids = {}
                 for elem in nodes:
@@ -140,7 +149,18 @@ class EntitiesMetaSampler(InMemoryDataset):
             self.nodes_dict = nodes_dict
 
             edges = []
-            for s, p, o in g.triples((None, None, None)):
+            # for s, p, o in g.triples((None, None, None)):
+            #     try:
+            #         src, dst, rel = nodes_dict[s], nodes_dict[o], relations_dict[p]
+            #         edges.append([src, dst, 2 * rel])
+            #         edges.append([dst, src, 2 * rel + 1])
+            #     except:
+            #         continue
+            # for s, p, o in g.triples((None, None, None)):
+            for  row in self.Triples_df.to_dict('records'):
+                s=row['Src_Node_ID']
+                p = row['Rel_ID']
+                o = row['Dest_Node_ID']
                 try:
                     src, dst, rel = nodes_dict[s], nodes_dict[o], relations_dict[p]
                     edges.append([src, dst, 2 * rel])
