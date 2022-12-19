@@ -41,6 +41,7 @@ def generateSubgraphNodeScores(target_node_type,file_path,considerOversmoothing=
     test.to_csv(file_path.replace(".csv", "") + "/raw/testSet.tsv", sep="\t", index=None)
     nt_df.to_csv(file_path.replace(".csv", "") + "/raw/" + file_name + ".nt", header=None, sep="\t", index=None)
 
+## normalize scores
 def normalize(df,exclude):
     result = df.copy()
     for feature_name in df.columns:

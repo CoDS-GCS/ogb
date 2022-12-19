@@ -1255,4 +1255,5 @@ Dataset 26, Epoch: 04, MSE: 0.1146
 Dataset 27, Epoch: 04, MSE: 0.1166
 Dataset 28, Epoch: 04, MSE: 0.1152
 Dataset 29, Epoch: 04, MSE: 0.1162
-25437380
+Memory:25437380
+Train_Time:4:41:30

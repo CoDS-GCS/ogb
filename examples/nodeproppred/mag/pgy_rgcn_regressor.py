@@ -88,6 +88,7 @@ model,data=None,None
 def train(loaders_datasets,nepochs=100):
     datasets=[]
     sample_idx=0
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     for loaderds in loaders_datasets:
         sample_idx =0
         print('loaderds=',loaderds['name'])
@@ -96,14 +97,14 @@ def train(loaders_datasets,nepochs=100):
             DecodedSubgraph_lst = getSubgraphNodes(loaderds['org_dataset'], data)
             DecodedSubgraph_df = pd.DataFrame(DecodedSubgraph_lst,columns=['Src_Node_Type', 'Src_Node_ID', 'Rel_type', 'Rel_ID',
                                                        'Dest_Node_Type', 'Dest_Node_ID'])
+            DecodedSubgraph_df.to_csv("FM_3small_Subgraphs/"+loaderds['name']+"_sample_"+str(sample_idx)+"_biased.csv")
+            # DecodedSubgraph_df.to_csv("FM_3small_Subgraphs/" + loaderds['name'] + "_sample_" + str(sample_idx) + "_UniformRW.csv")
             # normalized_df,all_labels_df,train_df,test_df,nt_df=generateSubgraphNodeScores_Oversmoothing_FromdDF(DecodedSubgraph_df,'rec')
-            all_labels_df, train_df, test_df, nt_df = generateSubgraphNodeScores_PPR_FromdDF(DecodedSubgraph_df, loaderds['subject_node'])
-
-            # all_labels_df, train, test, nt_df = generateTargetLabedlSubgraph(DecodedSubgraph_df, 'rec')
-            dataset = Entities(MaxNodeCount=40000, Triples_df=nt_df, labels_df=all_labels_df, Train_df=train_df, Test_df=test_df)
-            device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-            sampled_data=dataset.data.to(device)
-            datasets.append(sampled_data)
+            # all_labels_df, train_df, test_df, nt_df = generateSubgraphNodeScores_PPR_FromdDF(DecodedSubgraph_df, loaderds['subject_node'])
+            # # all_labels_df, train, test, nt_df = generateTargetLabedlSubgraph(DecodedSubgraph_df, 'rec')
+            # dataset = Entities(MaxNodeCount=40000, Triples_df=nt_df, labels_df=all_labels_df, Train_df=train_df, Test_df=test_df)
+            # sampled_data=dataset.data.to(device)
+            # datasets.append(sampled_data)
             sample_idx +=1
             print("sample_idx=",sample_idx)
 
@@ -231,12 +232,21 @@ def getDatasets(paths,ds_names,splits):
             print(homo_data)
             start_t = datetime.datetime.now()
             print("dataset.processed_dir", dataset.processed_dir)
-            train_loader = GraphSAINTRandomWalkSampler(homo_data,
-                                                       batch_size=args.batch_size,
-                                                       walk_length=args.num_layers,
-                                                       num_steps=args.num_steps,
-                                                       sample_coverage=0,
-                                                       save_dir=dataset.processed_dir)
+            train_loader = GraphSAINTTaskBaisedRandomWalkSampler(homo_data,
+                                                                 # train_loader = GraphSAINTRandomWalkSampler(homo_data,
+                                                                 batch_size=args.batch_size,
+                                                                 walk_length=args.num_layers,
+                                                                 Subject_indices=local2global[subject_node],
+                                                                 num_steps=args.num_steps,
+                                                                 sample_coverage=0,
+                                                                 save_dir=dataset.processed_dir)
+
+            # train_loader = GraphSAINTRandomWalkSampler(homo_data,
+            #                                            batch_size=args.batch_size,
+            #                                            walk_length=args.num_layers,
+            #                                            num_steps=args.num_steps,
+            #                                            sample_coverage=0,
+            #                                            save_dir=dataset.processed_dir)
             dataset_dic["train_loader"]=train_loader
 
             feat = torch.Tensor(data.num_nodes_dict[subject_node], 128)
@@ -261,33 +271,39 @@ parser.add_argument('--lr', type=float, default=0.005)
 parser.add_argument('--epochs', type=int, default=10)
 # parser.add_argument('--epochs', type=int, default=15)
 parser.add_argument('--runs', type=int, default=3)
-parser.add_argument('--batch_size', type=int, default=20000)
-parser.add_argument('--walk_length', type=int, default=2)
-parser.add_argument('--num_steps', type=int, default=10)
+# parser.add_argument('--batch_size', type=int, default=20000)
+parser.add_argument('--batch_size', type=int, default=2000)
+parser.add_argument('--walk_length', type=int, default=10)
+parser.add_argument('--num_steps', type=int, default=20)
 parser.add_argument('--loadTrainedModel', type=int, default=0)
 parser.add_argument('--graphsaint_dic_path', type=str, default='none')
 args = parser.parse_args()
 
 def main():
     datasets = getDatasets([
-        '/media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_DBLP/',
-        '/media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_YAGO/',
+        # '/media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_DBLP/',
+        # '/media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_YAGO/',
+        # '/media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_MAG/',
         '/media/hussein/UbuntuData/OGBN_Datasets/KGTOSA_MAG/'
     ],
         [
-            'DBLP_Paper_Venue_FM_Literals2Nodes_SY1900_EY2021_50Class',
-            'YAGO_FM51',
-            'mag',
+            # 'DBLP_Paper_Venue_FM_Literals2Nodes_SY1900_EY2021_50Class',
+            # 'YAGO_FM51',
+            # 'mag',
+            'KGTOSA_MAG_StarQuery'
+            # 'KGTOSA_MAG_Paper_Venue_2HOPS'
         ],
         [
+            # 'time',
+            # 'random',
+            # 'time',
             'time',
-            'random',
-            'time',
+            # 'time',
         ]
     )
     start_t = datetime.datetime.now()
     print(getrusage(RUSAGE_SELF).ru_maxrss)
-    model=train(datasets,5)
+    model=train(datasets,20)
     path="/media/hussein/UbuntuData/GithubRepos/ogb_cods/examples/nodeproppred/mag/"
     # saveModel(model,path,"DBLP_FG_GS_SubgraphNodes_Ls_Oversmoothing")
     saveModel(model, path, "DBLP_FG_GS_SubgraphNodes_Ls_PPR")

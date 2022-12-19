@@ -318,22 +318,30 @@ def graphSaint():
         # "KGTOSA_MAG_Paper_Venue_StarQuery",
         # "KGTOSA_MAG_Paper_Venue_BStarQuery",
         # "KGTOSA_MAG_Paper_Discipline_BStarQuery",
-        "mag"]
+        # "mag",
+        "IMDB12K"
+
+    ]
     print(args)
     gsaint_Final_Test = 0
     for GA_dataset_name in MAG_datasets:
         try:
             gsaint_start_t = datetime.datetime.now()
             ###################################Delete Folder if exist #############################
-            dir_path = "/shared_mnt/KGTOSA_MAG/" + GA_dataset_name
+            # dir_path = "/shared_mnt/KGTOSA_MAG/" + GA_dataset_name
+            dir_path = "/media/hussein/UbuntuData/OGBN_Datasets/IMDB12K" + GA_dataset_name
             try:
                 shutil.rmtree(dir_path)
                 print("Folder Deleted")
             except OSError as e:
                 print("Error Deleting : %s : %s" % (dir_path, e.strerror))
             #         ####################
-            dataset = PygNodePropPredDataset_hsh(name=GA_dataset_name, root='/media/hussein/UbuntuData/OGBN_Datasets/',
-                                                 numofClasses=str(350))
+            # dataset = PygNodePropPredDataset_hsh(name=GA_dataset_name,
+                                                 # root='/media/hussein/UbuntuData/OGBN_Datasets/',
+                                                 # numofClasses=str(350))
+            dataset = PygNodePropPredDataset_hsh(name=GA_dataset_name,
+                                                 root='/media/hussein/UbuntuData/OGBN_Datasets/IMDB12K/',
+                                                 numofClasses=str(3))
             dataset_name = GA_dataset_name + "_GA_" + str(GA_Index)
             print("dataset_name=", dataset_name)
             dic_results[dataset_name] = {}
@@ -348,7 +356,8 @@ def graphSaint():
             data = dataset[0]
             global subject_node
             subject_node = list(data.y_dict.keys())[0]
-            split_idx = dataset.get_idx_split()
+            # split_idx = dataset.get_idx_split()
+            split_idx = dataset.get_idx_split("random")
             end_t = datetime.datetime.now()
             print("dataset init time=", end_t - start_t, " sec.")
             dic_results[dataset_name]["GSaint_data_init_time"] = (end_t - start_t).total_seconds()
